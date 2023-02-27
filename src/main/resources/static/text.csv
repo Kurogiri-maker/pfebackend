@@ -1,0 +1,10 @@
+Id,Title,Description,Published
+1,Spring Boot Tut#1,Tut#1 Description,FALSE
+2,Spring Data Tut#2,Tut#2 Description,TRUE
+3,MySQL Database Tut#3,Tut#3 Description,TRUE
+4,Hibernate Tut#4,Tut#4 Description,FALSE
+5,Spring Cloud Tut#5,Tut#5 Description,TRUE
+6,Microservices Tut#6,Tut#6 Description,FALSE
+7,MongoDB Database Tut#7,Tut#7 Description,TRUE
+8,Spring Data JPA Tut#8,Tut#8 Description,TRUE
+9,Git Tut#9,Tut#9 Description,FALSE
