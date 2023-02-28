@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +19,15 @@ public class TiersServiceImpl implements TiersService {
     @Autowired
     private final TiersRepository tiersRepo;
 
+
     @Override
-    public void save(MultipartFile file) {
+    public Tiers save(Tiers tiers) {
+        Tiers tiers1 = tiersRepo.save(tiers);
+        return tiers1;
+    }
+
+    @Override
+    public void saveFile(MultipartFile file) {
 
         try {
             List<Tiers> tiers = CSVHelper.csvToTiers(file.getInputStream());

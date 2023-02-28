@@ -20,8 +20,15 @@ public class ContratServiceImpl implements ContratService {
     @Autowired
     private final ContratRepository contratRepo;
 
+
     @Override
-    public void save(MultipartFile file) {
+    public Contrat save(Contrat contrat) {
+        Contrat contrat1 = contratRepo.save(contrat);
+        return contrat1;
+    }
+
+    @Override
+    public void saveFile(MultipartFile file) {
 
         try {
             List<Contrat> contrats = CSVHelper.csvToContrats(file.getInputStream());
@@ -34,4 +41,16 @@ public class ContratServiceImpl implements ContratService {
     public List<Contrat> getAllContrat() {
         return contratRepo.findAll();
     }
+
+    @Override
+    public Contrat getContrat(Long id) {
+        return contratRepo.findById(id).get();
+    }
+
+    @Override
+    public void delete(Long id) {
+        contratRepo.deleteById(id);
+    }
+
+
 }
