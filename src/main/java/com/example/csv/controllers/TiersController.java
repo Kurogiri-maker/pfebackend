@@ -2,6 +2,7 @@ package com.example.csv.controllers;
 
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
+import com.example.csv.domain.TiersDTO;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
@@ -88,6 +89,14 @@ public class TiersController {
         fileService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+
+    }
+
+
 
 }
 
