@@ -1,5 +1,6 @@
 package com.example.csv.controllers;
 
+import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.CSVService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
@@ -45,6 +47,19 @@ public class ContratController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
+    @GetMapping("/contrats")
+    public ResponseEntity<List<Contrat>> getAllContrat() {
+        try {
+            List<Contrat> tutorials = fileService.getAllContrat();
 
+            if (tutorials.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(tutorials, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

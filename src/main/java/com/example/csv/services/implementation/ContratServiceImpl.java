@@ -31,4 +31,7 @@ public class ContratServiceImpl implements ContratService {
         }
 
     }
+    public List<Contrat> getAllContrat() {
+        return contratRepo.findAll();
+    }
 }

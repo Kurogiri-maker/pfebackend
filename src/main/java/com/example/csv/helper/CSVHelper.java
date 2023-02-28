@@ -54,7 +54,6 @@ public class CSVHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
                 Contrat contrat = new Contrat(
-                        Long.parseLong(csvRecord.get("Id")),
                         csvRecord.get("Num_dossierKPS"),
                         csvRecord.get("Num_CP"),
                         csvRecord.get("Raison_Social"),
@@ -62,7 +61,8 @@ public class CSVHelper {
                         csvRecord.get("Num_DC"),
                         csvRecord.get("Num_SDC"),
                         csvRecord.get("Num_CIR"),
-                        csvRecord.get("Num_SIRENRef_Collaborative"),
+                        csvRecord.get("Num_SIREN"),
+                        csvRecord.get("Ref_Collaborative"),
                         csvRecord.get("Code_Produit"),
                         csvRecord.get("Identifiant_de_offre_comm"),
                         csvRecord.get("Chef_de_File"),
