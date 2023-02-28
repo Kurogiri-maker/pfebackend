@@ -1,6 +1,7 @@
 package com.example.csv.helper;
 
-import com.example.csv.domain.Tutorial;
+import com.example.csv.domain.Contrat;
+import com.example.csv.domain.Tiers;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -39,32 +40,102 @@ public class CSVHelper {
         }
 
     }
-    public static List<Tutorial> csvToTutorials(InputStream is) {
+
+
+    public static List<Contrat> csvToContrats(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-            List<Tutorial> tutorials = new ArrayList<>();
+            List<Contrat> contrats = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-                Tutorial tutorial = new Tutorial(
+                Contrat contrat = new Contrat(
+                        Long.parseLong(csvRecord.get("Id")),
+                        csvRecord.get("Num_dossierKPS"),
+                        csvRecord.get("Num_CP"),
+                        csvRecord.get("Raison_Social"),
+                        csvRecord.get("Id_Tiers"),
+                        csvRecord.get("Num_DC"),
+                        csvRecord.get("Num_SDC"),
+                        csvRecord.get("Num_CIR"),
+                        csvRecord.get("Num_SIRENRef_Collaborative"),
+                        csvRecord.get("Code_Produit"),
+                        csvRecord.get("Identifiant_de_offre_comm"),
+                        csvRecord.get("Chef_de_File"),
+                        csvRecord.get("Num_OVI"),
+                        csvRecord.get("Num_RUM"),
+                        csvRecord.get("TypeEnergie"),
+                        csvRecord.get("Produit_Comm"),
+                        csvRecord.get("Produit"),
+                        csvRecord.get("Phase"),
+                        csvRecord.get("Montant_pret")
+                );
+
+                contrats.add(contrat);
+            }
+
+            return contrats;
+        } catch (IOException e) {
+            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+        }
+    }
+
+    public static List<Tiers> csvToTiers(InputStream is) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
+
+            List<Tiers> tiers = new ArrayList<>();
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+
+            for (CSVRecord csvRecord : csvRecords) {
+                Tiers tier = new Tiers(
+                        Long.parseLong(csvRecord.get("Numero")),
+                        csvRecord.get("Nom"),
+                        csvRecord.get("Siren"),
+                        csvRecord.get("Ref_mandat")
+                );
+
+                tiers.add(tier);
+            }
+
+            return tiers;
+        } catch (IOException e) {
+            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+        }
+    }
+
+    /*
+    public static List<Contrat> csvToContrats(InputStream is) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
+
+            List<Contrat> contrats = new ArrayList<>();
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+
+            for (CSVRecord csvRecord : csvRecords) {
+                Contrat contrat = new Contrat(
                         Long.parseLong(csvRecord.get("Id")),
                         csvRecord.get("Title"),
                         csvRecord.get("Description"),
                         Boolean.parseBoolean(csvRecord.get("Published"))
                 );
 
-                tutorials.add(tutorial);
+                contrats.add(contrat);
             }
 
-            return tutorials;
+            return contrats;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }
     }
-
+    */
 
 
 
