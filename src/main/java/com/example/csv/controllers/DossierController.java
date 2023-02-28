@@ -1,8 +1,11 @@
 package com.example.csv.controllers;
 
+import com.example.csv.domain.Dossier;
 import com.example.csv.domain.ResponseMessage;
+import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
-import com.example.csv.services.CSVService;
+import com.example.csv.services.DossierService;
+import com.example.csv.services.implementation.DossierServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,25 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.core.io.Resource;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
-@RequestMapping("/api/csv")
+@RequestMapping("/api/csv/dossier")
 @AllArgsConstructor
 @Slf4j
-public class CSVController {
+public class DossierController {
 
-    private static final String UPLOAD_DIR = "./uploads";
     @Autowired
-    private final CSVService fileService;
+    private final DossierService fileService;
 
-    // Upload a csv file
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -37,7 +34,7 @@ public class CSVController {
         if (CSVHelper.hasCSVFormat(file)) {
             try {
 
-                fileService.save(file);
+                fileService.saveFile(file);
 
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -52,20 +49,47 @@ public class CSVController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 
+    @PostMapping
+    public ResponseEntity<Dossier> save(@RequestBody Dossier dossier){
 
-    // Get the columns header
-    @GetMapping("/header")
-    public ResponseEntity<List<String>> getColumnsHeader(@RequestParam("file") MultipartFile file) {
+        if(!(fileService.getDossier(dossier.getId()) == null)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Dossier savedDossier = fileService.save(dossier);
+        return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);
+    }
+
+    @GetMapping ResponseEntity<List<Dossier>> getAllDossiers(){
         try {
-            List<String> columnsHeader = fileService.getColumnsHeader(file.getInputStream());
+            List<Dossier> dossiers = fileService.getAllDossiers();
 
-            if (columnsHeader.isEmpty()) {
+            if (dossiers.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(columnsHeader, HttpStatus.OK);
+            return new ResponseEntity<>(dossiers, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){
+        Dossier dossier = fileService.getDossier(id);
+        if(dossier.equals(null)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(dossier, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteDossier(@PathVariable("id") Long id){
+        if(fileService.getDossier(id)== null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        fileService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
