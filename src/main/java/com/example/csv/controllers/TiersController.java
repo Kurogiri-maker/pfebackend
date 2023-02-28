@@ -3,7 +3,6 @@ package com.example.csv.controllers;
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
-import com.example.csv.services.ContratService;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin("http://localhost:4200")

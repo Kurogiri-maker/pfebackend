@@ -1,6 +1,7 @@
 package com.example.csv.helper;
 
 import com.example.csv.domain.Contrat;
+import com.example.csv.domain.Dossier;
 import com.example.csv.domain.Tiers;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -109,33 +110,34 @@ public class CSVHelper {
         }
     }
 
-    /*
-    public static List<Contrat> csvToContrats(InputStream is) {
+
+    public static List<Dossier> csvToDossiers(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-            List<Contrat> contrats = new ArrayList<>();
+            List<Dossier> dossiers = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-                Contrat contrat = new Contrat(
-                        Long.parseLong(csvRecord.get("Id")),
-                        csvRecord.get("Title"),
-                        csvRecord.get("Description"),
-                        Boolean.parseBoolean(csvRecord.get("Published"))
+                Dossier dossier = new Dossier(
+                        csvRecord.get("dossier DC"),
+                        csvRecord.get("Numero"),
+                        csvRecord.get("ListSDC"),
+                        csvRecord.get("N_DPS"),
+                        csvRecord.get("Montant_du_pres")
                 );
 
-                contrats.add(contrat);
+                dossiers.add(dossier);
             }
 
-            return contrats;
+            return dossiers;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }
     }
-    */
+
 
 
 
