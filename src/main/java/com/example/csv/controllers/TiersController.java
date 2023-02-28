@@ -2,6 +2,7 @@ package com.example.csv.controllers;
 
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
+import com.example.csv.domain.TiersDTO;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class TiersController {
         if (CSVHelper.hasCSVFormat(file)) {
             try {
 
-                fileService.save(file);
+                fileService.saveFile(file);
 
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -44,6 +45,17 @@ public class TiersController {
 
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+    }
+
+    @PostMapping
+    public ResponseEntity<Tiers> save(@RequestBody Tiers tiers){
+
+        if(!(fileService.getTiers(tiers.getId()) == null)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Tiers savedTiers = fileService.save(tiers);
+        return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
     }
 
     @GetMapping ResponseEntity<List<Tiers>> getAllTiers(){
@@ -61,13 +73,30 @@ public class TiersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tiers> getTiers(Long id){
+    public ResponseEntity<Tiers> getTiers(@PathVariable("id")Long id){
         Tiers tiers = fileService.getTiers(id);
         if(tiers.equals(null)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(tiers, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteTiers(@PathVariable("id") Long id){
+        if(fileService.getTiers(id)== null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        fileService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+
+    }
+
+
 
 }
 

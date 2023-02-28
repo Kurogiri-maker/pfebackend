@@ -6,13 +6,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface TiersService {
-    void save(MultipartFile file);
+
+    Tiers save(Tiers tiers);
+
+    void saveFile(MultipartFile file);
 
     List<Tiers> getAllTiers();
 
     Tiers getTiers(Long id);
 
     void delete(Long id);
+
 
 
 }

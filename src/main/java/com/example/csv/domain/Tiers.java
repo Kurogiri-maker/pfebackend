@@ -15,11 +15,19 @@ public class Tiers {
     @Id
     @GeneratedValue
     private Long id;
+    private String numero;
     private String nom;
     private String siren;
     private String ref_mandat;
 
-    public Tiers(){
 
+    public Tiers( ) {
+    }
+
+    public Tiers(String numero, String nom, String siren, String ref_mandat) {
+        this.numero = numero;
+        this.nom = nom;
+        this.siren = siren;
+        this.ref_mandat = ref_mandat;
     }
 }
