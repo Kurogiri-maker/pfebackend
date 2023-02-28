@@ -96,9 +96,9 @@ public class CSVHelper {
             for (CSVRecord csvRecord : csvRecords) {
                 Tiers tier = new Tiers(
                         Long.parseLong(csvRecord.get("Numero")),
-                        csvRecord.get("Nom"),
-                        csvRecord.get("Siren"),
-                        csvRecord.get("Ref_mandat")
+                        csvRecord.get("nom"),
+                        csvRecord.get("siren"),
+                        csvRecord.get("ref_mandat")
                 );
 
                 tiers.add(tier);
