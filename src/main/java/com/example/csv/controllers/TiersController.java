@@ -92,7 +92,29 @@ public class TiersController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+        Tiers tiers = fileService.getTiers(id);
+        TiersDTO d = new TiersDTO();
+        if(tiers == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        if(tiersDTO.getNom() == null){
+            d.setNom(tiers.getNom());
+        }else {
+            d.setNom(tiersDTO.getNom());
+        }
+        if(tiersDTO.getSiren() == null){
+            d.setSiren(tiers.getSiren());
+        }else {
+            d.setSiren(tiersDTO.getSiren());
+        }
+        if(tiersDTO.getRef_mandat() == null){
+            d.setRef_mandat(tiers.getRef_mandat());
+        }else {
+            d.setRef_mandat(tiersDTO.getRef_mandat());
+        }
+        fileService.update(id,d.getNom(),d.getSiren(),d.getRef_mandat());
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

@@ -60,7 +60,7 @@ public class ContratController {
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
     }
 
-    @GetMapping("/contrats")
+    @GetMapping
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
             List<Contrat> contrats = fileService.getAllContrat();

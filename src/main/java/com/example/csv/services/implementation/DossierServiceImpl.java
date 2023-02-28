@@ -49,4 +49,9 @@ public class DossierServiceImpl implements DossierService {
         return dossier1;
     }
 
+    @Override
+    public void update(Long id, String dossier_DC, String listSDC, String n_DPS, String montant_du_pres) {
+        dosRepo.updateDossier(id,dossier_DC,listSDC,n_DPS,montant_du_pres);
+    }
+
 }
