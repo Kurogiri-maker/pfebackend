@@ -2,6 +2,7 @@ package com.example.csv.controllers;
 
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
+import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.CSVService;
 import com.example.csv.services.ContratService;
@@ -33,7 +34,7 @@ public class ContratController {
         if (CSVHelper.hasCSVFormat(file)) {
             try {
 
-                fileService.save(file);
+                fileService.saveFile(file);
 
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -47,19 +48,51 @@ public class ContratController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
+
+    @PostMapping
+    public ResponseEntity<Contrat> save(@RequestBody Contrat contrat){
+
+        if(!(fileService.getContrat(contrat.getId()) == null)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Contrat savedContrat = fileService.save(contrat);
+        return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
+    }
+
     @GetMapping("/contrats")
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
-            List<Contrat> tutorials = fileService.getAllContrat();
+            List<Contrat> contrats = fileService.getAllContrat();
 
-            if (tutorials.isEmpty()) {
+            if (contrats.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(tutorials, HttpStatus.OK);
+            return new ResponseEntity<>(contrats, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Contrat> getContrat(@PathVariable("id") Long id){
+        Contrat contrat = fileService.getContrat(id);
+        if(contrat.equals(null)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(contrat, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteContrat(@PathVariable("id") Long id){
+        if(fileService.getContrat(id)== null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        fileService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
