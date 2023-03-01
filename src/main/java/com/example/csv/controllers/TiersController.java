@@ -2,7 +2,7 @@ package com.example.csv.controllers;
 
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
-import com.example.csv.domain.TiersDTO;
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv/tier")
 @AllArgsConstructor
@@ -92,7 +92,29 @@ public class TiersController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+        Tiers tiers = fileService.getTiers(id);
+        TiersDTO d = new TiersDTO();
+        if(tiers == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        if(tiersDTO.getNom() == null){
+            d.setNom(tiers.getNom());
+        }else {
+            d.setNom(tiersDTO.getNom());
+        }
+        if(tiersDTO.getSiren() == null){
+            d.setSiren(tiers.getSiren());
+        }else {
+            d.setSiren(tiersDTO.getSiren());
+        }
+        if(tiersDTO.getRef_mandat() == null){
+            d.setRef_mandat(tiers.getRef_mandat());
+        }else {
+            d.setRef_mandat(tiersDTO.getRef_mandat());
+        }
+        fileService.update();
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

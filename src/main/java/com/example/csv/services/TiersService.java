@@ -18,5 +18,5 @@ public interface TiersService {
     void delete(Long id);
 
 
-
+    void update();
 }

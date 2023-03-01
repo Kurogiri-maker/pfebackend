@@ -1,5 +1,8 @@
-package com.example.csv.domain;
+package com.example.csv.DTO;
 
+import lombok.Data;
+
+@Data
 public class TiersDTO {
 
     private String nom;

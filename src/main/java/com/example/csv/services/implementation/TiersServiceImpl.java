@@ -52,5 +52,10 @@ public class TiersServiceImpl implements TiersService {
         tiersRepo.deleteById(id);
     }
 
+    @Override
+    public void update() {
+
+    }
+
 
 }
