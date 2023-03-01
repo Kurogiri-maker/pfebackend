@@ -53,8 +53,8 @@ public class TiersServiceImpl implements TiersService {
     }
 
     @Override
-    public void update(Long id, String nom, String siren, String ref_mandat) {
-        tiersRepo.updateTiers(id,nom,siren,ref_mandat);
+    public void update() {
+
     }
 
 

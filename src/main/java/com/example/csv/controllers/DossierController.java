@@ -1,5 +1,6 @@
 package com.example.csv.controllers;
 
+import com.example.csv.DTO.DossierDTO;
 import com.example.csv.domain.*;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.DossierService;

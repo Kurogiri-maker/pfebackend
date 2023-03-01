@@ -1,4 +1,4 @@
-package com.example.csv.domain;
+package com.example.csv.DTO;
 
 import lombok.Data;
 

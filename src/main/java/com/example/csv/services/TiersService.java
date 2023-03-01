@@ -18,5 +18,5 @@ public interface TiersService {
     void delete(Long id);
 
 
-    void update(Long id, String nom, String siren, String ref_mandat);
+    void update();
 }

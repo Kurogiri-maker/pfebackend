@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 public class Tiers {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numero;
     private String nom;
@@ -21,13 +22,6 @@ public class Tiers {
     private String ref_mandat;
 
 
-    public Tiers( ) {
-    }
 
-    public Tiers(String numero, String nom, String siren, String ref_mandat) {
-        this.numero = numero;
-        this.nom = nom;
-        this.siren = siren;
-        this.ref_mandat = ref_mandat;
-    }
+
 }

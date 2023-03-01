@@ -2,7 +2,7 @@ package com.example.csv.controllers;
 
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
-import com.example.csv.domain.TiersDTO;
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv/tier")
 @AllArgsConstructor
@@ -113,7 +113,7 @@ public class TiersController {
         }else {
             d.setRef_mandat(tiersDTO.getRef_mandat());
         }
-        fileService.update(id,d.getNom(),d.getSiren(),d.getRef_mandat());
+        fileService.update();
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
