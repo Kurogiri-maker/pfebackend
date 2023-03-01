@@ -20,7 +20,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
+
                 .csrf()
                 .disable()
                 .cors()
@@ -39,6 +41,10 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);*/
 
 
+        return http.build();*/
+       
         return http.build();
+
+
     }
 }

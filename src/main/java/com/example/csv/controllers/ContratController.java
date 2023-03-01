@@ -59,8 +59,10 @@ public class ContratController {
         Contrat savedContrat = fileService.save(contrat);
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
     }
+
     @CrossOrigin
     @GetMapping("/contrats")
+
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
             List<Contrat> contrats = fileService.getAllContrat();
