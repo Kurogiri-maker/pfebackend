@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv/contrat")
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class ContratController {
 
     @Autowired
     private final ContratService fileService;
-
+    @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -48,7 +48,7 @@ public class ContratController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Contrat> save(@RequestBody Contrat contrat){
 
@@ -59,7 +59,7 @@ public class ContratController {
         Contrat savedContrat = fileService.save(contrat);
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping("/contrats")
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
@@ -75,7 +75,7 @@ public class ContratController {
         }
     }
 
-
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Contrat> getContrat(@PathVariable("id") Long id){
         Contrat contrat = fileService.getContrat(id);
@@ -85,7 +85,7 @@ public class ContratController {
         return new ResponseEntity<>(contrat, HttpStatus.OK);
     }
 
-
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteContrat(@PathVariable("id") Long id){
         if(fileService.getContrat(id)== null){
