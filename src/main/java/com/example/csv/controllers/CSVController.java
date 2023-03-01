@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv")
 @AllArgsConstructor
@@ -30,6 +30,7 @@ public class CSVController {
     private final CSVService fileService;
 
     // Upload a csv file
+    @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -54,6 +55,7 @@ public class CSVController {
 
 
     // Get the columns header
+    @CrossOrigin
     @GetMapping("/header")
     public ResponseEntity<List<String>> getColumnsHeader(@RequestParam("file") MultipartFile file) {
         try {

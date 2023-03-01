@@ -24,7 +24,7 @@ public class TiersController {
 
     @Autowired
     private final TiersService fileService;
-
+    @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)  {
         String message = "";
@@ -46,7 +46,7 @@ public class TiersController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Tiers> save(@RequestBody Tiers tiers){
 
@@ -57,7 +57,7 @@ public class TiersController {
         Tiers savedTiers = fileService.save(tiers);
         return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping ResponseEntity<List<Tiers>> getAllTiers(){
         try {
             List<Tiers> tiers = fileService.getAllTiers();
@@ -71,7 +71,7 @@ public class TiersController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Tiers> getTiers(@PathVariable("id")Long id){
         Tiers tiers = fileService.getTiers(id);
@@ -80,7 +80,7 @@ public class TiersController {
         }
         return new ResponseEntity<>(tiers, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteTiers(@PathVariable("id") Long id){
         if(fileService.getTiers(id)== null){
@@ -90,9 +90,10 @@ public class TiersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @CrossOrigin
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
+
         Tiers tiers = fileService.getTiers(id);
         TiersDTO d = new TiersDTO();
         if(tiers == null){
@@ -115,6 +116,7 @@ public class TiersController {
         }
         fileService.update();
         return new ResponseEntity<>(HttpStatus.OK);
+
 
     }
 
