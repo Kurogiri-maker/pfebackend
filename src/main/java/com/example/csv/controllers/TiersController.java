@@ -53,7 +53,7 @@ public class TiersController {
         Tiers savedTiers = fileService.save(tiers);
         return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
     }
-    @CrossOrigin
+    /*@CrossOrigin
     @GetMapping
     ResponseEntity<List<Tiers>> getAllTiers(){
         try {
@@ -68,7 +68,7 @@ public class TiersController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @CrossOrigin
     @GetMapping

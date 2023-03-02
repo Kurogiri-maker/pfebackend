@@ -73,6 +73,4 @@ public class TiersServiceImpl implements TiersService {
             return new ArrayList<Tiers>();
         }
     }
-
-
 }
