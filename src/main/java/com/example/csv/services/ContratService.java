@@ -12,11 +12,13 @@ public interface ContratService {
 
     void saveFile(MultipartFile file);
 
-    public List<Contrat> getAllContrat();
+    public List<Contrat> getAllContrats();
 
     Contrat getContrat(Long id);
 
     void delete(Long id);
 
     void update(Long id, ContratDTO contratDTO);
+
+    public List<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy);
 }

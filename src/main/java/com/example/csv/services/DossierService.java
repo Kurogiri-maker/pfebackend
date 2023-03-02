@@ -20,6 +20,10 @@ public interface DossierService {
     Dossier save(Dossier dossier);
     void update(Long id, DossierDTO dto);
 
+
     List<Dossier> searchDossiers(String dossier_DC, String listSDC, String n_DPS, String montant_du_pres);
+
+    public List<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy);
+
 
 }

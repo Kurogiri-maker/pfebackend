@@ -12,10 +12,15 @@ import com.example.csv.services.DossierService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,26 +74,38 @@ public class DossierServiceImpl implements DossierService {
 
     @Override
     public List<Dossier> searchDossiers(String dossier_DC, String listSDC, String n_DPS, String montant_du_pres) {
-        Specification<Dossier> spec =Specification.where(null);
+        Specification<Dossier> spec = Specification.where(null);
 
-        if( dossier_DC != null && !dossier_DC.isEmpty()){
+        if (dossier_DC != null && !dossier_DC.isEmpty()) {
             spec = spec.and(DossierSpecifications.dossierDCContains(dossier_DC));
         }
 
-        if( listSDC != null && !listSDC.isEmpty()){
+        if (listSDC != null && !listSDC.isEmpty()) {
             spec = spec.and(DossierSpecifications.listSDCContains(listSDC));
         }
 
-        if( n_DPS != null && !n_DPS.isEmpty()){
+        if (n_DPS != null && !n_DPS.isEmpty()) {
             spec = spec.and(DossierSpecifications.nDPSContains(n_DPS));
         }
 
-        if( montant_du_pres != null && !montant_du_pres.isEmpty()){
+        if (montant_du_pres != null && !montant_du_pres.isEmpty()) {
             spec = spec.and(DossierSpecifications.montantDuPresContains(montant_du_pres));
         }
 
 
         return dosRepo.findAll(spec);
+    }
+
+    public List<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy){
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<Dossier> pagedResult = dosRepo.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Dossier>();
+        }
     }
 
 }
