@@ -77,11 +77,7 @@ public class TiersController {
         }
     }*/
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> ahmed
     @GetMapping
     public ResponseEntity<List<Tiers>> getAllTiers(
             @RequestParam(defaultValue = "0") int page,

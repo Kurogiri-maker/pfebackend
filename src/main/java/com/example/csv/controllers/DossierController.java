@@ -57,8 +57,7 @@ public class DossierController {
         Dossier savedDossier = fileService.save(dossier);
         return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);
     }
-<<<<<<< HEAD
-=======
+
     /*@CrossOrigin
 >>>>>>> ahmed
     @GetMapping ResponseEntity<List<Dossier>> getAllDossiers(){
@@ -87,7 +86,7 @@ public class DossierController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-<<<<<<< HEAD
+
     @GetMapping("/search")
     public ResponseEntity<List<Dossier>> searchDossier(
             @RequestParam(required = false) String dossier_DC,
@@ -100,10 +99,6 @@ public class DossierController {
     }
 
 
-=======
-
-    @CrossOrigin
->>>>>>> ahmed
     @GetMapping("/{id}")
     public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){
         Dossier dossier = fileService.getDossier(id);
