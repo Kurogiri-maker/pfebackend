@@ -72,7 +72,6 @@ public class TiersController {
         }
     }*/
 
-    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Tiers>> getAllTiers(
             @RequestParam(defaultValue = "0") int page,
