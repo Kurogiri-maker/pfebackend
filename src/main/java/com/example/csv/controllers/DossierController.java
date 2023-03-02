@@ -24,7 +24,7 @@ public class DossierController {
 
     @Autowired
     private final DossierService fileService;
-    @CrossOrigin
+
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -46,7 +46,7 @@ public class DossierController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-    @CrossOrigin
+
     @PostMapping
     public ResponseEntity<Dossier> save(@RequestBody Dossier dossier){
 
@@ -57,7 +57,6 @@ public class DossierController {
         Dossier savedDossier = fileService.save(dossier);
         return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);
     }
-    @CrossOrigin
     @GetMapping ResponseEntity<List<Dossier>> getAllDossiers(){
         try {
             List<Dossier> dossiers = fileService.getAllDossiers();
@@ -71,7 +70,19 @@ public class DossierController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @CrossOrigin
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Dossier>> searchDossier(
+            @RequestParam(required = false) String dossier_DC,
+            @RequestParam(required = false) String listSDC,
+            @RequestParam(required = false) String n_DPS,
+            @RequestParam(required = false) String montant_du_pres
+    ){
+        List<Dossier> dossiers = fileService.searchDossiers( dossier_DC,  listSDC,  n_DPS,  montant_du_pres) ;
+        return new ResponseEntity<>(dossiers,HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){
         Dossier dossier = fileService.getDossier(id);
@@ -80,7 +91,7 @@ public class DossierController {
         }
         return new ResponseEntity<>(dossier, HttpStatus.OK);
     }
-    @CrossOrigin
+
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteDossier(@PathVariable("id") Long id){
         if(fileService.getDossier(id)== null){
