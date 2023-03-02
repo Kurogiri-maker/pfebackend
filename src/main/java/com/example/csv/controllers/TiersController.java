@@ -8,6 +8,7 @@ import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,10 @@ public class TiersController {
     @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)  {
-        String message = "";
-
+        String message = "Please upload a csv file!";
         if (CSVHelper.hasCSVFormat(file)) {
             try {
-
                 fileService.saveFile(file);
-
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
             } catch (Exception e) {
@@ -42,8 +40,6 @@ public class TiersController {
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
             }
         }
-
-        message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
     @CrossOrigin
@@ -58,8 +54,10 @@ public class TiersController {
         return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
     }
     @CrossOrigin
-    @GetMapping ResponseEntity<List<Tiers>> getAllTiers(){
+    @GetMapping
+    ResponseEntity<List<Tiers>> getAllTiers(){
         try {
+
             List<Tiers> tiers = fileService.getAllTiers();
 
             if (tiers.isEmpty()) {
@@ -71,6 +69,19 @@ public class TiersController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<List<Tiers>> getAllTiers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    )
+    {
+     List<Tiers> list = fileService.getAllTiers(page, size, sortBy);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Tiers> getTiers(@PathVariable("id")Long id){

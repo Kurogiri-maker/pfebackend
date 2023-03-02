@@ -3,7 +3,6 @@ package com.example.csv.auth;
 import com.example.csv.config.JwtService;
 import com.example.csv.domain.Role;
 import com.example.csv.domain.User;
-import com.example.csv.exceptions.auth.AlreadyExistsException;
 import com.example.csv.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

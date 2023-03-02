@@ -13,6 +13,8 @@ public interface TiersService {
 
     List<Tiers> getAllTiers();
 
+    List<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy);
+
     Tiers getTiers(Long id);
 
     void delete(Long id);

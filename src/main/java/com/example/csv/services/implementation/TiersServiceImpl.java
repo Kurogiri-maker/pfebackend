@@ -6,10 +6,15 @@ import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,6 +60,18 @@ public class TiersServiceImpl implements TiersService {
     @Override
     public void update() {
 
+    }
+    @Override
+    public List<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy){
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<Tiers> pagedResult = tiersRepo.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Tiers>();
+        }
     }
 
 
