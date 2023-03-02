@@ -1,7 +1,9 @@
 package com.example.csv.services.implementation;
 
+import com.example.csv.DTO.DossierDTO;
 import com.example.csv.domain.Dossier;
 import com.example.csv.helper.CSVHelper;
+import com.example.csv.helper.mapper.DossierMapper;
 import com.example.csv.repositories.DossierRepository;
 import com.example.csv.services.DossierService;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class DossierServiceImpl implements DossierService {
     @Autowired
     private final DossierRepository dosRepo;
+
+    private DossierMapper mapper;
 
     @Override
     public void saveFile(MultipartFile file) {
@@ -50,8 +54,13 @@ public class DossierServiceImpl implements DossierService {
     }
 
     @Override
-    public void update(Long id, String dossier_DC, String listSDC, String n_DPS, String montant_du_pres) {
-        dosRepo.updateDossier(id,dossier_DC,listSDC,n_DPS,montant_du_pres);
+    public void update(Long id, DossierDTO dto) {
+        Dossier d = dosRepo.findById(id).get();
+        if(d != null){
+            Dossier d1 = mapper.mapNonNullFields(dto , d);
+            dosRepo.save(d1);
+        }
+
     }
 
 }

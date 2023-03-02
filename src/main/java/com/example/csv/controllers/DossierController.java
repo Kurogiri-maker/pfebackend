@@ -92,32 +92,7 @@ public class DossierController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateDossier(@PathVariable("id") Long id ,@RequestBody DossierDTO dossierDTO){
-        Dossier dossier = fileService.getDossier(id);
-        DossierDTO d = new DossierDTO();
-        if(dossier == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if(dossierDTO.getDossier_DC() == null){
-            d.setDossier_DC(dossier.getDossier_DC());
-        }else {
-            d.setDossier_DC(dossierDTO.getDossier_DC());
-        }
-        if(dossierDTO.getListSDC() == null){
-            d.setListSDC(dossier.getListSDC());
-        }else {
-            d.setListSDC(dossierDTO.getListSDC());
-        }
-        if(dossierDTO.getMontant_du_pres() == null){
-            d.setMontant_du_pres(dossier.getMontant_du_pres());
-        }else {
-            d.setMontant_du_pres(dossierDTO.getMontant_du_pres());
-        }
-        if(dossierDTO.getN_DPS() == null){
-            d.setN_DPS(dossier.getN_DPS());
-        }else {
-            d.setN_DPS(dossierDTO.getN_DPS());
-        }
-        fileService.update(id,d.getDossier_DC(),d.getListSDC(),d.getN_DPS(),d.getMontant_du_pres());
+        fileService.update(id,dossierDTO);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

@@ -25,7 +25,8 @@ public class TiersController {
 
     @Autowired
     private final TiersService fileService;
-    @CrossOrigin
+
+
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)  {
         String message = "Please upload a csv file!";
@@ -42,7 +43,7 @@ public class TiersController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-    @CrossOrigin
+
     @PostMapping
     public ResponseEntity<Tiers> save(@RequestBody Tiers tiers){
 
@@ -53,9 +54,10 @@ public class TiersController {
         Tiers savedTiers = fileService.save(tiers);
         return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
     }
-    /*@CrossOrigin
-    @GetMapping
-    ResponseEntity<List<Tiers>> getAllTiers(){
+
+    /*
+    @GetMapping ResponseEntity<List<Tiers>> getAllTiers(){
+
         try {
 
             List<Tiers> tiers = fileService.getAllTiers();
@@ -82,7 +84,7 @@ public class TiersController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @CrossOrigin
+
     @GetMapping("/{id}")
     public ResponseEntity<Tiers> getTiers(@PathVariable("id")Long id){
         Tiers tiers = fileService.getTiers(id);
@@ -91,7 +93,7 @@ public class TiersController {
         }
         return new ResponseEntity<>(tiers, HttpStatus.OK);
     }
-    @CrossOrigin
+
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteTiers(@PathVariable("id") Long id){
         if(fileService.getTiers(id)== null){
@@ -101,33 +103,11 @@ public class TiersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @CrossOrigin
+
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
-
-        Tiers tiers = fileService.getTiers(id);
-        TiersDTO d = new TiersDTO();
-        if(tiers == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if(tiersDTO.getNom() == null){
-            d.setNom(tiers.getNom());
-        }else {
-            d.setNom(tiersDTO.getNom());
-        }
-        if(tiersDTO.getSiren() == null){
-            d.setSiren(tiers.getSiren());
-        }else {
-            d.setSiren(tiersDTO.getSiren());
-        }
-        if(tiersDTO.getRef_mandat() == null){
-            d.setRef_mandat(tiers.getRef_mandat());
-        }else {
-            d.setRef_mandat(tiersDTO.getRef_mandat());
-        }
-        fileService.update();
+        fileService.update(id,tiersDTO);
         return new ResponseEntity<>(HttpStatus.OK);
-
 
     }
 

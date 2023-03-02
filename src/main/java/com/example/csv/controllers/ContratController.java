@@ -1,10 +1,10 @@
 package com.example.csv.controllers;
 
+import com.example.csv.DTO.ContratDTO;
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
-import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
-import com.example.csv.services.CSVService;
 import com.example.csv.services.ContratService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class ContratController {
 
     @Autowired
     private final ContratService fileService;
-    @CrossOrigin
+
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -48,7 +48,7 @@ public class ContratController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-    @CrossOrigin
+
     @PostMapping
     public ResponseEntity<Contrat> save(@RequestBody Contrat contrat){
 
@@ -60,9 +60,9 @@ public class ContratController {
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
     }
 
-    @CrossOrigin
-    @GetMapping("/contrats")
 
+
+    @GetMapping
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
             List<Contrat> contrats = fileService.getAllContrat();
@@ -77,7 +77,7 @@ public class ContratController {
         }
     }
 
-    @CrossOrigin
+
     @GetMapping("/{id}")
     public ResponseEntity<Contrat> getContrat(@PathVariable("id") Long id){
         Contrat contrat = fileService.getContrat(id);
@@ -87,7 +87,7 @@ public class ContratController {
         return new ResponseEntity<>(contrat, HttpStatus.OK);
     }
 
-    @CrossOrigin
+
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteContrat(@PathVariable("id") Long id){
         if(fileService.getContrat(id)== null){
@@ -96,5 +96,17 @@ public class ContratController {
         fileService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody ContratDTO contratDTO){
+        fileService.update(id,contratDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+
+
 
 }
