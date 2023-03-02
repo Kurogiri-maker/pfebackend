@@ -21,4 +21,10 @@ public interface TiersService {
     void delete(Long id);
 
     void update(Long id, TiersDTO dto);
+
+    List<Tiers>  search(String nom);
+
+    List<Tiers> searchTiers(String nom , String siren , String ref_mandat);
+
+    //List<Tiers> searchTiers(String searchTerm);
 }

@@ -3,6 +3,7 @@ package com.example.csv.services.implementation;
 import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
+import com.example.csv.helper.TiersSpecifications;
 import com.example.csv.helper.mapper.TierMapper;
 import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,6 +73,45 @@ public class TiersServiceImpl implements TiersService {
             tiersRepo.save(t1);
         }
     }
+
+    @Override
+    public List<Tiers> search(String nom) {
+        List<Tiers> tiers = tiersRepo.findAllByNom(nom);
+        return tiers;
+    }
+
+
+    @Override
+    public List<Tiers> searchTiers(String nom, String siren, String ref_mandat) {
+        Specification<Tiers> spec =Specification.where(null);
+
+        if( nom != null && !nom.isEmpty()){
+            spec = spec.and(TiersSpecifications.nomContains(nom));
+        }
+
+        if( siren != null && !siren.isEmpty()){
+            spec = spec.and(TiersSpecifications.sirenContains(siren));
+        }
+
+        if( ref_mandat != null && !ref_mandat.isEmpty()){
+            spec = spec.and(TiersSpecifications.refMandatContains(ref_mandat));
+        }
+
+        return tiersRepo.findAll(spec);
+    }
+    /*
+
+    @Override
+    public List<Tiers> searchTiers(String searchTerm) {
+        Specification<Tiers> spec = Specification.where(TiersSpecifications.nomContains(searchTerm)
+                .or(TiersSpecifications.sirenContains(searchTerm))
+                .or(TiersSpecifications.refMandatContains(searchTerm)));
+
+        return tiersRepo.findAll(spec);
+    }
+    */
+
+
     @Override
     public List<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy){
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
