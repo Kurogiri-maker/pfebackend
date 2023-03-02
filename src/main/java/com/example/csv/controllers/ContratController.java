@@ -1,7 +1,6 @@
 package com.example.csv.controllers;
 
 import com.example.csv.DTO.ContratDTO;
-import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.helper.CSVHelper;
@@ -62,10 +61,10 @@ public class ContratController {
 
 
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
-            List<Contrat> contrats = fileService.getAllContrat();
+            List<Contrat> contrats = fileService.getAllContrats();
 
             if (contrats.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -75,6 +74,18 @@ public class ContratController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }*/
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<List<Contrat>> getAllContrats(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    )
+    {
+        List<Contrat> list = fileService.getAllContrats(page, size, sortBy);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
 

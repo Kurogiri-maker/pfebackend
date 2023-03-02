@@ -57,7 +57,7 @@ public class DossierController {
         Dossier savedDossier = fileService.save(dossier);
         return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);
     }
-    @CrossOrigin
+    /*@CrossOrigin
     @GetMapping ResponseEntity<List<Dossier>> getAllDossiers(){
         try {
             List<Dossier> dossiers = fileService.getAllDossiers();
@@ -70,7 +70,21 @@ public class DossierController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }*/
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<List<Dossier>> getAllDossiers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    )
+    {
+        List<Dossier> list = fileService.getAllDossiers(page, size, sortBy);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+
     @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){

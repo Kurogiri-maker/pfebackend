@@ -2,16 +2,22 @@ package com.example.csv.services.implementation;
 
 import com.example.csv.DTO.DossierDTO;
 import com.example.csv.domain.Dossier;
+import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.helper.mapper.DossierMapper;
 import com.example.csv.repositories.DossierRepository;
 import com.example.csv.services.DossierService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,6 +67,19 @@ public class DossierServiceImpl implements DossierService {
             dosRepo.save(d1);
         }
 
+    }
+
+    @Override
+    public List<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy){
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<Dossier> pagedResult = dosRepo.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Dossier>();
+        }
     }
 
 }

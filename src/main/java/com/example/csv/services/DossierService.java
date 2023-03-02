@@ -20,4 +20,6 @@ public interface DossierService {
     Dossier save(Dossier dossier);
     void update(Long id, DossierDTO dto);
 
+    public List<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy);
+
 }
