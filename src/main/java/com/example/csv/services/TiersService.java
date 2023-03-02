@@ -1,5 +1,6 @@
 package com.example.csv.services;
 
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Tiers;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,5 @@ public interface TiersService {
 
     void delete(Long id);
 
-
-    void update();
+    void update(Long id, TiersDTO dto);
 }

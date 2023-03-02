@@ -1,10 +1,10 @@
 package com.example.csv.controllers;
 
+import com.example.csv.DTO.ContratDTO;
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
-import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
-import com.example.csv.services.CSVService;
 import com.example.csv.services.ContratService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv/contrat")
 @AllArgsConstructor
@@ -60,6 +60,7 @@ public class ContratController {
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);
     }
 
+
     @GetMapping
     public ResponseEntity<List<Contrat>> getAllContrat() {
         try {
@@ -94,5 +95,17 @@ public class ContratController {
         fileService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody ContratDTO contratDTO){
+        fileService.update(id,contratDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+
+
 
 }

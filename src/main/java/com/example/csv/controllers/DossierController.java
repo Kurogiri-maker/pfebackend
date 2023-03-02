@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/csv/dossier")
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class DossierController {
 
     @Autowired
     private final DossierService fileService;
-
+    @CrossOrigin
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
@@ -46,7 +46,7 @@ public class DossierController {
         message = "Please upload a csv file!";
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
-
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Dossier> save(@RequestBody Dossier dossier){
 
@@ -57,7 +57,7 @@ public class DossierController {
         Dossier savedDossier = fileService.save(dossier);
         return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping ResponseEntity<List<Dossier>> getAllDossiers(){
         try {
             List<Dossier> dossiers = fileService.getAllDossiers();
@@ -71,7 +71,7 @@ public class DossierController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){
         Dossier dossier = fileService.getDossier(id);
@@ -80,7 +80,7 @@ public class DossierController {
         }
         return new ResponseEntity<>(dossier, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteDossier(@PathVariable("id") Long id){
         if(fileService.getDossier(id)== null){
@@ -92,32 +92,7 @@ public class DossierController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateDossier(@PathVariable("id") Long id ,@RequestBody DossierDTO dossierDTO){
-        Dossier dossier = fileService.getDossier(id);
-        DossierDTO d = new DossierDTO();
-        if(dossier == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if(dossierDTO.getDossier_DC() == null){
-            d.setDossier_DC(dossier.getDossier_DC());
-        }else {
-            d.setDossier_DC(dossierDTO.getDossier_DC());
-        }
-        if(dossierDTO.getListSDC() == null){
-            d.setListSDC(dossier.getListSDC());
-        }else {
-            d.setListSDC(dossierDTO.getListSDC());
-        }
-        if(dossierDTO.getMontant_du_pres() == null){
-            d.setMontant_du_pres(dossier.getMontant_du_pres());
-        }else {
-            d.setMontant_du_pres(dossierDTO.getMontant_du_pres());
-        }
-        if(dossierDTO.getN_DPS() == null){
-            d.setN_DPS(dossier.getN_DPS());
-        }else {
-            d.setN_DPS(dossierDTO.getN_DPS());
-        }
-        fileService.update(id,d.getDossier_DC(),d.getListSDC(),d.getN_DPS(),d.getMontant_du_pres());
+        fileService.update(id,dossierDTO);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

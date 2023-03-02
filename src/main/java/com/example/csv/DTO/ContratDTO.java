@@ -1,23 +1,10 @@
-package com.example.csv.domain;
+package com.example.csv.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Contrat {
+public class ContratDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String Num_dossierKPS;
     private String Num_CP;
     private String Raison_Social;

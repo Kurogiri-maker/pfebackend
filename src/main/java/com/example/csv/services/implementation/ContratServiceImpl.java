@@ -1,8 +1,9 @@
 package com.example.csv.services.implementation;
 
+import com.example.csv.DTO.ContratDTO;
 import com.example.csv.domain.Contrat;
-import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
+import com.example.csv.helper.mapper.ContratMapper;
 import com.example.csv.repositories.ContratRepository;
 import com.example.csv.services.ContratService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ public class ContratServiceImpl implements ContratService {
 
     @Autowired
     private final ContratRepository contratRepo;
+
+    private ContratMapper mapper;
 
 
     @Override
@@ -50,6 +53,16 @@ public class ContratServiceImpl implements ContratService {
     @Override
     public void delete(Long id) {
         contratRepo.deleteById(id);
+    }
+
+    @Override
+    public void update(Long id, ContratDTO dto) {
+        Contrat c = contratRepo.findById(id).get();
+        if(c != null){
+            Contrat c1 = mapper.mapNonNullFields(dto , c);
+            contratRepo.save(c1);
+        }
+
     }
 
 
