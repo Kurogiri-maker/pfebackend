@@ -72,15 +72,15 @@ public class ContratServiceImpl implements ContratService {
     }
 
     @Override
-    public List<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy){
+    public Page<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy){
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Contrat> pagedResult = contratRepo.findAll(paging);
 
         if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
+            return pagedResult;
         } else {
-            return new ArrayList<Contrat>();
+            return Page.empty();
         }
     }
 

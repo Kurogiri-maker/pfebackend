@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -26,6 +28,18 @@ public class TiersController {
     @Autowired
     private final TiersService fileService;
 
+
+    // Get attributes
+    @GetMapping("/attributes")
+    public ResponseEntity<?> getMetadata(){
+        Class<?> clazz = Tiers.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
 
     // Upload a csv file to save all tiers in it
     @PostMapping("/upload")
@@ -49,10 +63,10 @@ public class TiersController {
     // Save a tier in the database
     @PostMapping
     public ResponseEntity<Tiers> save(@RequestBody Tiers tiers){
-
+/*
         if(!(fileService.getTiers(tiers.getId()) == null)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        }*/
 
         Tiers savedTiers = fileService.save(tiers);
         return new ResponseEntity<>(savedTiers,HttpStatus.CREATED);
@@ -78,14 +92,16 @@ public class TiersController {
     }*/
 
 
+
+
     @GetMapping
-    public ResponseEntity<List<Tiers>> getAllTiers(
+    public ResponseEntity<Page<Tiers>> getAllTiers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
             @RequestParam(defaultValue = "id") String sortBy
     )
     {
-     List<Tiers> list = fileService.getAllTiers(page, size, sortBy);
+     Page<Tiers> list = fileService.getAllTiers(page, size, sortBy);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

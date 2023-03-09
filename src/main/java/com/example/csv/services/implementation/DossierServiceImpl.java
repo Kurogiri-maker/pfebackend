@@ -96,15 +96,15 @@ public class DossierServiceImpl implements DossierService {
         return dosRepo.findAll(spec);
     }
 
-    public List<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy){
+    public Page<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy){
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Dossier> pagedResult = dosRepo.findAll(paging);
 
         if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
+            return pagedResult;
         } else {
-            return new ArrayList<Dossier>();
+            return Page.empty();
         }
     }
 

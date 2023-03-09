@@ -8,12 +8,15 @@ import com.example.csv.services.ContratService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -25,6 +28,17 @@ public class ContratController {
 
     @Autowired
     private final ContratService fileService;
+
+    @GetMapping("/attributes")
+    public ResponseEntity<?> getMetadata(){
+        Class<?> clazz = Contrat.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
@@ -78,13 +92,13 @@ public class ContratController {
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<List<Contrat>> getAllContrats(
+    public ResponseEntity<Page<Contrat>> getAllContrats(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
             @RequestParam(defaultValue = "id") String sortBy
     )
     {
-        List<Contrat> list = fileService.getAllContrats(page, size, sortBy);
+        Page<Contrat> list = fileService.getAllContrats(page, size, sortBy);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

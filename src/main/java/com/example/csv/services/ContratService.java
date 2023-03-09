@@ -3,6 +3,7 @@ package com.example.csv.services;
 import com.example.csv.DTO.ContratDTO;
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.Tiers;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface ContratService {
 
     void update(Long id, ContratDTO contratDTO);
 
-    public List<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy);
+    public Page<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy);
 }
