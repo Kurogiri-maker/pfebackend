@@ -69,7 +69,7 @@ public class TiersServiceImplTest {
 
 
     @Test
-    void UpdateTiers(){
+    void updateTiers(){
         Tiers t = new Tiers(1L,"1","Iheb","iheb.cherif99@gmail.com","cherif");
         TiersDTO dto = new TiersDTO();
         dto.setNom("Ahmed");
@@ -85,6 +85,12 @@ public class TiersServiceImplTest {
 
         assertEquals("Ahmed",result.getNom());
         log.info("Expected : Ahmed"+"Result : "+result.getNom());
+
+    }
+
+
+    @Test
+    void deleteTiers(){
 
     }
 
