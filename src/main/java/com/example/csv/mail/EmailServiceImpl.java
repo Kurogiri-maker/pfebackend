@@ -25,10 +25,10 @@ public class EmailServiceImpl implements EmailService{
     private UserRepository userRepository;
 
     @Override
-    public void sendVerificationEmail(String to, String token) throws MessagingException {
+    public void sendVerificationEmail(User user) throws MessagingException {
 
         try {
-            InternetAddress emailAddress = new InternetAddress(to);
+            InternetAddress emailAddress = new InternetAddress(user.getEmail());
             emailAddress.validate(); // Validates the email address
         } catch (AddressException ex) {
             // Handle invalid email address exception
@@ -38,12 +38,13 @@ public class EmailServiceImpl implements EmailService{
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
+        String token = generateVerificationToken(user);
 
         String subject = "Email Verification";
         String text ="Please click on the link below to verify your email address:"+
-                "http://localhost:8086/api/csv/verify?token=" + token;
+                "http://localhost:8086/auth/verify?token=" + token;
 
-        helper.setTo(to);
+        helper.setTo(user.getEmail());
         helper.setSubject(subject);
         helper.setText(text,true);
 
@@ -65,7 +66,11 @@ public class EmailServiceImpl implements EmailService{
     public Boolean verifyEmail(String token) {
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         User user = verificationToken.getUser();
+        System.out.println(user);
+        System.out.println(userRepository.findById(user.getId()).isPresent());
         if(userRepository.findById(user.getId()).isPresent()){
+            user.setEnabled(true);
+            userRepository.save(user);
             return true;
         }
         return false;

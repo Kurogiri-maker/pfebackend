@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/csv")
+@RequestMapping("/auth")
 public class EmailController {
 
     @Autowired
@@ -22,24 +22,25 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/send")
+
+   /* @PostMapping("/send")
     public ResponseEntity<?> sendEmail(@RequestParam("to") String to) throws MessagingException {
         User user = new User(null,"iheb","cherif","iheb.cherif99@gmail.com","testtest", Role.USER);
         userRepository.save(user);
         String token = emailService.generateVerificationToken(user);
         emailService.sendVerificationEmail(to,token);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token , HttpServletResponse response) throws IOException {
         Boolean val =emailService.verifyEmail(token);
         if(val){
-            String redirectUrl = "http://localhost:4200"; // replace with your desired URL
+            String redirectUrl = "http://localhost:4200/auth/login"; // replace with your desired URL
            response.sendRedirect(redirectUrl);
            return null;
         }
-        return new ResponseEntity<>("Erro",HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Error",HttpStatus.FORBIDDEN);
 
     }
 }

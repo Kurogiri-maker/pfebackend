@@ -31,16 +31,15 @@ public class SecurityConfiguration {
                 .antMatchers("/auth/**")
                 .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                .anyRequest().permitAll();
-               /* .authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                return http.build();*/
-       
+
         return http.build();
 
 

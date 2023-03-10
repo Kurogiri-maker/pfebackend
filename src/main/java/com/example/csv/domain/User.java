@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
-
+import java.util.UUID;
 
 
 @Data
@@ -28,6 +28,8 @@ import java.util.List;
         private String lastName;
         private String email;
         private String password;
+
+        private Boolean enabled = false;
         @Enumerated(EnumType.STRING)
         private Role role;
 
@@ -58,7 +60,7 @@ import java.util.List;
 
         @Override
         public boolean isEnabled() {
-            return true;
+            return this.enabled;
         }
     }
 

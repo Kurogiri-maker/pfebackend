@@ -6,7 +6,7 @@ import javax.mail.MessagingException;
 
 public interface EmailService {
 
-    public void sendVerificationEmail(String to ,String token) throws MessagingException;
+    public void sendVerificationEmail(User user) throws MessagingException;
 
     public String generateVerificationToken(User user);
 

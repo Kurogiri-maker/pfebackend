@@ -3,6 +3,7 @@ package com.example.csv.auth;
 import com.example.csv.config.JwtService;
 import com.example.csv.domain.Role;
 import com.example.csv.domain.User;
+import com.example.csv.mail.EmailService;
 import com.example.csv.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 @Service
@@ -22,12 +24,13 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request){
+    private final EmailService emailService;
+
+    public void register(RegisterRequest request) throws MessagingException {
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             System.out.println(request.getEmail() +" is already registered");
-            return AuthenticationResponse.builder().token(null)
-                    .error("User already registered").build();
+            throw new  IllegalStateException("Email already registered");
         } else {
             var user = User.builder()
                     .firstName(request.getFirstName())
@@ -35,14 +38,17 @@ public class AuthenticationService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(Role.USER)
+                    .enabled(false)
                     .build();
             userRepository.save(user);
-            var jwtToken = jwtService.generateToken(user);
+            emailService.sendVerificationEmail(user);
+            /*var jwtToken = jwtService.generateToken(user);
 
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .error(null)
-                    .build();
+                    .build();*/
+
         }
     }
 
@@ -54,10 +60,14 @@ public class AuthenticationService {
                 ));
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
 
+        if (!user.isEnabled()) {
+            throw new IllegalStateException("User not enabled");
+        }else {
+            var jwtToken = jwtService.generateToken(user);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        }
     }
 }
