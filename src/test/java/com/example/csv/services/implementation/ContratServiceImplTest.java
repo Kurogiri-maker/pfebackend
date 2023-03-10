@@ -3,10 +3,13 @@ package com.example.csv.services.implementation;
 import com.example.csv.domain.Contrat;
 import com.example.csv.services.ContratService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
+@Slf4j
 class ContratServiceImplTest {
 
     @Autowired
@@ -59,6 +63,8 @@ class ContratServiceImplTest {
 
         int expected = size+1;
         assertEquals(expected,contratService.getAllContrats().size());
+        log.info("Expected : " + expected);
+        log.info("Result : "+ contratService.getAllContrats().size() );
 
     }
 

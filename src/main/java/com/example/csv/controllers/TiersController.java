@@ -166,7 +166,6 @@ public class TiersController {
     public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
         fileService.update(id,tiersDTO);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
 
