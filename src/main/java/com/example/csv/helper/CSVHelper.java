@@ -125,7 +125,7 @@ public class CSVHelper {
             for (CSVRecord csvRecord : csvRecords) {
                 Dossier dossier = new Dossier(
                         null,
-                        csvRecord.get("dossier DC"),
+                        csvRecord.get("dossier_DC"),
                         csvRecord.get("Numero"),
                         csvRecord.get("ListSDC"),
                         csvRecord.get("N_DPS"),
