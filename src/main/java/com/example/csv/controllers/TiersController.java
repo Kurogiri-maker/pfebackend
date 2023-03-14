@@ -101,7 +101,7 @@ public class TiersController {
             @RequestParam(defaultValue = "id") String sortBy
     )
     {
-     Page<Tiers> list = fileService.getAllTiers(page, size, sortBy);
+        Page<Tiers> list = fileService.getAllTiers(page, size, sortBy);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -110,7 +110,7 @@ public class TiersController {
     @GetMapping("/{id}")
     public ResponseEntity<Tiers> getTiers(@PathVariable("id")Long id){
         Tiers tiers = fileService.getTiers(id);
-        if(tiers.equals(null)){
+        if(tiers == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(tiers, HttpStatus.OK);
@@ -120,14 +120,11 @@ public class TiersController {
     // Get a tier by its name
     @GetMapping("/search/{nom}")
     public ResponseEntity<List<Tiers>> searchByName(@PathVariable("nom")String nom){
-        String res = nom.substring(0, 1).toUpperCase() + nom.substring(1);
         List<Tiers> tiers = fileService.search(nom);
-        if(tiers.equals(null)){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        if(tiers == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);}
         return new ResponseEntity<>(tiers, HttpStatus.OK);
     }
-
     //Search filter
     @GetMapping("/search")
     public ResponseEntity<List<Tiers>> searchTiers(
@@ -139,17 +136,6 @@ public class TiersController {
         return new ResponseEntity<>(tiers,HttpStatus.OK);
     }
 
-    /*
-    @GetMapping("/search")
-    public ResponseEntity<List<Tiers>> searchTiers(
-            @RequestParam(required = false) String searchTerm
-    ){
-        List<Tiers> tiers = fileService.searchTiers(searchTerm) ;
-        return new ResponseEntity<>(tiers,HttpStatus.OK);
-    }
-    */
-
-
     // Delete a tier by its id
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteTiers(@PathVariable("id") Long id){
@@ -157,9 +143,7 @@ public class TiersController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         fileService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
+        return new ResponseEntity<>(HttpStatus.OK);}
 
     //Update a tier by its id
     @PatchMapping("/{id}")
@@ -168,18 +152,5 @@ public class TiersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
 

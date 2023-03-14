@@ -1,11 +1,9 @@
 package com.example.csv.controllers;
 
+import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
-import com.example.csv.helper.CSVHelper;
-import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
-import com.example.csv.services.implementation.TiersServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,15 +27,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -90,7 +87,6 @@ public class TiersControllerTest {
         String csvContent = "Numero,nom,siren,ref_mandat\n1,iheb,@gmail.com,cherif\n2,ahmed,.@gmail.com,tounsi\n";
         MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
 
-        //doNothing().when(service).saveFile(mockCsvFile);
         MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(mockCsvFile))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -154,30 +150,148 @@ public class TiersControllerTest {
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(t);
+        MvcResult result = mvc.perform(post("/api/csv/tier").content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String actualResult = result.getResponse().getContentAsString();
+        logger.info(body);
+        logger.info(actualResult);
+        assertEquals(body,actualResult);
     }
 
     @Test
-    void getAllTiers() {
+    void getAllTiers() throws Exception {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t2 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi");
+        List<Tiers> content = new ArrayList<>();
+        content.add(t1);
+        content.add(t2);
+        Page<Tiers> page = new PageImpl<>(content, PageRequest.of(0, 2),2);
+
+        when(service.getAllTiers(0,2,null)).thenReturn(page);
+
+        ResponseEntity<Page<Tiers>> result = controller.getAllTiers(0,2,null);
+
+        List<Tiers> actualResult = result.getBody().getContent();
+        assertEquals(actualResult,page.getContent());
+        logger.info(String.valueOf(actualResult));
+        logger.info(String.valueOf(result.getStatusCode()));
+
+        assertEquals(HttpStatus.OK,result.getStatusCode());
+
+
     }
 
     @Test
     void getTiers() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        when(service.getTiers(1L)).thenReturn(t1);
+        ResponseEntity<Tiers> result = controller.getTiers(1L);
+
+        Tiers actualContent = result.getBody();
+        logger.info(String.valueOf(actualContent));
+        assertEquals(t1,actualContent);
+        String actualStatus = result.getStatusCode().toString();
+        logger.info(actualStatus);
+        assertEquals(HttpStatus.OK,result.getStatusCode());
+    }
+
+    @Test
+    void getTiersFailed() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        when(service.getTiers(1L)).thenReturn(null);
+        ResponseEntity<Tiers> result = controller.getTiers(1L);
+
+        Tiers actualContent = result.getBody();
+        logger.info(String.valueOf(actualContent));
+        assertNotEquals(t1,actualContent);
+
+
+        String actualStatus = result.getStatusCode().toString();
+        logger.info(actualStatus);
+        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
     }
 
     @Test
     void searchByName() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        List<Tiers> list = new ArrayList<>(List.of(t1,t2));
+        when(service.search("iheb")).thenReturn(list);
+        ResponseEntity<List<Tiers>> result = controller.searchByName("iheb");
+
+        List<Tiers> actualResult = result.getBody();
+        assertEquals(actualResult,list);
+        logger.info(String.valueOf(actualResult));
+        logger.info(String.valueOf(result.getStatusCode()));
+
+        assertEquals(HttpStatus.OK,result.getStatusCode());
+
+
+    }
+
+    @Test
+    void searchByNameFailed() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        List<Tiers> list = new ArrayList<>(List.of(t1,t2));
+        when(service.search("iheb")).thenReturn(null);
+        ResponseEntity<List<Tiers>> result = controller.searchByName("iheb");
+
+        List<Tiers> actualResult = result.getBody();
+        assertNotEquals(actualResult,list);
+        logger.info(String.valueOf(actualResult));
+        logger.info(String.valueOf(result.getStatusCode()));
+
+        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
+
+
     }
 
     @Test
     void searchTiers() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        List<Tiers> list = new ArrayList<>(List.of(t1,t2));
+        when(service.searchTiers("iheb",null,null)).thenReturn(list);
+        ResponseEntity<List<Tiers>> result = controller.searchTiers("iheb",null,null);
+
+        List<Tiers> actualResult = result.getBody();
+        assertEquals(actualResult,list);
+        logger.info(String.valueOf(actualResult));
+        logger.info(String.valueOf(result.getStatusCode()));
+        assertEquals(HttpStatus.OK,result.getStatusCode());
     }
 
     @Test
     void deleteTiers() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        when(service.getTiers(t1.getId())).thenReturn(t1);
+        ResponseEntity<Void> result = controller.deleteTiers(t1.getId());
+        assertEquals(HttpStatus.OK,result.getStatusCode());
+
+    }
+
+    @Test
+    void deleteTiersFailed() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        when(service.getTiers(t1.getId())).thenReturn(null);
+        ResponseEntity<Void> result = controller.deleteTiers(t1.getId());
+        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
+
     }
 
     @Test
     void updateTiers() {
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        TiersDTO dto = new TiersDTO();
+        dto.setNom("mohamed");
+        ResponseEntity<Void> result = controller.updateTiers(1L,dto);
+        assertEquals(HttpStatus.OK,result.getStatusCode());
     }
 }
