@@ -107,7 +107,17 @@ public class TiersControllerTest {
         doAnswer(invocation -> {
             csvHelperMock.csvToTiers(invocation.getArgument(0, MultipartFile.class).getInputStream());
             return null;
-        }).when(csvHelperMock).csvToTiers(any(InputStream.class));
+        }).when(csvHelperMock).csvToTiers(mockCsvFile.getInputStream());
+
+        Tiers t = new Tiers(null,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(null,"2","ahmed",".@gmail.com","tounsi");
+
+
+        List<Tiers> list = new ArrayList<>();
+        list.add(t);
+        list.add(t1);
+
+        when(csvHelperMock.csvToTiers(mockCsvFile.getInputStream())).thenReturn(list);
 
         doNothing().when(service).saveFile(any(MultipartFile.class));
 

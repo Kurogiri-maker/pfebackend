@@ -41,7 +41,7 @@ import static org.mockito.Mockito.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class ContratServiceTest {
+class ContratServiceImplTest {
 
     @Mock
     private ContratRepository contratRepository;
