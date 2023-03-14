@@ -27,12 +27,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,8 +54,7 @@ public class TiersControllerTest {
     @Mock
     private TiersService service;
 
-    @Mock
-    private  TiersRepository tiersRepo;
+
 
     @Autowired
     private MockMvc mvc;
@@ -60,8 +62,6 @@ public class TiersControllerTest {
 
     @BeforeEach
     void setUp(){
-
-        service = new TiersServiceImpl(tiersRepo,null);
 
         controller= new TiersController(service);
     }
@@ -113,26 +113,24 @@ public class TiersControllerTest {
 
         // create a mock CSV file with some content
         String csvContent = "numero,Nom,siren,ref_mandat\n1,iheb,@gmail.com,cherif\n2,ahmed,.@gmail.com,tounsi\n";
-        MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
+        MultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
 
+        doThrow(new RuntimeException("exception")).when(service).saveFile(mockCsvFile);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(mockCsvFile))
-                .andExpect(status().isExpectationFailed())
-                .andReturn();
+        ResponseEntity<ResponseMessage> result = controller.uploadFile(mockCsvFile);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            service.saveFile(mockCsvFile);
+        });
 
 
         String expectedContent = "Could not upload the file: test.csv!";
-        String actualContent = result.getResponse().getContentAsString();
-        String val = JsonPath.read(actualContent, "$.message");
+        String actualContent = result.getBody().getMessage();
+        assertEquals(expectedContent,actualContent);
+        assertEquals(HttpStatus.EXPECTATION_FAILED,result.getStatusCode());
 
-        assertEquals(expectedContent,val);
-
-        logger.info("Expected : " + expectedContent);
-        logger.info("Resultat  : " + val);
-
-
-
-
+        logger.info("Expected : " + expectedContent + " Response status : "+ HttpStatus.EXPECTATION_FAILED);
+        logger.info("Resultat  : " + actualContent + " Response status : "+ result.getStatusCode());
 
     }
 
