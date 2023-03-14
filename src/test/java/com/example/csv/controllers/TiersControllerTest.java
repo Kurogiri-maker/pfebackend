@@ -1,8 +1,11 @@
 package com.example.csv.controllers;
 
+import com.example.csv.domain.ResponseMessage;
 import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
+import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
+import com.example.csv.services.implementation.TiersServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -46,12 +51,18 @@ public class TiersControllerTest {
     @Mock
     private TiersService service;
 
+    @Mock
+    private  TiersRepository tiersRepo;
+
     @Autowired
     private MockMvc mvc;
 
 
     @BeforeEach
     void setUp(){
+
+        service = new TiersServiceImpl(tiersRepo,null);
+
         controller= new TiersController(service);
     }
 
@@ -99,31 +110,14 @@ public class TiersControllerTest {
     @Test
     void uploadFileFailed() throws Exception {
 
+
         // create a mock CSV file with some content
         String csvContent = "numero,Nom,siren,ref_mandat\n1,iheb,@gmail.com,cherif\n2,ahmed,.@gmail.com,tounsi\n";
         MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
 
-        CSVHelper csvHelperMock = mock(CSVHelper.class);
-        doAnswer(invocation -> {
-            csvHelperMock.csvToTiers(invocation.getArgument(0, MultipartFile.class).getInputStream());
-            return null;
-        }).when(csvHelperMock).csvToTiers(mockCsvFile.getInputStream());
 
-        Tiers t = new Tiers(null,"1","iheb",".@gmail.com","cherif");
-        Tiers t1 = new Tiers(null,"2","ahmed",".@gmail.com","tounsi");
-
-
-        List<Tiers> list = new ArrayList<>();
-        list.add(t);
-        list.add(t1);
-
-        when(csvHelperMock.csvToTiers(mockCsvFile.getInputStream())).thenReturn(list);
-
-        doNothing().when(service).saveFile(any(MultipartFile.class));
-
-        service.saveFile(mockCsvFile);
         MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(mockCsvFile))
-                .andExpect(status().isOk())
+                .andExpect(status().isExpectationFailed())
                 .andReturn();
 
 
@@ -136,6 +130,29 @@ public class TiersControllerTest {
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
 
+
+
+
+
+    }
+
+    @Test
+    void uploadFileWrongFormat() throws Exception {
+
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes());
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(file))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+
+        String expectedContent = "Please upload a csv file!";
+        String actualContent = result.getResponse().getContentAsString();
+        String val = JsonPath.read(actualContent, "$.message");
+
+        assertEquals(expectedContent,val);
+
+        logger.info("Expected : " + expectedContent);
+        logger.info("Resultat  : " + val);
     }
 
     @Test
