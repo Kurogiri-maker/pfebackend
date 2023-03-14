@@ -2,6 +2,7 @@ package com.example.csv.services.implementation;
 
 
 import com.example.csv.DTO.TiersDTO;
+import com.example.csv.domain.Dossier;
 import com.example.csv.domain.Tiers;
 import com.example.csv.helper.mapper.TierMapper;
 import com.example.csv.repositories.TiersRepository;
@@ -30,8 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -127,6 +127,24 @@ public class TiersServiceImplTest {
         assertEquals(csvContent, content);
     }
 
+    @Test
+    void testSaveFileWithIOException() throws Exception {
+        // create a mock MultipartFile that throws an IOException when its input stream is accessed
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.getInputStream()).thenThrow(new IOException("File could not be read"));
+
+        // verify that a RuntimeException is thrown when the file is saved
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            service.saveFile(mockFile);
+        });
+
+        // verify that the exception message is correct
+        String expectedMessage = "File could not be read";
+        String actualMessage = exception.getCause().getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+
 
     @Test
     void getTiers(){
@@ -174,14 +192,17 @@ public class TiersServiceImplTest {
     @Test
     void searchTiers(){
         Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t1 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi" );
+        Tiers t2 = new Tiers(3L,"3","ahmed","@yahoo.fr","chaari" );
         String name = "Iheb";
-        List<Tiers> list = new ArrayList<>();
-        list.add(t);
-        service.save(t);
-        when(tiersRepo.findAll(any(Specification.class))).thenReturn(list);
-        List<Tiers>  result = service.searchTiers(name,null,null);
-        log.info("Expected : "+ list.size() + "\n Result : "+ result.size());
-        assertEquals(list.size(),result.size());
+        List<Tiers> list = new ArrayList<>(List.of(t,t1,t2));
+        for (Tiers tiers : list) {
+            service.save(tiers);
+        }
+        when(tiersRepo.findAll(any(Specification.class))).thenReturn(List.of(t));
+        List<Tiers>  result = service.searchTiers(name,"iheb.cherif99@gmail.com","cherif");
+        log.info("Expected : "+ 1 + "\n Result : "+ result.size());
+        assertEquals(1,result.size());
         log.info("Expected : "+ list.get(0).getNom() + "\n Result : "+ result.get(0).getNom());
         assertEquals(list.get(0).getNom(),result.get(0).getNom());
 
@@ -195,6 +216,23 @@ public class TiersServiceImplTest {
         List<Tiers> list = new ArrayList<>();
         list.add(t);
         list.add(t1);
+
+        Page<Tiers> page = new PageImpl<>(list);
+
+        when(tiersRepo.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
+        Page<Tiers> result = service.getAllTiers(0,2,"id");
+
+        assertEquals(page.getTotalElements(), result.getTotalElements());
+        log.info("Expected : "+ page.getTotalElements() + "\n Result : "+ result.getTotalElements());
+        assertEquals(page.getContent(), result.getContent());
+        log.info("Expected : "+ page.getContent() + "\n Result : "+ result.getContent());
+    }
+
+    @Test
+    void getAllTiersEmptyPage(){
+
+
+        List<Tiers> list = new ArrayList<>();
 
         Page<Tiers> page = new PageImpl<>(list);
 

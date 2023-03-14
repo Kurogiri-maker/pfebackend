@@ -1,56 +1,57 @@
 package com.example.csv.services.implementation;
 
+
+import antlr.ASTNULLType;
 import com.example.csv.DTO.ContratDTO;
 import com.example.csv.domain.Contrat;
+import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.helper.mapper.ContratMapper;
+import com.example.csv.helper.mapper.TierMapper;
 import com.example.csv.repositories.ContratRepository;
 import com.example.csv.services.ContratService;
-
+import com.example.csv.services.implementation.ContratServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.*;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
-
+@SpringBootTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class ContratServiceImplTest {
 
     @Mock
     private ContratRepository contratRepository;
     private ContratService contratService ;
+    @Mock
     private ContratMapper mapper;
 
     @BeforeEach
     void setUp() {
-        contratService = new ContratServiceImpl(contratRepository, mapper);
+        contratService = new ContratServiceImpl(contratRepository,mapper);
     }
 
     @Test
@@ -92,24 +93,6 @@ class ContratServiceImplTest {
 
     }
 
-
-    @Test
-    void testUpdate() {
-        Contrat expectedContrat = new Contrat(31L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
-
-        when(contratRepository.findById(31L)).thenReturn(Optional.of(expectedContrat));
-        ContratDTO contratDTO = new ContratDTO();
-        contratDTO.setNum_dossierKPS("azerty");
-        contratService.update(31L, contratDTO);
-        ArgumentCaptor<Contrat> contratArgumentCaptor = ArgumentCaptor.forClass(Contrat.class);
-        verify(contratRepository).save(contratArgumentCaptor.capture());
-        Contrat capturedContrat = contratArgumentCaptor.getValue();
-        assertEquals("azerty", capturedContrat.getNum_dossierKPS());
-
-
-    }
-
-
     @Test
     void testGetContrat() {
         Contrat expectedContrat = new Contrat(31L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
@@ -127,7 +110,49 @@ class ContratServiceImplTest {
 
 
 
+    @Order(2)
+    @Test
+    void updateContrat(){
+        Contrat contrat = new Contrat(
+                21L,
+                "num_dossier",
+                "num_cp",
+                "raison_Social",
+                "id_Tiers",
+                "num_dc",
+                "num_sdc",
+                "num_cir",
+                "num_siren",
+                "ref_coll",
+                "code_produit",
+                "id_de_offre_comm",
+                "chef_de_file",
+                "num_ovi",
+                "num_rum",
+                "typeenregie",
+                "produit_comm",
+                "produit",
+                "phase",
+                "montant_pret");
 
+        ContratDTO contratDTO = new ContratDTO();
+        contratDTO.setNum_CP("3");
+        Contrat contrat1 = new Contrat(21L,"num_dossier","3","raison_Social","id_Tiers","num_dc","num_sdc","num_cir","num_siren","ref_coll","code_produit","id_de_offre_comm","chef_de_file","num_ovi","num_rum","typeenregie","produit_comm","produit","phase","montant_pret");
+
+        when(contratRepository.findById(21L)).thenReturn(Optional.of(contrat));
+        when(mapper.mapNonNullFields(contratDTO,contrat)).thenReturn(contrat1);
+
+        //then
+        contratService.update(contrat.getId(), contratDTO);
+        ArgumentCaptor<Contrat> contratArgumentCaptor = ArgumentCaptor.forClass(Contrat.class);
+        verify(contratRepository).save(contratArgumentCaptor.capture());
+        Contrat capturedContrat = contratArgumentCaptor.getValue();
+
+        //assert
+        assertEquals(capturedContrat,contrat1);
+        log.info("Expected : 3" + "Result : " + capturedContrat.getNum_CP());
+
+    }
 
     @Test
     @Order(3)
@@ -261,7 +286,7 @@ class ContratServiceImplTest {
         when(mockRepo.findAll()).thenReturn(expectedContrats);
 
         // create a service instance with the mock repository
-        ContratServiceImpl contratService = new ContratServiceImpl(mockRepo, null);
+        ContratServiceImpl contratService = new ContratServiceImpl(mockRepo,mapper);
 
 
         // call the method and verify the results
@@ -270,4 +295,37 @@ class ContratServiceImplTest {
         verify(mockRepo).findAll();
     }
 
+    @Test
+    void getAllContrats() {
+        Contrat c1= new Contrat(1L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
+        Contrat c2= new Contrat(2L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
+        List<Contrat> expectedContrats = new ArrayList<>(List.of(c1, c2));
+
+
+        Page<Contrat> page = new PageImpl<>(expectedContrats);
+        when(contratRepository.findAll(any(Pageable.class))).thenReturn(page);
+
+        when(contratRepository.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
+        Page result = contratService.getAllContrats(0, 2, "id");
+
+        assertEquals(page.getContent(), result.getContent());
+        assertEquals(page.getTotalElements(), result.getTotalElements());
+
+    }
+
+    @Test
+    void getAllContratsEmptyPage() {
+        List<Contrat> expectedContrats = new ArrayList<>(List.of());
+
+
+        Page<Contrat> page = new PageImpl<>(expectedContrats);
+        when(contratRepository.findAll(any(Pageable.class))).thenReturn(page);
+
+        when(contratRepository.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
+        Page result = contratService.getAllContrats(0, 2, "id");
+
+        assertEquals(page.getContent(), result.getContent());
+        assertEquals(page.getTotalElements(), result.getTotalElements());
+
+    }
 }

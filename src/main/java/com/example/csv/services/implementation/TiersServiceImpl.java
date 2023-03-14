@@ -100,8 +100,8 @@ public class TiersServiceImpl implements TiersService {
 
         return tiersRepo.findAll(spec);
     }
+
     /*
-eeee
     @Override
     public List<Tiers> searchTiers(String searchTerm) {
         Specification<Tiers> spec = Specification.where(TiersSpecifications.nomContains(searchTerm)
