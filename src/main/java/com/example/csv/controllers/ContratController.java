@@ -65,9 +65,9 @@ public class ContratController {
     @PostMapping
     public ResponseEntity<Contrat> save(@RequestBody Contrat contrat){
 
-        if(!(fileService.getContrat(contrat.getId()) == null)){
+       /* if(!(fileService.getContrat(contrat.getId()) == null)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        }*/
 
         Contrat savedContrat = fileService.save(contrat);
         return new ResponseEntity<>(savedContrat,HttpStatus.CREATED);

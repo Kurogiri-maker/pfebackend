@@ -64,9 +64,9 @@ public class DossierController {
     @PostMapping
     public ResponseEntity<Dossier> save(@RequestBody Dossier dossier){
 
-        if(!(fileService.getDossier(dossier.getId()) == null)){
+        /*if(!(fileService.getDossier(dossier.getId()) == null)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        }*/
 
         Dossier savedDossier = fileService.save(dossier);
         return new ResponseEntity<>(savedDossier,HttpStatus.CREATED);

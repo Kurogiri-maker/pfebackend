@@ -8,6 +8,7 @@ import com.example.csv.helper.mapper.TierMapper;
 import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TiersServiceImpl implements TiersService {
 
     @Autowired

@@ -18,25 +18,25 @@ public class Contrat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Num_dossierKPS;
-    private String Num_CP;
-    private String Raison_Social;
-    private String Id_Tiers;
-    private String Num_DC;
-    private String Num_SDC;
-    private String Num_CIR;
-    private String Num_SIREN;
-    private String Ref_Collaborative;
-    private String Code_Produit;
-    private String Identifiant_de_offre_comm;
-    private String Chef_de_File;
-    private String Num_OVI;
-    private String Num_RUM;
-    private String TypeEnergie;
-    private String Produit_Comm;
-    private String Produit;
-    private String Phase;
-    private String Montant_pret;
+    private String num_dossierKPS;
+    private String num_CP;
+    private String raison_Social;
+    private String id_Tiers;
+    private String num_DC;
+    private String num_SDC;
+    private String num_CIR;
+    private String num_SIREN;
+    private String ref_Collaborative;
+    private String code_Produit;
+    private String identifiant_de_offre_comm;
+    private String chef_de_File;
+    private String num_OVI;
+    private String num_RUM;
+    private String typeEnergie;
+    private String produit_Comm;
+    private String produit;
+    private String phase;
+    private String montant_pret;
 
 
 }
