@@ -20,15 +20,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -124,6 +125,23 @@ public class DossierServiceImplTest {
         assertEquals(csvContent, content);
     }
 
+    @Test
+    void testSaveFileWithIOException() throws Exception {
+        // create a mock MultipartFile that throws an IOException when its input stream is accessed
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.getInputStream()).thenThrow(new IOException("File could not be read"));
+
+        // verify that a RuntimeException is thrown when the file is saved
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            service.saveFile(mockFile);
+        });
+
+        // verify that the exception message is correct
+        String expectedMessage = "File could not be read";
+        String actualMessage = exception.getCause().getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
     @Test
     void getDossier(){
@@ -173,6 +191,28 @@ public class DossierServiceImplTest {
 
     }
 
+    @Test
+    void searchDossierForCoverage(){
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20");
+        Dossier t2 = new Dossier(3L, "dossier3", "3", "list3", "3","30");
+        String dossier_DC = "dossier1";
+        String listSDC = "list1";
+        String n_DPS = "1";
+        String montant_du_pres = "10";
+        List<Dossier> list = new ArrayList<>(List.of(t,t1,t2));
+        for (Dossier dossier : list) {
+            service.save(dossier);
+        }
+        when(dossierRepo.findAll(any(Specification.class))).thenReturn(List.of(t));
+        List<Dossier>  result = service.searchDossiers(dossier_DC,listSDC,n_DPS,montant_du_pres);
+        log.info("Expected : 1 " + "\n Result : "+ result.size());
+        assertEquals(1,result.size());
+        log.info("Expected : "+ list.get(0) + "\n Result : "+ result.get(0));
+        assertEquals(list.get(0),result.get(0));
+
+    }
+
 
     @Test
     void getAllDossiersPage(){
@@ -183,6 +223,25 @@ public class DossierServiceImplTest {
         List<Dossier> list = new ArrayList<>();
         list.add(t);
         list.add(t1);
+
+        Page<Dossier> page = new PageImpl<>(list);
+
+        when(dossierRepo.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
+        Page<Dossier> result = service.getAllDossiers(0,2,"id");
+
+        assertEquals(page.getTotalElements(), result.getTotalElements());
+        log.info("Expected : "+ page.getTotalElements() + "\n Result : "+ result.getTotalElements());
+        assertEquals(page.getContent(), result.getContent());
+        log.info("Expected : "+ page.getContent() + "\n Result : "+ result.getContent());
+
+
+    }
+
+    @Test
+    void getAllDossiersEmptyPage(){
+
+
+        List<Dossier> list = new ArrayList<>();
 
         Page<Dossier> page = new PageImpl<>(list);
 

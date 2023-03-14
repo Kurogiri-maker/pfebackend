@@ -36,7 +36,7 @@ public class EmailController {
     public ResponseEntity<String> verifyEmail(@RequestParam String token , HttpServletResponse response) throws IOException {
         Boolean val =emailService.verifyEmail(token);
         if(val){
-            String redirectUrl = "http://localhost:4200/auth/login"; // replace with your desired URL
+            String redirectUrl = "http://localhost:4200/auth/login"; // REDIRECT TO LOGIN PAGE
            response.sendRedirect(redirectUrl);
            return null;
         }
