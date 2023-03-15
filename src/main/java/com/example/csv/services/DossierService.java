@@ -2,9 +2,7 @@ package com.example.csv.services;
 
 import com.example.csv.DTO.DossierDTO;
 import com.example.csv.domain.Dossier;
-import com.example.csv.domain.Tiers;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +21,8 @@ public interface DossierService {
 
 
     List<Dossier> searchDossiers(String dossier_DC, String listSDC, String n_DPS, String montant_du_pres);
+
+    List<Dossier> searchDossiers(String searchTerm);
 
     public Page<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy);
 

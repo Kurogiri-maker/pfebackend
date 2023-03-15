@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .antMatchers("/auth/**")
                 .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-//                .anyRequest().permitAll(); //For no security uncomment this line and comment all the underlines
+//                .anyRequest().permitAll(); //For no security uncomment this line and comment all the lines below
                 .anyRequest()
                 .authenticated()
                 .and()

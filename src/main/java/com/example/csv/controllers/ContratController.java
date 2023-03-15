@@ -106,7 +106,7 @@ public class ContratController {
     @GetMapping("/{id}")
     public ResponseEntity<Contrat> getContrat(@PathVariable("id") Long id){
         Contrat contrat = fileService.getContrat(id);
-        if(contrat.equals(null)){
+        if(contrat==null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(contrat, HttpStatus.OK);

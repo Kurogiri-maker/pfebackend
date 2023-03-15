@@ -15,6 +15,8 @@ public interface TiersService {
 
     List<Tiers> getAllTiers();
 
+    List<Tiers> searchTiers(String searchTerm);
+
     Page<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy);
 
     Tiers getTiers(Long id);

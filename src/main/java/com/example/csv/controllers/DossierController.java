@@ -111,6 +111,14 @@ public class DossierController {
         return new ResponseEntity<>(dossiers,HttpStatus.OK);
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<List<Dossier>> searchDossier(
+            @RequestParam(required = false) String searchTerm
+    ){
+        List<Dossier> dossiers = fileService.searchDossiers(searchTerm) ;
+        return new ResponseEntity<>(dossiers,HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Dossier> getDossier(@PathVariable("id") Long id){
