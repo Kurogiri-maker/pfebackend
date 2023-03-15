@@ -2,10 +2,8 @@ package com.example.csv.services.implementation;
 
 import com.example.csv.DTO.DossierDTO;
 import com.example.csv.domain.Dossier;
-import com.example.csv.domain.Tiers;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.helper.DossierSpecifications;
-import com.example.csv.helper.TiersSpecifications;
 import com.example.csv.helper.mapper.DossierMapper;
 import com.example.csv.repositories.DossierRepository;
 import com.example.csv.services.DossierService;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -92,6 +89,16 @@ public class DossierServiceImpl implements DossierService {
             spec = spec.and(DossierSpecifications.montantDuPresContains(montant_du_pres));
         }
 
+
+        return dosRepo.findAll(spec);
+    }
+
+    @Override
+    public List<Dossier> searchDossiers(String searchTerm) {
+        Specification<Dossier> spec = Specification.where(DossierSpecifications.dossierDCContains(searchTerm)
+                .or(DossierSpecifications.listSDCContains(searchTerm))
+                .or(DossierSpecifications.nDPSContains(searchTerm))
+                .or(DossierSpecifications.montantDuPresContains(searchTerm)));
 
         return dosRepo.findAll(spec);
     }

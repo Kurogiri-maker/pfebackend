@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class DossierSpecifications {
     public static Specification<Dossier> dossierDCContains(String dossier_dc) {
-        return (root,query,builder) -> builder.like(builder.lower(root.get("dossier_dc")),  dossier_dc);
+        return (root,query,builder) -> builder.like(builder.lower(root.get("dossier_DC")),  dossier_dc);
     }
 
     public static Specification<Dossier> listSDCContains(String listSDC) {
@@ -14,7 +14,7 @@ public class DossierSpecifications {
     }
 
     public static Specification<Dossier> nDPSContains(String n_dps) {
-        return (root,query,builder) -> builder.like(builder.lower(root.get("n_dps")),  n_dps);
+        return (root,query,builder) -> builder.like(builder.lower(root.get("n_DPS")),  n_dps);
     }
 
     public static Specification<Dossier> montantDuPresContains(String montant_du_pres) {

@@ -136,6 +136,14 @@ public class TiersController {
         return new ResponseEntity<>(tiers,HttpStatus.OK);
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<List<Tiers>> searchTiers(
+            @RequestParam(required = false) String searchTerm
+    ){
+        List<Tiers> tiers = fileService.searchTiers(searchTerm) ;
+        return new ResponseEntity<>(tiers,HttpStatus.OK);
+    }
+
     // Delete a tier by its id
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteTiers(@PathVariable("id") Long id){
