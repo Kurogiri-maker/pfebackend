@@ -31,15 +31,15 @@ public class SecurityConfiguration {
                 .antMatchers("/auth/**")
                 .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                .anyRequest().permitAll(); //No security
-                /*.anyRequest()
+//                .anyRequest().permitAll(); //For no security uncomment this line and comment all the underlines
+                .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);*/
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
