@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class DossierControllerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(TiersControllerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DossierControllerTest.class);
 
 
     private DossierController controller;
