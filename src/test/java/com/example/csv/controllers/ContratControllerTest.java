@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class ContratControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ContratControllerTest.class);
