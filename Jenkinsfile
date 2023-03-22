@@ -27,9 +27,16 @@ pipeline {
             }
         }
 
+
         stage('Test') {
             steps {
                 sh 'mvn test -X'
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=iheb'
+
             }
         }
         stage('Docker Login') {
