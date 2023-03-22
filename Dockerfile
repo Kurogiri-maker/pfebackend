@@ -1,6 +1,6 @@
 # Stage 1: Run Java application using JRE image
 # Use a Java runtime image as the base image
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-alpine
 
 # Set the working directory to /app
 WORKDIR /app
