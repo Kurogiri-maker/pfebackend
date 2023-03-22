@@ -1,6 +1,6 @@
 # Stage 1: Run Java application using JRE image
 # Use a Java runtime image as the base image
-FROM temurin-17-jdk-maven
+FROM taoqn/temurin-17-jdk-maven
 
 # Set the working directory to /app
 WORKDIR /app
