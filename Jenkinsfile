@@ -19,19 +19,19 @@ pipeline {
         stage('Build') {
             // some block
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean install -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test -X'
             }
         }
         stage('Deploy') {
             steps {
                 sh "java -version"
-                sh 'java -jar target/csv-0.0.1-SNAPSHOT.jar --spring.datasource.url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE} --spring.datasource.username=${MYSQL_USER} --spring.datasource.password=${MYSQL_PASSWORD}'
+                sh "docker build -t talancdz ."
             }
         }
     }
