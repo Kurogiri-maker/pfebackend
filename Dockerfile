@@ -1,14 +1,6 @@
-# Stage 1: Compile and package Java application using Maven
-FROM maven:3.8.4-openjdk-17-slim AS build
-WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src/ ./src/
-RUN mvn package -DskipTests
-
-# Stage 2: Run Java application using JRE image
+# Stage 1: Run Java application using JRE image
 # Use a Java runtime image as the base image
-FROM openjdk:17-jre-slim
+FROM openjdk:17-jdk-alpine
 
 # Set the working directory to /app
 WORKDIR /app
