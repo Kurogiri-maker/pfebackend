@@ -6,6 +6,10 @@ pipeline {
         MYSQL_DATABASE = 'tuto'
         MYSQL_USER = 'root'
         MYSQL_PASSWORD = ''
+        DOCKER_REGISTRY_USERNAME = 'kurogirixo'
+        DOCKER_REGISTRY_PASSWORD = 'dckr_pat_Eg5RZq3aggg-_4n9p84hFwAyNfw'
+        DOCKER_REGISTRY_URL = 'https://hub.docker.com'
+
     }
     stages {
         stage('Checkout') {
@@ -28,11 +32,24 @@ pipeline {
                 sh 'mvn test -X'
             }
         }
-        stage('Deploy') {
+        stage('Docker Login') {
             steps {
-                sh "java -version"
-                sh "docker build -t talancdz ."
+                script {
+                    sh "docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD}"
+                }
             }
         }
+        stage('Build Docker image') {
+            steps {
+                sh "java -version"
+                sh "docker build -t kurogirixo/talancdz:latest ."
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                sh "docker push kurogirixo/talancdz:latest"
+            }
+        }
+
     }
 }
