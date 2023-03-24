@@ -1,15 +1,8 @@
 pipeline {
     agent any
   environment {
-        MYSQL_HOST = 'mysql'
-        MYSQL_PORT = '3306'
-        MYSQL_DATABASE = 'tuto'
-        MYSQL_USER = 'root'
-        MYSQL_PASSWORD = ''
         DOCKER_REGISTRY_USERNAME = 'kurogirixo'
         DOCKER_REGISTRY_PASSWORD = 'dckr_pat_Eg5RZq3aggg-_4n9p84hFwAyNfw'
-        DOCKER_REGISTRY_URL = 'https://hub.docker.com'
-
     }
     stages {
         stage('Checkout') {
@@ -33,15 +26,15 @@ pipeline {
                 sh 'mvn test -X'
             }
         }
-        stage('SonarQube analysis') {
+        
+        stage('Scan') {
             steps {
-            withSonarQubeEnv('sonar'){
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=iheb'
-            }
-
-
+                withSonarQubeEnv(installationName: 'sq1') { 
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.java.binaries=target/classes'
+                }
             }
         }
+        
         stage('Docker Login') {
             steps {
                 script {
