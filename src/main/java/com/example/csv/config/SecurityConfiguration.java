@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .antMatchers("/auth/**")
                 .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                //.anyRequest().permitAll(); //No security
+                // .anyRequest().permitAll(); //No security
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,7 +42,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
 
     }
 }

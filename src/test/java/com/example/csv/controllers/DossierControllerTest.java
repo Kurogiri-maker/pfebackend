@@ -1,13 +1,10 @@
 package com.example.csv.controllers;
 
 import com.example.csv.DTO.DossierDTO;
-import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Dossier;
 import com.example.csv.domain.ResponseMessage;
-import com.example.csv.domain.Tiers;
 import com.example.csv.services.DossierService;
-import com.example.csv.services.TiersService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
@@ -53,27 +50,25 @@ public class DossierControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(DossierControllerTest.class);
 
-
     private DossierController controller;
 
     @Mock
     private DossierService service;
 
-
-
     @Autowired
     private MockMvc mvc;
 
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
 
-        controller= new DossierController(service);
+        controller = new DossierController(service);
     }
+
     @Test
     void getMetadata() throws Exception {
 
-        List<String> attributes = new ArrayList<>(List.of( "id", "dossier_DC", "numero", "listSDC", "n_DPS","montant_du_pres"));
+        List<String> attributes = new ArrayList<>(
+                List.of("id", "dossier_DC", "numero", "listSDC", "n_DPS", "montant_du_pres"));
 
         MvcResult result = mvc.perform(get("/api/csv/dossier/attributes"))
                 .andExpect(status().isOk())
@@ -82,7 +77,7 @@ public class DossierControllerTest {
         String expectedContent = new ObjectMapper().writeValueAsString(attributes);
         String actualContent = result.getResponse().getContentAsString();
 
-        assertEquals(expectedContent,actualContent);
+        assertEquals(expectedContent, actualContent);
 
         logger.info(actualContent);
     }
@@ -92,18 +87,18 @@ public class DossierControllerTest {
 
         // create a mock CSV file with some content
         String csvContent = "dossier_DC,Numero,ListSDC,N_DPS,Montant_du_pres\ndossier1,1,list1,1,10\ndossier2,2,list2,2,20\n";
-        MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
+                csvContent.getBytes(StandardCharsets.UTF_8));
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/dossier/upload").file(mockCsvFile))
                 .andExpect(status().isOk())
                 .andReturn();
 
-
         String expectedContent = "Uploaded the file successfully: test.csv";
         String actualContent = result.getResponse().getContentAsString();
         String val = JsonPath.read(actualContent, "$.message");
 
-        assertEquals(expectedContent,val);
+        assertEquals(expectedContent, val);
 
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
@@ -112,10 +107,10 @@ public class DossierControllerTest {
     @Test
     void uploadFileFailed() throws Exception {
 
-
         // create a mock CSV file with some content
         String csvContent = "dossier_DC,Numero,ListSDC,N_DPS,Montant_du_pres\ndossier1,1,list1,1,10\ndossier2,2,list2,2,20\n";
-        MultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
+        MultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
+                csvContent.getBytes(StandardCharsets.UTF_8));
 
         doThrow(new RuntimeException("exception")).when(service).saveFile(mockCsvFile);
 
@@ -125,14 +120,13 @@ public class DossierControllerTest {
             service.saveFile(mockCsvFile);
         });
 
-
         String expectedContent = "Could not upload the file: test.csv!";
         String actualContent = result.getBody().getMessage();
-        assertEquals(expectedContent,actualContent);
-        assertEquals(HttpStatus.EXPECTATION_FAILED,result.getStatusCode());
+        assertEquals(expectedContent, actualContent);
+        assertEquals(HttpStatus.EXPECTATION_FAILED, result.getStatusCode());
 
-        logger.info("Expected : " + expectedContent + " Response status : "+ HttpStatus.EXPECTATION_FAILED);
-        logger.info("Resultat  : " + actualContent + " Response status : "+ result.getStatusCode());
+        logger.info("Expected : " + expectedContent + " Response status : " + HttpStatus.EXPECTATION_FAILED);
+        logger.info("Resultat  : " + actualContent + " Response status : " + result.getStatusCode());
 
     }
 
@@ -144,12 +138,11 @@ public class DossierControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-
         String expectedContent = "Please upload a csv file!";
         String actualContent = result.getResponse().getContentAsString();
         String val = JsonPath.read(actualContent, "$.message");
 
-        assertEquals(expectedContent,val);
+        assertEquals(expectedContent, val);
 
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
@@ -157,7 +150,7 @@ public class DossierControllerTest {
 
     @Test
     void save() throws Exception {
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(t);
         MvcResult result = mvc.perform(post("/api/csv/dossier").content(body).contentType(MediaType.APPLICATION_JSON))
@@ -167,83 +160,83 @@ public class DossierControllerTest {
         String actualResult = result.getResponse().getContentAsString();
         logger.info(body);
         logger.info(actualResult);
-        assertEquals(body,actualResult);
+        assertEquals(body, actualResult);
     }
 
     @Test
     void getAllDossiers() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
-        Dossier t2 = new Dossier(2L, "dossier2", "2", "list2", "2","20");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t2 = new Dossier(2L, "dossier2", "2", "list2", "2", "20");
         List<Dossier> content = new ArrayList<>();
         content.add(t1);
         content.add(t2);
-        Page<Dossier> page = new PageImpl<>(content, PageRequest.of(0, 2),2);
+        Page<Dossier> page = new PageImpl<>(content, PageRequest.of(0, 2), 2);
 
-        when(service.getAllDossiers(0,2,null)).thenReturn(page);
+        when(service.getAllDossiers(0, 2, null)).thenReturn(page);
 
-        ResponseEntity<Page<Dossier>> result = controller.getAllDossiers(0,2,null);
+        ResponseEntity<Page<Dossier>> result = controller.getAllDossiers(0, 2, null);
 
         List<Dossier> actualResult = result.getBody().getContent();
-        assertEquals(actualResult,page.getContent());
+        assertEquals(actualResult, page.getContent());
         logger.info(String.valueOf(actualResult));
         logger.info(String.valueOf(result.getStatusCode()));
 
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void searchDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
-        Dossier t2 = new Dossier(2L, "dossier1", "2", "list2", "2","20");
-        List<Dossier> list = new ArrayList<>(List.of(t1,t2));
-        when(service.searchDossiers("dossier1",null,null,null)).thenReturn(list);
-        ResponseEntity<List<Dossier>> result = controller.searchDossier("dossier1",null,null,null);
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t2 = new Dossier(2L, "dossier1", "2", "list2", "2", "20");
+        List<Dossier> list = new ArrayList<>(List.of(t1, t2));
+        when(service.searchDossiers("dossier1", null, null, null)).thenReturn(list);
+        ResponseEntity<List<Dossier>> result = controller.searchDossier("dossier1", null, null, null);
 
         List<Dossier> actualResult = result.getBody();
-        assertEquals(actualResult,list);
+        assertEquals(actualResult, list);
         logger.info(String.valueOf(actualResult));
         logger.info(String.valueOf(result.getStatusCode()));
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void getDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
         when(service.getDossier(1L)).thenReturn(t1);
         ResponseEntity<Dossier> result = controller.getDossier(1L);
 
         Dossier actualContent = result.getBody();
         logger.info(String.valueOf(actualContent));
-        assertEquals(t1,actualContent);
+        assertEquals(t1, actualContent);
         String actualStatus = result.getStatusCode().toString();
         logger.info(actualStatus);
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void deleteDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
         when(service.getDossier(t1.getId())).thenReturn(t1);
         ResponseEntity<Void> result = controller.deleteDossier(t1.getId());
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void deleteDossierFailed() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
         when(service.getDossier(t1.getId())).thenReturn(null);
         ResponseEntity<Void> result = controller.deleteDossier(t1.getId());
-        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
 
     }
 
     @Test
     void updateDossier() {
 
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
         DossierDTO dto = new DossierDTO();
         dto.setDossier_DC("dossier2");
-        ResponseEntity<Void> result = controller.updateDossier(1L,dto);
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        ResponseEntity<Void> result = controller.updateDossier(1L, dto);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }
