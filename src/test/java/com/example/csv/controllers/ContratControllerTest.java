@@ -356,7 +356,7 @@ public class ContratControllerTest {
     }
 
     @Test
-    void deleteTiersFailed() {
+    void deleteContratFailed() {
         Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
@@ -385,7 +385,7 @@ public class ContratControllerTest {
     }
 
     @Test
-    void updateTiers() {
+    void updateContart() {
         Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
