@@ -42,8 +42,9 @@ pipeline {
                       reportFiles: 'index.html',
                       reportName: 'Jacoco Code Coverage Report'
                     ])
-                  }
                 }
+            }
+        }
         
         stage('Scan') {
             steps {
