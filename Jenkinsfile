@@ -74,7 +74,7 @@ pipeline {
                     docker pull kurogirixo/talancdz:latest
 
                     # Run Docker container and get container ID
-                    container_id=$(docker run -d my-docker-image:latest)
+                    container_id=$(docker run -d kurogirixo/talancdz:latest)
 
                     # Wait for 6 minutes
                     sleep 360
