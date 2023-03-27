@@ -26,6 +26,24 @@ pipeline {
                 sh 'mvn test -X'
             }
         }
+
+        stage('Code Coverage Report') {
+            steps {
+                sh 'mvn jacoco:report'
+                jacoco(execPattern: '**/target/jacoco.exec')
+            }
+            post {
+                always {
+                     publishHTML(target: [
+                      allowMissing: false,
+                      alwaysLinkToLastBuild: true,
+                      keepAll: true,
+                      reportDir: 'target/site/jacoco',
+                      reportFiles: 'index.html',
+                      reportName: 'Jacoco Code Coverage Report'
+                    ])
+                  }
+                }
         
         stage('Scan') {
             steps {
