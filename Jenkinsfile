@@ -5,14 +5,6 @@ pipeline {
         DOCKER_REGISTRY_PASSWORD = 'dckr_pat_Eg5RZq3aggg-_4n9p84hFwAyNfw'
     }
     stages {
-        stage('Checkout') {
-            steps{
-                checkout scmGit(
-                    branches: [[name: 'iheb']],
-                    extensions: [],
-                    userRemoteConfigs: [[url: 'https://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@github.com/Kurogiri-maker/pfebackend.git']])
-            }
-        }
         stage('Build') {
             // some block
             steps {
