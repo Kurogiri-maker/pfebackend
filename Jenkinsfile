@@ -5,6 +5,8 @@ pipeline {
         DOCKER_REGISTRY_PASSWORD = 'dckr_pat_Eg5RZq3aggg-_4n9p84hFwAyNfw'
     }
     stages {
+
+
         stage('Build') {
             // some block
             steps {
@@ -13,9 +15,9 @@ pipeline {
         }
 
 
-        stage('Test') {
+        stage('Unit Test') {
             steps {
-                sh 'mvn test -X'
+                sh 'mvn test '
             }
         }
 
@@ -64,6 +66,25 @@ pipeline {
                 sh "docker push kurogirixo/talancdz:latest"
             }
         }
+
+        stage('Run Docker Image') {
+            steps {
+                sh '''
+                    # Pull Docker image
+                    docker pull kurogirixo/talancdz:latest
+
+                    # Run Docker container and get container ID
+                    container_id=$(docker run -d my-docker-image:latest)
+
+                    # Wait for 6 minutes
+                    sleep 360
+
+                    # Stop Docker container
+                    docker stop $container_id
+                '''
+            }
+        }
+
 
     }
 }
