@@ -8,7 +8,7 @@ pipeline {
 
 
         stage('Build') {
-            // some block
+            // Build the jar file
             steps {
                 sh 'mvn clean install -DskipTests'
             }
