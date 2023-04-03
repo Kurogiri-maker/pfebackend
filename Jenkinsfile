@@ -76,8 +76,8 @@ pipeline {
                     # Run Docker container and get container ID
                     container_id=$(docker run -d  --network talan kurogirixo/talancdz:latest)
 
-                    # Wait for 6 minutes
-                    sleep 360
+                    # Wait for 5 minutes
+                    sleep 300
 
                     # Stop Docker container
                     docker stop $container_id
