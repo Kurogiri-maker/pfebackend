@@ -74,7 +74,7 @@ pipeline {
                     docker pull kurogirixo/talancdz:latest
 
                     # Run Docker container and get container ID
-                    container_id=$(docker run -d  --network talan kurogirixo/talancdz:latest)
+                    container_id=$(docker run -d  --name container --network talan kurogirixo/talancdz:latest)
 
                     # Wait for 5 minutes
                     sleep 300
