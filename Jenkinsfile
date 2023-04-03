@@ -70,7 +70,7 @@ pipeline {
         stage('Run Docker Image') {
             steps {
                 sh '''
-                    # Pull Docker image
+                    # Pull Docker Image
                     docker pull kurogirixo/talancdz:latest
 
                     # Run Docker container and get container ID
