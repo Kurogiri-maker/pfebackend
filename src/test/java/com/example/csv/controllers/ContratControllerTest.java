@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class ContratControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ContratControllerTest.class);
@@ -355,13 +356,8 @@ public class ContratControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
     void deleteContratFailed() {
-        Contrat t1 =  new Contrat(
-=======
-    void deleteTiersFailed() {
         Contrat t1 = new Contrat(
->>>>>>> ba5037e4a779bde61a80a64312c47e2a87d433da
                 1L,
                 "dfydn",
                 "1",
@@ -389,13 +385,8 @@ public class ContratControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
-    void updateContrats() {
-        Contrat t1 =  new Contrat(
-=======
-    void updateTiers() {
+    void updateContart() {
         Contrat t1 = new Contrat(
->>>>>>> ba5037e4a779bde61a80a64312c47e2a87d433da
                 1L,
                 "dfydn",
                 "1",

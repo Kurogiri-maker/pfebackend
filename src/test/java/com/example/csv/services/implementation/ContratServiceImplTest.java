@@ -25,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,7 +40,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 class ContratServiceImplTest {
 
@@ -55,7 +55,6 @@ class ContratServiceImplTest {
     }
 
     @Test
-    @Order(1)
     void save() {
 
         //given
@@ -110,7 +109,6 @@ class ContratServiceImplTest {
 
 
 
-    @Order(2)
     @Test
     void updateContrat(){
         Contrat contrat = new Contrat(
@@ -155,7 +153,6 @@ class ContratServiceImplTest {
     }
 
     @Test
-    @Order(3)
     void delete() {
 
         Contrat contrat = new Contrat(

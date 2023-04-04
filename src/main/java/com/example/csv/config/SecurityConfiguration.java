@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .cors()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/swagger-ui/**", "/actuator/**").permitAll() // allow access to Swagger and Actuator
                 .antMatchers("/auth/**")
                 .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
