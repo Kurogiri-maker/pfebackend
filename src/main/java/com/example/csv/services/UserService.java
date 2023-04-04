@@ -11,12 +11,14 @@ public interface UserService {
     User save(User user);
 
     List<User> getAllUsers();
+
+    User getUser(Integer id);
     Page<User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy);
 
     List<User> searchUsers(String searchTerm);
 
-    void update(Long id, UserDTO user);
-    void delete(Long id);
+    void update(Integer id, UserDTO user);
+    void delete(Integer id);
 
 
 }
