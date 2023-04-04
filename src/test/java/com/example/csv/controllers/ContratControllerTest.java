@@ -1,15 +1,11 @@
 package com.example.csv.controllers;
 
 import com.example.csv.DTO.ContratDTO;
-import com.example.csv.DTO.TiersDTO;
 import com.example.csv.domain.Contrat;
 import com.example.csv.domain.ResponseMessage;
-import com.example.csv.domain.Tiers;
 import com.example.csv.services.ContratService;
-import com.example.csv.services.TiersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,33 +40,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Slf4j
+
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 public class ContratControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ContratControllerTest.class);
 
-
     private ContratController controller;
 
     @Mock
     private ContratService service;
 
-
-
     @Autowired
     private MockMvc mvc;
 
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
 
-        controller= new ContratController(service);
+        controller = new ContratController(service);
     }
+
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<>(List.of( "id",
+        List<String> attributes = new ArrayList<>(List.of("id",
                 "num_dossierKPS",
                 "num_CP",
                 "raison_Social",
@@ -98,7 +91,7 @@ public class ContratControllerTest {
         String expectedContent = new ObjectMapper().writeValueAsString(attributes);
         String actualContent = result.getResponse().getContentAsString();
 
-        assertEquals(expectedContent,actualContent);
+        assertEquals(expectedContent, actualContent);
 
         logger.info(actualContent);
     }
@@ -107,31 +100,30 @@ public class ContratControllerTest {
     void uploadFileSuccessfully() throws Exception {
         // create a mock CSV file with some content
         String csvContent = "Num_dossierKPS,Num_CP,Raison_Social,Id_Tiers,Num_DC,Num_SDC,Num_CIR,Num_SIREN,Ref_Collaborative,Code_Produit,Identifiant_de_offre_comm,Chef_de_File,Num_OVI,Num_RUM,TypeEnergie,Produit_Comm,Produit,Phase,Montant_pret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\n";
-        MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
+                csvContent.getBytes(StandardCharsets.UTF_8));
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/contrat/upload").file(mockCsvFile))
                 .andExpect(status().isOk())
                 .andReturn();
 
-
         String expectedContent = "Uploaded the file successfully: test.csv";
         String actualContent = result.getResponse().getContentAsString();
         String val = JsonPath.read(actualContent, "$.message");
 
-        assertEquals(expectedContent,val);
+        assertEquals(expectedContent, val);
 
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
     }
 
-
     @Test
     void uploadFileFailed() throws Exception {
 
-
         // create a mock CSV file with some content
         String csvContent = "Num_dossierKPS,Num_CP,Raison_Social,Id_Tiers,Num_DC,Num_SDC,Num_CIR,Num_SIREN,Ref_Collaborative,Code_Produit,Identifiant_de_offre_comm,Chef_de_File,Num_OVI,Num_RUM,TypeEnergie,Produit_Comm,Produit,Phase,Montant_pret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\n";
-        MultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
+        MultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
+                csvContent.getBytes(StandardCharsets.UTF_8));
 
         doThrow(new RuntimeException("exception")).when(service).saveFile(mockCsvFile);
 
@@ -141,14 +133,13 @@ public class ContratControllerTest {
             service.saveFile(mockCsvFile);
         });
 
-
         String expectedContent = "Could not upload the file: test.csv!";
         String actualContent = result.getBody().getMessage();
-        assertEquals(expectedContent,actualContent);
-        assertEquals(HttpStatus.EXPECTATION_FAILED,result.getStatusCode());
+        assertEquals(expectedContent, actualContent);
+        assertEquals(HttpStatus.EXPECTATION_FAILED, result.getStatusCode());
 
-        logger.info("Expected : " + expectedContent + " Response status : "+ HttpStatus.EXPECTATION_FAILED);
-        logger.info("Resultat  : " + actualContent + " Response status : "+ result.getStatusCode());
+        logger.info("Expected : " + expectedContent + " Response status : " + HttpStatus.EXPECTATION_FAILED);
+        logger.info("Resultat  : " + actualContent + " Response status : " + result.getStatusCode());
 
     }
 
@@ -160,12 +151,11 @@ public class ContratControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-
         String expectedContent = "Please upload a csv file!";
         String actualContent = result.getResponse().getContentAsString();
         String val = JsonPath.read(actualContent, "$.message");
 
-        assertEquals(expectedContent,val);
+        assertEquals(expectedContent, val);
 
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
@@ -173,7 +163,7 @@ public class ContratControllerTest {
 
     @Test
     void save() throws Exception {
-        Contrat c =  new Contrat(
+        Contrat c = new Contrat(
                 1L,
                 "dfydn",
                 "1",
@@ -204,12 +194,12 @@ public class ContratControllerTest {
         String actualResult = result.getResponse().getContentAsString();
         logger.info(body);
         logger.info(actualResult);
-        assertEquals(body,actualResult);
+        assertEquals(body, actualResult);
     }
 
     @Test
     void getAllContrats() {
-        Contrat t1 =  new Contrat(
+        Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
                 "1",
@@ -230,7 +220,7 @@ public class ContratControllerTest {
                 "blcbp",
                 "poocm",
                 "yobnt");
-        Contrat t2 =  new Contrat(
+        Contrat t2 = new Contrat(
                 null,
                 "dfydn",
                 "1",
@@ -252,24 +242,24 @@ public class ContratControllerTest {
                 "poocm",
                 "yobnt");
 
-        List<Contrat> content = new ArrayList<>(List.of(t1,t2));
-        Page<Contrat> page = new PageImpl<>(content, PageRequest.of(0, 2),2);
+        List<Contrat> content = new ArrayList<>(List.of(t1, t2));
+        Page<Contrat> page = new PageImpl<>(content, PageRequest.of(0, 2), 2);
 
-        when(service.getAllContrats(0,2,null)).thenReturn(page);
+        when(service.getAllContrats(0, 2, null)).thenReturn(page);
 
-        ResponseEntity<Page<Contrat>> result = controller.getAllContrats(0,2,null);
+        ResponseEntity<Page<Contrat>> result = controller.getAllContrats(0, 2, null);
 
         List<Contrat> actualResult = result.getBody().getContent();
-        assertEquals(actualResult,page.getContent());
+        assertEquals(actualResult, page.getContent());
         logger.info(String.valueOf(actualResult));
         logger.info(String.valueOf(result.getStatusCode()));
 
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void getContrat() {
-        Contrat t1 =  new Contrat(
+        Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
                 "1",
@@ -295,15 +285,15 @@ public class ContratControllerTest {
 
         Contrat actualContent = result.getBody();
         logger.info(String.valueOf(actualContent));
-        assertEquals(t1,actualContent);
+        assertEquals(t1, actualContent);
         String actualStatus = result.getStatusCode().toString();
         logger.info(actualStatus);
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     void getContratFailed() {
-        Contrat t1 =  new Contrat(
+        Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
                 "1",
@@ -329,18 +319,16 @@ public class ContratControllerTest {
 
         Contrat actualContent = result.getBody();
         logger.info(String.valueOf(actualContent));
-        assertNotEquals(t1,actualContent);
-
+        assertNotEquals(t1, actualContent);
 
         String actualStatus = result.getStatusCode().toString();
         logger.info(actualStatus);
-        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
     }
-
 
     @Test
     void deleteContrat() {
-        Contrat t1 =  new Contrat(
+        Contrat t1 = new Contrat(
                 1L,
                 "dfydn",
                 "1",
@@ -363,13 +351,17 @@ public class ContratControllerTest {
                 "yobnt");
         when(service.getContrat(t1.getId())).thenReturn(t1);
         ResponseEntity<Void> result = controller.deleteContrat(t1.getId());
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
-
     @Test
+<<<<<<< HEAD
     void deleteContratFailed() {
         Contrat t1 =  new Contrat(
+=======
+    void deleteTiersFailed() {
+        Contrat t1 = new Contrat(
+>>>>>>> ba5037e4a779bde61a80a64312c47e2a87d433da
                 1L,
                 "dfydn",
                 "1",
@@ -392,13 +384,18 @@ public class ContratControllerTest {
                 "yobnt");
         when(service.getContrat(t1.getId())).thenReturn(null);
         ResponseEntity<Void> result = controller.deleteContrat(t1.getId());
-        assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
 
     }
 
     @Test
+<<<<<<< HEAD
     void updateContrats() {
         Contrat t1 =  new Contrat(
+=======
+    void updateTiers() {
+        Contrat t1 = new Contrat(
+>>>>>>> ba5037e4a779bde61a80a64312c47e2a87d433da
                 1L,
                 "dfydn",
                 "1",
@@ -421,7 +418,7 @@ public class ContratControllerTest {
                 "yobnt");
         ContratDTO dto = new ContratDTO();
         dto.setIdentifiant_de_offre_comm("aaaa");
-        ResponseEntity<Void> result = controller.updateTiers(1L,dto);
-        assertEquals(HttpStatus.OK,result.getStatusCode());
+        ResponseEntity<Void> result = controller.updateTiers(1L, dto);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }

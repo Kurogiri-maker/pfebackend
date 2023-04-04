@@ -8,7 +8,6 @@ import com.example.csv.helper.mapper.TierMapper;
 import com.example.csv.repositories.TiersRepository;
 import com.example.csv.services.TiersService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,15 +22,13 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Slf4j
+
 public class TiersServiceImpl implements TiersService {
 
     @Autowired
     private final TiersRepository tiersRepo;
 
-
     private TierMapper mapper;
-
 
     @Override
     public Tiers save(Tiers tiers) {
@@ -65,12 +62,11 @@ public class TiersServiceImpl implements TiersService {
         tiersRepo.deleteById(id);
     }
 
-
     @Override
     public void update(Long id, TiersDTO dto) {
         Tiers t = tiersRepo.findById(id).get();
-        if(t != null){
-            Tiers t1 = mapper.mapNonNullFields(dto,t);
+        if (t != null) {
+            Tiers t1 = mapper.mapNonNullFields(dto, t);
             tiersRepo.save(t1);
         }
     }
@@ -81,28 +77,24 @@ public class TiersServiceImpl implements TiersService {
         return tiers;
     }
 
-
     @Override
     public List<Tiers> searchTiers(String nom, String siren, String ref_mandat) {
-        Specification<Tiers> spec =Specification.where(null);
+        Specification<Tiers> spec = Specification.where(null);
 
-        if( nom != null && !nom.isEmpty()){
+        if (nom != null && !nom.isEmpty()) {
             spec = spec.and(TiersSpecifications.nomContains(nom));
         }
 
-        if( siren != null && !siren.isEmpty()){
+        if (siren != null && !siren.isEmpty()) {
             spec = spec.and(TiersSpecifications.sirenContains(siren));
         }
 
-        if( ref_mandat != null && !ref_mandat.isEmpty()){
+        if (ref_mandat != null && !ref_mandat.isEmpty()) {
             spec = spec.and(TiersSpecifications.refMandatContains(ref_mandat));
         }
 
         return tiersRepo.findAll(spec);
     }
-
-
-
 
     @Override
     public List<Tiers> searchTiers(String searchTerm) {
@@ -113,15 +105,13 @@ public class TiersServiceImpl implements TiersService {
         return tiersRepo.findAll(spec);
     }
 
-
-
     @Override
-    public Page<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy){
+    public Page<Tiers> getAllTiers(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Tiers> pagedResult = tiersRepo.findAll(paging);
 
-        if(pagedResult.hasContent()) {
+        if (pagedResult.hasContent()) {
             return pagedResult;
         } else {
             return Page.empty();

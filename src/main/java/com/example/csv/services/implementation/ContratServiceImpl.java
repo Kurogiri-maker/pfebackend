@@ -2,7 +2,6 @@ package com.example.csv.services.implementation;
 
 import com.example.csv.DTO.ContratDTO;
 import com.example.csv.domain.Contrat;
-import com.example.csv.domain.Dossier;
 import com.example.csv.helper.CSVHelper;
 import com.example.csv.helper.mapper.ContratMapper;
 import com.example.csv.repositories.ContratRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +26,6 @@ public class ContratServiceImpl implements ContratService {
     private final ContratRepository contratRepo;
 
     private ContratMapper mapper;
-
 
     @Override
     public Contrat save(Contrat contrat) {
@@ -47,6 +44,7 @@ public class ContratServiceImpl implements ContratService {
         }
 
     }
+
     public List<Contrat> getAllContrats() {
         return contratRepo.findAll();
     }
@@ -64,25 +62,24 @@ public class ContratServiceImpl implements ContratService {
     @Override
     public void update(Long id, ContratDTO dto) {
         Contrat c = contratRepo.findById(id).get();
-        if(c != null){
-            Contrat c1 = mapper.mapNonNullFields(dto , c);
+        if (c != null) {
+            Contrat c1 = mapper.mapNonNullFields(dto, c);
             contratRepo.save(c1);
         }
 
     }
 
     @Override
-    public Page<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy){
+    public Page<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Contrat> pagedResult = contratRepo.findAll(paging);
 
-        if(pagedResult.hasContent()) {
+        if (pagedResult.hasContent()) {
             return pagedResult;
         } else {
             return Page.empty();
         }
     }
-
 
 }
