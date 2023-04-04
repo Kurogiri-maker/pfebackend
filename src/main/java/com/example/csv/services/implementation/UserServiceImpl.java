@@ -18,6 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -27,6 +28,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final UserMapper mapper;
+
+    @Override
+    public List<String> getAttributes() {
+        return List.of("id","firstName", "lastName", "email", "role", "enabled");
+    }
+
     @Override
     public User save(User user) {
         User user1 = userRepository.save(user);
@@ -35,6 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() { return userRepository.findAll(); }
+
+
 
     @Override
     public User getUser(Integer id) {
@@ -65,12 +74,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(Integer id, UserDTO dto) {
+    public Optional<User> update(Integer id, UserDTO dto) {
         User u= userRepository.findById(id).get();
         if (u!=null){
             User u1 = mapper.mapNonNullFields(dto,u);
             userRepository.save(u1);
+            return Optional.of(u1);
         }
+        else return Optional.empty();
     }
 
 

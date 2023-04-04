@@ -6,8 +6,11 @@ import org.mapstruct.control.MappingControl;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
+
+    List<String> getAttributes();
     User save(User user);
 
     List<User> getAllUsers();
@@ -17,7 +20,7 @@ public interface UserService {
 
     List<User> searchUsers(String searchTerm);
 
-    void update(Integer id, UserDTO user);
+    Optional<User> update(Integer id, UserDTO user);
     void delete(Integer id);
 
 
