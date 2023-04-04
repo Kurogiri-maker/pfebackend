@@ -29,8 +29,9 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**", "/actuator/**").permitAll() // allow access to Swagger and Actuator
-                .antMatchers("/auth/**")
-                .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/api/user/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
 
 //                .anyRequest().permitAll(); //For no security uncomment this line and comment all the lines below

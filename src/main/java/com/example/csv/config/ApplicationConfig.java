@@ -3,6 +3,7 @@ package com.example.csv.config;
 import com.example.csv.helper.mapper.ContratMapper;
 import com.example.csv.helper.mapper.DossierMapper;
 import com.example.csv.helper.mapper.TierMapper;
+import com.example.csv.helper.mapper.UserMapper;
 import com.example.csv.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -67,6 +68,11 @@ public class ApplicationConfig {
     @Bean
     public ContratMapper contratMapper() {
         return Mappers.getMapper(ContratMapper.class);
+    }
+
+    @Bean
+    public UserMapper userMapper() {
+        return Mappers.getMapper(UserMapper.class);
     }
 
 
