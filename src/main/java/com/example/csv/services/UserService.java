@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+
+
     List<String> getAttributes();
     User save(User user);
 
@@ -22,6 +24,8 @@ public interface UserService {
 
     Optional<User> update(Integer id, UserDTO user);
     void delete(Integer id);
+
+    String passwordEncoder(String password);
 
 
 }

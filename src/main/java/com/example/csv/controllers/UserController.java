@@ -25,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
 
+
     @GetMapping("/attributes")
     public ResponseEntity<List<String>> getAttributes(){
         List<String> attributes = userService.getAttributes();
@@ -33,6 +34,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user){
+        user.setPassword(userService.passwordEncoder(user.getPassword()));
         User savedUser = userService.save(user);
         return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }

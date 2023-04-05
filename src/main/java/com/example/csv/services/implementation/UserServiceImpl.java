@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final UserMapper mapper;
 
@@ -88,5 +91,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public String passwordEncoder(String password) {
+        return passwordEncoder.encode(password);
     }
 }
