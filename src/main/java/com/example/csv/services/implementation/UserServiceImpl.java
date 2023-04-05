@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getUser(Integer id) {
+    public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
 
@@ -77,10 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> update(Integer id, UserDTO dto) {
+    public Optional<User> update(Long id, UserDTO dto) {
         User u= userRepository.findById(id).get();
         if (u!=null){
             User u1 = mapper.mapNonNullFields(dto,u);
+            System.out.println(u1);
             userRepository.save(u1);
             return Optional.of(u1);
         }
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         userRepository.deleteById(id);
     }
 

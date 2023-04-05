@@ -17,13 +17,13 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User getUser(Integer id);
+    User getUser(Long id);
     Page<User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy);
 
     List<User> searchUsers(String searchTerm);
 
-    Optional<User> update(Integer id, UserDTO user);
-    void delete(Integer id);
+    Optional<User> update(Long id, UserDTO user);
+    void delete(Long id);
 
     String passwordEncoder(String password);
 
