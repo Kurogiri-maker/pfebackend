@@ -6,6 +6,7 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -25,6 +26,7 @@ public class EmailServiceImpl implements EmailService{
     private UserRepository userRepository;
 
     @Override
+    @Async
     public void sendVerificationEmail(User user) throws MessagingException {
 
         try {

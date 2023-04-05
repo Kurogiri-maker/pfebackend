@@ -3,12 +3,14 @@ package com.example.csv.config;
 import com.example.csv.helper.mapper.ContratMapper;
 import com.example.csv.helper.mapper.DossierMapper;
 import com.example.csv.helper.mapper.TierMapper;
+import com.example.csv.helper.mapper.UserMapper;
 import com.example.csv.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 @ComponentScan("com.example.csv.helper")
+@EnableAsync
 public class ApplicationConfig {
     private final UserRepository userRepository;
     @Bean
@@ -65,6 +68,11 @@ public class ApplicationConfig {
     @Bean
     public ContratMapper contratMapper() {
         return Mappers.getMapper(ContratMapper.class);
+    }
+
+    @Bean
+    public UserMapper userMapper() {
+        return Mappers.getMapper(UserMapper.class);
     }
 
 

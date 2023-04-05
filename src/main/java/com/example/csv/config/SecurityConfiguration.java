@@ -3,6 +3,7 @@ package com.example.csv.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,10 +30,13 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**", "/actuator/**").permitAll() // allow access to Swagger and Actuator
-                .antMatchers("/auth/**")
-                .permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/api/user/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                // .anyRequest().permitAll(); //No security
+
+//                .anyRequest().permitAll(); //For no security uncomment this line and comment all the lines below
+
                 .anyRequest()
                 .authenticated()
                 .and()
