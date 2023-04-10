@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getAttributes() {
-        return List.of("id","firstName", "lastName", "email", "role", "enabled");
+        return List.of("id","firstName", "lastName","password", "email", "role", "enabled");
     }
 
     @Override
