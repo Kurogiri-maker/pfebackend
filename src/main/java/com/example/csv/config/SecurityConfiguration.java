@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/kafka").permitAll()
+                .antMatchers("/kafka/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/actuator/**").permitAll() // allow access to Swagger and Actuator
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/api/user/**").permitAll()
