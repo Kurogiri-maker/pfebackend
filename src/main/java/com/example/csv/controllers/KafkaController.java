@@ -1,5 +1,6 @@
 package com.example.csv.controllers;
 
+import com.example.csv.domain.KafkaResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,62 +24,90 @@ public class KafkaController {
     public ResponseEntity<String> uploadFileForCollect(@RequestParam("file") MultipartFile fileResource){
 
         byte[] fileContent;
-        try {
-            // Read file content as byte array
-            fileContent = fileResource.getBytes();
-        } catch (IOException e) {
-            // Handle exception as needed
-            return new ResponseEntity<>("Failed to read file content", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        // Convert byte array to Base64 encoded string
-        String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
-
-        // Make POST request using WebClient
-        WebClient.ResponseSpec responseSpec = webClient.post()
-                .uri("http://localhost:8080/collect")
-                .bodyValue(base64FileContent)
-                .retrieve();
-
-        // Extract response body as String
-        String responseBody = responseSpec.bodyToMono(String.class).block();
 
 
-        // Return response body as the response to the client
-        return  new ResponseEntity<>(responseBody,HttpStatus.OK);
+            try {
+                // Read file content as byte array
+                fileContent = fileResource.getBytes();
+            } catch (IOException e) {
+                // Handle exception as needed
+                return new ResponseEntity<>("Failed to read file content", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            // Convert byte array to Base64 encoded string
+            String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
+
+            // Make POST request using WebClient
+            WebClient.ResponseSpec responseSpec = webClient.post()
+                    .uri("http://localhost:8080/collect")
+                    .bodyValue(base64FileContent)
+                    .retrieve();
+
+            // Extract response body as String
+            String responseBody = responseSpec.bodyToMono(String.class).block();
+
+            // Return response body as the response to the client
+            return  new ResponseEntity<>(responseBody,HttpStatus.OK);
+
+
+
+
 
     }
 
     //Upload a document to collect its data
     @PostMapping("/kafka/type")
-    public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile fileResource){
+    public ResponseEntity<KafkaResponse> uploadFileForTypage(@RequestParam("file") MultipartFile fileResource){
 
         byte[] fileContent;
-        try {
-            // Read file content as byte array
-            fileContent = fileResource.getBytes();
-        } catch (IOException e) {
-            // Handle exception as needed
-            return new ResponseEntity<>("Failed to read file content", HttpStatus.INTERNAL_SERVER_ERROR);
+        String message = "Please upload a pdf file!";
+        String responseBody = null;
+        KafkaResponse reponse = new KafkaResponse(message,responseBody);
+        if(hasPDFFormat(fileResource)) {
+            try {
+                // Read file content as byte array
+                fileContent = fileResource.getBytes();
+            } catch (IOException e) {
+                // Handle exception as needed
+                message = "Failed to read file content";
+                reponse.setMessage(message);
+                return new ResponseEntity<>(reponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            // Convert byte array to Base64 encoded string
+            String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
+
+            // Make POST request using WebClient
+            WebClient.ResponseSpec responseSpec = webClient.post()
+                    .uri("http://localhost:8080/type")
+                    .bodyValue(base64FileContent)
+                    .retrieve();
+
+            // Extract response body as String
+            responseBody = responseSpec.bodyToMono(String.class).block();
+            message = "Uploaded the file successfully";
+            reponse.setMessage(message);
+            reponse.setResult(responseBody);
+
+            // Return response body as the response to the client
+            return new ResponseEntity<>(reponse, HttpStatus.OK);
         }
 
-        // Convert byte array to Base64 encoded string
-        String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
-
-        // Make POST request using WebClient
-        WebClient.ResponseSpec responseSpec = webClient.post()
-                .uri("http://localhost:8080/type")
-                .bodyValue(base64FileContent)
-                .retrieve();
-
-        // Extract response body as String
-        String responseBody = responseSpec.bodyToMono(String.class).block();
-
-
-        // Return response body as the response to the client
-        return  new ResponseEntity<>(responseBody,HttpStatus.OK);
+        return new ResponseEntity<>(reponse,HttpStatus.BAD_REQUEST);
 
     }
+
+    public  boolean hasPDFFormat(MultipartFile file) {
+        // Update the content type to match PDF files
+        final String TYPE = "application/pdf";
+
+        if (!TYPE.equals(file.getContentType())) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     //Get the content of document
     @GetMapping("/kafka/collect")
