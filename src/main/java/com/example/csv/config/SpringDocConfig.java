@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class SpringFoxConfig {
+public class SpringDocConfig {
 
 
     @Bean
