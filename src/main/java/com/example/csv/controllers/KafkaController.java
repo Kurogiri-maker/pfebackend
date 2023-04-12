@@ -26,6 +26,8 @@ public class KafkaController {
 
     private final TopicListener topicListener;
 
+    private final String kafkaUrl = "http://localhost:8087/";
+
 
     //Upload a document to collect its data
     @PostMapping("/kafka/collect")
@@ -47,7 +49,7 @@ public class KafkaController {
 
             // Make POST request using WebClient
             WebClient.ResponseSpec responseSpec = webClient.post()
-                    .uri("http://localhost:8080/collect")
+                    .uri(kafkaUrl+ "collect")
                     .bodyValue(base64FileContent)
                     .retrieve();
 
@@ -83,7 +85,7 @@ public class KafkaController {
 
             // Make POST request using WebClient
             WebClient.ResponseSpec responseSpec = webClient.post()
-                    .uri("http://localhost:8080/type")
+                    .uri(kafkaUrl+ "type")
                     .bodyValue(base64FileContent)
                     .retrieve();
 
@@ -122,7 +124,7 @@ public class KafkaController {
     public ResponseEntity<String> getContentOfDocument(){
         // Make GET request using WebClient
         WebClient.ResponseSpec responseSpec = webClient.get()
-                .uri("http://localhost:8080/collect")
+                .uri(kafkaUrl +"collect")
                 .retrieve();
 
         // Extract response body as String
@@ -138,7 +140,7 @@ public class KafkaController {
     public ResponseEntity<String> getTypeOfDocument(){
         // Make GET request using WebClient
         WebClient.ResponseSpec responseSpec = webClient.get()
-                .uri("http://localhost:8080/type")
+                .uri( kafkaUrl +"type")
                 .retrieve();
 
         // Extract response body as String
