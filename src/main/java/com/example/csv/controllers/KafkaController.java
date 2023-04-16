@@ -4,8 +4,11 @@ import com.example.csv.domain.KafkaResponse;
 import com.example.csv.helper.TopicListener;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,6 +24,8 @@ import java.util.concurrent.ExecutionException;
 @AllArgsConstructor
 public class KafkaController {
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     private final WebClient webClient;
 
@@ -68,8 +73,8 @@ public class KafkaController {
         byte[] fileContent;
         String message = "Please upload a pdf file!";
         String responseBody = null;
-        KafkaResponse reponse = new KafkaResponse(message,responseBody);
-        if(hasPDFFormat(fileResource)) {
+        KafkaResponse reponse = new KafkaResponse(message, responseBody);
+        if (hasPDFFormat(fileResource)) {
             try {
                 // Read file content as byte array
                 fileContent = fileResource.getBytes();
@@ -83,72 +88,74 @@ public class KafkaController {
             // Convert byte array to Base64 encoded string
             String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
 
-            // Make POST request using WebClient
-            WebClient.ResponseSpec responseSpec = webClient.post()
-                    .uri(kafkaUrl+ "type")
-                    .bodyValue(base64FileContent)
+            kafkaTemplate.send("pdf-type", base64FileContent);
+            message="File content sent to Kafka topic";
+            reponse.setMessage(message);
+            return new ResponseEntity<>(reponse, HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @KafkaListener(topics = "pdf-type-result", groupId = "group_id")
+    public void consumeResult(String message) {
+        // Extract result from message
+        String result = message;
+
+        // Create response object with result
+        KafkaResponse response = new KafkaResponse("File classification successful", result);
+
+        // Return response to client
+        ResponseEntity<KafkaResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+        // You can return the ResponseEntity here or store it in a variable and return it later, depending on your use case
+
+        // Log message for debugging purposes
+        log.info("Received message from Kafka topic pdf-type-result: {}", result);
+    }
+
+
+    public boolean hasPDFFormat (MultipartFile file){
+            // Update the content type to match PDF files
+            final String TYPE = "application/pdf";
+
+            if (!TYPE.equals(file.getContentType())) {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        //Get the content of document
+        @GetMapping("/kafka/collect")
+        public ResponseEntity<String> getContentOfDocument () {
+            // Make GET request using WebClient
+            WebClient.ResponseSpec responseSpec = webClient.get()
+                    .uri(kafkaUrl + "collect")
                     .retrieve();
 
             // Extract response body as String
-            responseBody = responseSpec.bodyToMono(String.class).block();
-            if (responseBody != null) {
-                // Kafka message processing logic
-                String processedResponse = topicListener.getTypageMessage();
+            String responseBody = responseSpec.bodyToMono(String.class).block();
 
-                // Return response body as the response to the client
-                return new ResponseEntity<>(new KafkaResponse("Uploaded the file successfully",processedResponse), HttpStatus.OK);
+            // Return response body as the response to the client
+            return ResponseEntity.ok(responseBody);
 
-            }else{
-                // Handle exception as needed
-                return new ResponseEntity<>(new KafkaResponse( "Failed to process Kafka message",null), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
         }
 
-        return new ResponseEntity<>(reponse,HttpStatus.BAD_REQUEST);
-    }
+        //Get the type of document
+        @GetMapping("/kafka/type")
+        public ResponseEntity<String> getTypeOfDocument () {
+            // Make GET request using WebClient
+            WebClient.ResponseSpec responseSpec = webClient.get()
+                    .uri(kafkaUrl + "type")
+                    .retrieve();
 
-    public  boolean hasPDFFormat(MultipartFile file) {
-        // Update the content type to match PDF files
-        final String TYPE = "application/pdf";
+            // Extract response body as String
+            String responseBody = responseSpec.bodyToMono(String.class).block();
 
-        if (!TYPE.equals(file.getContentType())) {
-            return false;
+            // Return response body as the response to the client
+            return ResponseEntity.ok(responseBody);
+
         }
-
-        return true;
-    }
-
-
-    //Get the content of document
-    @GetMapping("/kafka/collect")
-    public ResponseEntity<String> getContentOfDocument(){
-        // Make GET request using WebClient
-        WebClient.ResponseSpec responseSpec = webClient.get()
-                .uri(kafkaUrl +"collect")
-                .retrieve();
-
-        // Extract response body as String
-        String responseBody = responseSpec.bodyToMono(String.class).block();
-
-        // Return response body as the response to the client
-        return ResponseEntity.ok(responseBody);
-
-    }
-
-    //Get the type of document
-    @GetMapping("/kafka/type")
-    public ResponseEntity<String> getTypeOfDocument(){
-        // Make GET request using WebClient
-        WebClient.ResponseSpec responseSpec = webClient.get()
-                .uri( kafkaUrl +"type")
-                .retrieve();
-
-        // Extract response body as String
-        String responseBody = responseSpec.bodyToMono(String.class).block();
-
-        // Return response body as the response to the client
-        return ResponseEntity.ok(responseBody);
-
-    }
 
 }

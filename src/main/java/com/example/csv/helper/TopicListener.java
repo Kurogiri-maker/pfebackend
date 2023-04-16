@@ -40,14 +40,10 @@ public class TopicListener {
 
     @KafkaListener(topics = "#{@typageTopic.name}",groupId = "group_id")
     public void processDocumentForTypage(@Payload String payload) throws JsonProcessingException {
-
         // Parse the JSON string into a JsonNode object
         JsonNode jsonNode = objectMapper.readTree(payload);
-
         typageMessage = jsonNode.get("type").asText();
         log.info(typageMessage);
-
-
     }
 
 
