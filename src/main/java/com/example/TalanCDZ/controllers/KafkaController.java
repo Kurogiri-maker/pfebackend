@@ -61,7 +61,7 @@ public class KafkaController {
 
     //Upload a document to get its type
     @PostMapping("/kafka/type")
-    public ResponseEntity<KafkaResponse> uploadFileForTypage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
         String message = "Please upload a pdf file!";
@@ -75,7 +75,7 @@ public class KafkaController {
                 // Handle exception as needed
                 message = "Failed to read file content";
                 reponse.setMessage(message);
-                return new ResponseEntity<>(reponse, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             // Convert byte array to Base64 encoded string
@@ -90,26 +90,11 @@ public class KafkaController {
             // Extract response body as String
             responseBody = responseSpec.bodyToMono(String.class).block();
             log.info(responseBody);
-            return new ResponseEntity<>(new KafkaResponse("Uploaded the file successfully",responseBody), HttpStatus.OK);
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
-            /*
-            if (responseBody != null) {
-                // Kafka message processing logic
-                String processedResponse = topicListener.getTypageMessage();
-
-
-                // Return response body as the response to the client
-                return new ResponseEntity<>(new KafkaResponse("Uploaded the file successfully",processedResponse), HttpStatus.OK);
-
-            }else{
-                // Handle exception as needed
-                return new ResponseEntity<>(new KafkaResponse( "Failed to process Kafka message",null), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-             */
         }
 
-        return new ResponseEntity<>(reponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
 
     public  boolean hasPDFFormat(MultipartFile file) {
