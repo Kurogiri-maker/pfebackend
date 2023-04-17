@@ -1,7 +1,9 @@
 package com.example.TalanCDZ.controllers;
 
 import com.example.TalanCDZ.domain.KafkaResponse;
-//import com.example.TalanCDZ.helper.TopicListener;
+import com.example.TalanCDZ.helper.TopicListener;
+import com.example.TalanCDZ.helper.TopicProducer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,8 +26,9 @@ public class KafkaController {
 
     private final WebClient webClient;
 
-    //private final TopicListener topicListener;
+    private final TopicProducer topicProducer;
 
+    private final TopicListener topicListener;
 
     //Upload a document to collect its data
     @PostMapping("/kafka/collect")
@@ -61,7 +64,7 @@ public class KafkaController {
 
     //Upload a document to get its type
     @PostMapping("/kafka/type")
-    public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile file) throws JsonProcessingException {
 
         byte[] fileContent;
         String message = "Please upload a pdf file!";
@@ -81,6 +84,7 @@ public class KafkaController {
             // Convert byte array to Base64 encoded string
             String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
 
+            /*
             // Make POST request using WebClient
             WebClient.ResponseSpec responseSpec = webClient.post()
                     .uri("http://localhost:8080/type")
@@ -90,7 +94,14 @@ public class KafkaController {
             // Extract response body as String
             responseBody = responseSpec.bodyToMono(String.class).block();
             log.info(responseBody);
+
+             */
+            topicProducer.getDocumentType(base64FileContent);
+
+
             return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
+
 
         }
 
