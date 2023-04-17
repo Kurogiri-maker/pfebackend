@@ -36,7 +36,7 @@ public class OcrController {
 
 
     @PostMapping("/kafka/type")
-    public ResponseEntity<KafkaResponse> uploadFileForTypage(@RequestParam("file") MultipartFile fileResource) {
+    public ResponseEntity<KafkaResponse> uploadFileForTypage(@RequestParam("file") MultipartFile fileResource) throws InterruptedException {
 
         byte[] fileContent;
         String message = "Please upload a pdf file!";
@@ -70,12 +70,15 @@ public class OcrController {
             });
             return new ResponseEntity<>(responseBody, HttpStatus.OK);
             */
-            ResponseEntity<String> responseEntity = null;
             kafkaObservable.getObservable().subscribe(response -> {
                 log.info("Response received from KafkaObservable: {}", response);
                 reponse.setResult(response);
                 log.info(reponse.getResult());
             });
+
+            while(reponse.getResult() == null){
+                Thread.sleep(100);
+            }
 
             return new ResponseEntity<>(reponse,HttpStatus.OK);
 
