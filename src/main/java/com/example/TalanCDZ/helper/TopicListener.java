@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,17 +33,14 @@ public class TopicListener {
 
     private String collectMessage;
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
 
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
-    @KafkaListener(topics = "test-topic",groupId = "group_id")
+    @KafkaListener(topics = "#{@typageTopic.name}",groupId = "group_id")
     public void processDocumentForTypage(@Payload String payload)  {
-        messagingTemplate.convertAndSend("/topic/receivedMessage", payload);
 
     }
 

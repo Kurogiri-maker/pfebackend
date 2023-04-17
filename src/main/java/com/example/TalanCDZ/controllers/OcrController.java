@@ -5,6 +5,8 @@ import com.example.TalanCDZ.helper.KafkaObservable;
 import com.example.TalanCDZ.services.OcrService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -29,12 +31,16 @@ public class OcrController {
     private final KafkaObservable kafkaObservable = KafkaObservable.getInstance();
     private final KafkaTemplate<String, String> kafkaTemplate;
 
+    @Autowired
+    private NewTopic typageTopic;
+
+
     @PostMapping("/kafka/type")
     public ResponseEntity<KafkaResponse> uploadFileForTypage(@RequestParam("file") MultipartFile fileResource) {
 
         byte[] fileContent;
         String message = "Please upload a pdf file!";
-        String responseBody = null;
+        String  responseBody = null;
         KafkaResponse reponse = new KafkaResponse(message, responseBody);
         if (service.hasPDFFormat(fileResource)) {
             try {
@@ -51,23 +57,34 @@ public class OcrController {
             String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
 
             //send file content to kafka topic
-            kafkaTemplate.send("pdf-type", base64FileContent);
+            kafkaTemplate.send("typage", base64FileContent);
             message="File content sent to Kafka topic";
             reponse.setMessage(message);
 
+            /*
             // Subscribe to KafkaObservable for response
+             kafkaObservable.getObservable().subscribe(response -> {
+                log.info("Response received from KafkaObservable: {}", response);
+                //reponse.setResult(response);
+                responseBody= new ResponseEntity<>(response,HttpStatus.OK);
+            });
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
+            */
+            ResponseEntity<String> responseEntity = null;
             kafkaObservable.getObservable().subscribe(response -> {
                 log.info("Response received from KafkaObservable: {}", response);
-                reponse.setMessage(response);
+                reponse.setResult(response);
+                log.info(reponse.getResult());
             });
-            return new ResponseEntity<>(reponse, HttpStatus.OK);
+
+            return new ResponseEntity<>(reponse,HttpStatus.OK);
 
 
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(reponse,HttpStatus.BAD_REQUEST);
     }
 
-    @KafkaListener(topics = "pdf-type-result", groupId = "group_id")
+    @KafkaListener(topics = "test-topic", groupId = "group_id")
     public void consume(String message) {
         // Send message to KafkaObservable
         kafkaObservable.sendMessage(message);

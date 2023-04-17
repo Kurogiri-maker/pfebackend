@@ -1,3 +1,4 @@
+/*
 package com.example.TalanCDZ.controllers;
 
 import com.example.TalanCDZ.domain.KafkaResponse;
@@ -95,7 +96,7 @@ public class KafkaController {
             responseBody = responseSpec.bodyToMono(String.class).block();
             log.info(responseBody);
 
-             */
+
             topicProducer.getDocumentType(base64FileContent);
 
 
@@ -121,3 +122,4 @@ public class KafkaController {
 
 
 }
+*/
