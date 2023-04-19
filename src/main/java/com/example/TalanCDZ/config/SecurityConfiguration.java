@@ -31,9 +31,7 @@ public class SecurityConfiguration {
                 .antMatchers("/kafka/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/actuator/**").permitAll() // allow access to Swagger and Actuator
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/csv/**").permitAll()
-                // .antMatchers("/api/user/**").hasAuthority("ADMIN")
+                .antMatchers("/api/user/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
 
