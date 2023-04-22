@@ -29,14 +29,14 @@ public class KafkaController {
 
     //Upload a document to collect its data
     @PostMapping("/kafka/collect")
-    public ResponseEntity<String> uploadFileForCollect(@RequestParam("file") MultipartFile fileResource){
+    public ResponseEntity<String> uploadFileForCollect(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
 
-
+        if (hasPDFFormat(file)){
             try {
                 // Read file content as byte array
-                fileContent = fileResource.getBytes();
+                fileContent = file.getBytes();
             } catch (IOException e) {
                 // Handle exception as needed
                 return new ResponseEntity<>("Failed to read file content", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,10 +54,17 @@ public class KafkaController {
             // Extract response body as String
             String responseBody = responseSpec.bodyToMono(String.class).block();
 
+
             // Return response body as the response to the client
-            return  new ResponseEntity<>(responseBody,HttpStatus.OK);
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+
 
     }
+
+
 
     //Upload a document to get its type
     @PostMapping("/kafka/type")
