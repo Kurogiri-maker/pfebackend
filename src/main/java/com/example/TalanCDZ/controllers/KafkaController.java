@@ -1,7 +1,10 @@
 package com.example.TalanCDZ.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.example.TalanCDZ.domain.KafkaResponse;
-//import com.example.TalanCDZ.helper.TopicListener;
+import com.example.TalanCDZ.services.OCRService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.util.Base64;
-
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin("*")
@@ -23,6 +26,8 @@ public class KafkaController {
 
 
     private final WebClient webClient;
+
+    private final OCRService service;
 
     //private final TopicListener topicListener;
 
@@ -113,6 +118,43 @@ public class KafkaController {
         }
 
         return true;
+    }
+
+    @PostMapping("/verify")
+    public String verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
+        // Create an ObjectMapper object
+        ObjectMapper objectMapper = new ObjectMapper();
+        // Use the readValue method to convert the JSON string to a Map<String, String>
+        Map<String, String> map = objectMapper.readValue(doc, new TypeReference<Map<String, String>>(){});
+
+        // Get the type of document
+        String type = map.get("type");
+        map.remove("type");
+        System.out.println(map);
+        // Get the attributes of this class
+        List<String> attributes = service.getAttributes(type);
+
+        // Get the attributes of the document
+        List<String> keyList = map.keySet().stream().collect(Collectors.toList());
+        keyList.forEach(key -> System.out.println(key));
+
+        Map<String,String> map1 = new LinkedHashMap<>();
+
+        for (String key : attributes) {
+            map1.put(key,map.get(key));
+        }
+        System.out.println(map1);
+        System.out.println(keyList.containsAll(attributes));
+        if(keyList.containsAll(attributes)){
+            if (service.searchDocument(type,map1)) {
+                return "Le fichier existe";
+            }else{
+                return "Le fichier n'existe pas. Voulez vous le sauvegardez ?";
+
+            }
+        }
+        return "Le fichier n'est pas cohérent";
+
     }
 
 }

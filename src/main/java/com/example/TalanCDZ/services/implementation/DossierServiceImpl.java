@@ -96,6 +96,7 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public List<Dossier> searchDossiers(String searchTerm) {
         Specification<Dossier> spec = Specification.where(DossierSpecifications.dossierDCContains(searchTerm)
+                .or(DossierSpecifications.numeroContains(searchTerm))
                 .or(DossierSpecifications.listSDCContains(searchTerm))
                 .or(DossierSpecifications.nDPSContains(searchTerm))
                 .or(DossierSpecifications.montantDuPresContains(searchTerm)));

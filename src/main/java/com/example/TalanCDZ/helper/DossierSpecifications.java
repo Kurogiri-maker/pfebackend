@@ -8,6 +8,10 @@ public class DossierSpecifications {
         return (root, query, builder) -> builder.like(builder.lower(root.get("dossier_DC")), dossier_dc);
     }
 
+    public static Specification<Dossier> numeroContains(String numero) {
+        return (root, query, builder) -> builder.like(builder.lower(root.get("numero")), numero);
+    }
+
     public static Specification<Dossier> listSDCContains(String listSDC) {
         return (root, query, builder) -> builder.like(builder.lower(root.get("listSDC")), listSDC);
     }

@@ -1,0 +1,22 @@
+@startuml
+
+top to bottom direction
+
+:Utilisateur:
+:Administrateur:
+
+
+Utilisateur -> (Importer un fichier au format CSV)
+Utilisateur -> (Importer un fichier au format PDF)
+Utilisateur --> (Rechercher un document)
+Utilisateur --> (Ajouter un document)
+Utilisateur --> (Modifier un document)
+Utilisateur --> (Supprimer un document)
+
+Administrateur --> (Gérer les comptes)
+Administrateur --> (Suivre l'état de disponibilité de l'application)
+
+
+Utilisateur <|-- Administrateur
+
+@enduml

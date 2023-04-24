@@ -99,6 +99,7 @@ public class TiersServiceImpl implements TiersService {
     @Override
     public List<Tiers> searchTiers(String searchTerm) {
         Specification<Tiers> spec = Specification.where(TiersSpecifications.nomContains(searchTerm)
+                .or(TiersSpecifications.numeroContains(searchTerm))
                 .or(TiersSpecifications.sirenContains(searchTerm))
                 .or(TiersSpecifications.refMandatContains(searchTerm)));
 
