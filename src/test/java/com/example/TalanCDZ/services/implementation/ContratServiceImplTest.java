@@ -53,25 +53,12 @@ class ContratServiceImplTest {
 
         Contrat contrat = new Contrat(
                 null,
-                "num_dossier",
-                "num_cp",
-                "raison_Social",
-                "id_Tiers",
-                "num_dc",
-                "num_sdc",
-                "num_cir",
-                "num_siren",
-                "ref_coll",
-                "code_produit",
-                "id_de_offre_comm",
-                "chef_de_file",
-                "num_ovi",
-                "num_rum",
-                "typeenregie",
-                "produit_comm",
-                "produit",
-                "phase",
-                "montant_pret");
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
         contratService.save(contrat);
 
         ArgumentCaptor<Contrat> contratArgumentCaptor = ArgumentCaptor.forClass(Contrat.class);
@@ -86,12 +73,19 @@ class ContratServiceImplTest {
 
     @Test
     void testGetContrat() {
-        Contrat expectedContrat = new Contrat(31L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
+        Contrat expectedContrat = new Contrat(
+                31L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
 
 
 
         when(contratRepository.findById(31L)).thenReturn(Optional.of(expectedContrat));
-        Contrat actualContrat = contratService.getContrat(31l);
+        Contrat actualContrat = contratService.getContrat(31L);
         assertEquals(expectedContrat, actualContrat);
         verify(contratRepository).findById(31L);
 
@@ -105,29 +99,23 @@ class ContratServiceImplTest {
     void updateContrat(){
         Contrat contrat = new Contrat(
                 21L,
-                "num_dossier",
-                "num_cp",
-                "raison_Social",
-                "id_Tiers",
-                "num_dc",
-                "num_sdc",
-                "num_cir",
-                "num_siren",
-                "ref_coll",
-                "code_produit",
-                "id_de_offre_comm",
-                "chef_de_file",
-                "num_ovi",
-                "num_rum",
-                "typeenregie",
-                "produit_comm",
-                "produit",
-                "phase",
-                "montant_pret");
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
 
         ContratDTO contratDTO = new ContratDTO();
-        contratDTO.setNum_CP("3");
-        Contrat contrat1 = new Contrat(21L,"num_dossier","3","raison_Social","id_Tiers","num_dc","num_sdc","num_cir","num_siren","ref_coll","code_produit","id_de_offre_comm","chef_de_file","num_ovi","num_rum","typeenregie","produit_comm","produit","phase","montant_pret");
+        contratDTO.setRaisonSocial("3");
+        Contrat contrat1 = new Contrat(
+                21L,
+                "dfydn",
+                "3",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
 
         when(contratRepository.findById(21L)).thenReturn(Optional.of(contrat));
         when(mapper.mapNonNullFields(contratDTO,contrat)).thenReturn(contrat1);
@@ -140,7 +128,7 @@ class ContratServiceImplTest {
 
         //assert
         assertEquals(capturedContrat,contrat1);
-        log.info("Expected : 3" + "Result : " + capturedContrat.getNum_CP());
+        log.info("Expected : 3" + "Result : " + capturedContrat.getRaisonSocial());
 
     }
 
@@ -148,26 +136,13 @@ class ContratServiceImplTest {
     void delete() {
 
         Contrat contrat = new Contrat(
-                31l,
-                "num_dossier",
-                "num_cp",
-                "raison_Social",
-                "id_Tiers",
-                "num_dc",
-                "num_sdc",
-                "num_cir",
-                "num_siren",
-                "ref_coll",
-                "code_produit",
-                "id_de_offre_comm",
-                "chef_de_file",
-                "num_ovi",
-                "num_rum",
-                "typeenregie",
-                "produit_comm",
-                "produit",
-                "phase",
-                "montant_pret");
+                31L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
         contratService.delete(contrat.getId());
 
         Mockito.verify(contratRepository).deleteById(contrat.getId());
@@ -181,7 +156,7 @@ class ContratServiceImplTest {
         // create a mock for the ContratRepository
 
         // create some test data
-        byte[] fileContent = "Num_dossierKPS,Num_CP,Raison_Social,Id_Tiers,Num_DC,Num_SDC,Num_CIR,Num_SIREN,Ref_Collaborative,Code_Produit,Identifiant_de_offre_comm,Chef_de_File,Num_OVI,Num_RUM,TypeEnergie,Produit_Comm,Produit,Phase,Montant_pret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\n".getBytes();
+        byte[] fileContent = "numero,raisonSocial,codeProduit,produit,phase,montantPret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\n".getBytes();
         MockMultipartFile file = new MockMultipartFile("file.csv", "file.csv", "text/csv", fileContent);
 
         // create a list of expected Contrat objects
@@ -193,20 +168,7 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl",
-                "bfixm",
-                "yyvwp",
-                "vegzu",
-                "ixrrl",
-                "wmeoi",
-                "dcosp",
-                "wpinz",
-                "nliuy",
-                "impvq",
-                "uljpk",
-                "blcbp",
-                "poocm",
-                "yobnt"));
+                "zqmyl"));
         expectedContrats.add( new Contrat(
                 null,
                 "dfydn",
@@ -214,20 +176,7 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl",
-                "bfixm",
-                "yyvwp",
-                "vegzu",
-                "ixrrl",
-                "wmeoi",
-                "dcosp",
-                "wpinz",
-                "nliuy",
-                "impvq",
-                "uljpk",
-                "blcbp",
-                "poocm",
-                "yobnt"));
+                "zqmyl"));
 
         // create a mock CSVHelper that returns the expected Contrat objects
         CSVHelper csvHelper = Mockito.mock(CSVHelper.class);
@@ -264,9 +213,22 @@ class ContratServiceImplTest {
     @Test
     void testGetAllContrat() {
         // create some test data
-        Contrat contrat1 = new Contrat(31L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
-        Contrat contrat2= new Contrat(32L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
-
+        Contrat contrat1 = new Contrat(
+                1L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
+        Contrat contrat2= new Contrat(
+                2L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
         List<Contrat> expectedContrats = new ArrayList<>();
         expectedContrats.add(contrat1);
         expectedContrats.add(contrat2);
@@ -286,16 +248,31 @@ class ContratServiceImplTest {
 
     @Test
     void getAllContrats() {
-        Contrat c1= new Contrat(1L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
-        Contrat c2= new Contrat(2L,"dfydn","1","ztfop","amgqv","fmkzu","zqmyl","bfixm","yyvwp","vegzu","ixrrl","wmeoi","dcosp","wpinz","nliuy","impvq","uljpk","blcbp","poocm","yobnt");
-        List<Contrat> expectedContrats = new ArrayList<>(List.of(c1, c2));
+
+        Contrat contrat1 = new Contrat(
+                1L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
+        Contrat contrat2= new Contrat(
+                2L,
+                "dfydn",
+                "1",
+                "ztfop",
+                "amgqv",
+                "fmkzu",
+                "zqmyl");
+        List<Contrat> expectedContrats = new ArrayList<>(List.of(contrat1, contrat2));
 
 
         Page<Contrat> page = new PageImpl<>(expectedContrats);
         when(contratRepository.findAll(any(Pageable.class))).thenReturn(page);
 
         when(contratRepository.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
-        Page result = contratService.getAllContrats(0, 2, "id");
+        Page<Contrat> result = contratService.getAllContrats(0, 2, "id");
 
         assertEquals(page.getContent(), result.getContent());
         assertEquals(page.getTotalElements(), result.getTotalElements());
@@ -311,7 +288,7 @@ class ContratServiceImplTest {
         when(contratRepository.findAll(any(Pageable.class))).thenReturn(page);
 
         when(contratRepository.findAll(PageRequest.of(0, 2, Sort.by("id")))).thenReturn(page);
-        Page result = contratService.getAllContrats(0, 2, "id");
+        Page<Contrat> result = contratService.getAllContrats(0, 2, "id");
 
         assertEquals(page.getContent(), result.getContent());
         assertEquals(page.getTotalElements(), result.getTotalElements());

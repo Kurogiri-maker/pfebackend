@@ -55,25 +55,12 @@ public class CSVHelper {
             for (CSVRecord csvRecord : csvRecords) {
                 Contrat contrat = new Contrat(
                         null,
-                        csvRecord.get("Num_dossierKPS"),
-                        csvRecord.get("Num_CP"),
-                        csvRecord.get("Raison_Social"),
-                        csvRecord.get("Id_Tiers"),
-                        csvRecord.get("Num_DC"),
-                        csvRecord.get("Num_SDC"),
-                        csvRecord.get("Num_CIR"),
-                        csvRecord.get("Num_SIREN"),
-                        csvRecord.get("Ref_Collaborative"),
-                        csvRecord.get("Code_Produit"),
-                        csvRecord.get("Identifiant_de_offre_comm"),
-                        csvRecord.get("Chef_de_File"),
-                        csvRecord.get("Num_OVI"),
-                        csvRecord.get("Num_RUM"),
-                        csvRecord.get("TypeEnergie"),
-                        csvRecord.get("Produit_Comm"),
-                        csvRecord.get("Produit"),
-                        csvRecord.get("Phase"),
-                        csvRecord.get("Montant_pret")
+                        csvRecord.get("numero"),
+                        csvRecord.get("raisonSociale"),
+                        csvRecord.get("codeProduit"),
+                        csvRecord.get("produit"),
+                        csvRecord.get("phase"),
+                        csvRecord.get("montantPret")
                 );
 
                 contrats.add(contrat);
