@@ -1,0 +1,9 @@
+@startuml
+autonumber
+
+Utilisateur -> "Interface de login": Insérer les coordonnées
+"Interface de login" -> Serveur: Insérer les coordonnées
+Serveur -> "Base de données": Insérer les coordonnées
+
+
+@enduml
