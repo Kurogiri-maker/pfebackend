@@ -63,26 +63,7 @@ public class ContratControllerTest {
 
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<>(List.of("id",
-                "num_dossierKPS",
-                "num_CP",
-                "raison_Social",
-                "id_Tiers",
-                "num_DC",
-                "num_SDC",
-                "num_CIR",
-                "num_SIREN",
-                "ref_Collaborative",
-                "code_Produit",
-                "identifiant_de_offre_comm",
-                "chef_de_File",
-                "num_OVI",
-                "num_RUM",
-                "typeEnergie",
-                "produit_Comm",
-                "produit",
-                "phase",
-                "montant_pret"));
+        List<String> attributes = new ArrayList<>(List.of("id", "numero","raisonSocial","codeProduit","produit","phase","montantPret"));
 
         MvcResult result = mvc.perform(get("/api/csv/contrat/attributes"))
                 .andExpect(status().isOk())
@@ -99,7 +80,7 @@ public class ContratControllerTest {
     @Test
     void uploadFileSuccessfully() throws Exception {
         // create a mock CSV file with some content
-        String csvContent = "Num_dossierKPS,Num_CP,Raison_Social,Id_Tiers,Num_DC,Num_SDC,Num_CIR,Num_SIREN,Ref_Collaborative,Code_Produit,Identifiant_de_offre_comm,Chef_de_File,Num_OVI,Num_RUM,TypeEnergie,Produit_Comm,Produit,Phase,Montant_pret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\n";
+        String csvContent = "numero,raisonSocial,codeProduit,produit,phase,montantPret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\n";
         MockMultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
                 csvContent.getBytes(StandardCharsets.UTF_8));
 
@@ -121,7 +102,7 @@ public class ContratControllerTest {
     void uploadFileFailed() throws Exception {
 
         // create a mock CSV file with some content
-        String csvContent = "Num_dossierKPS,Num_CP,Raison_Social,Id_Tiers,Num_DC,Num_SDC,Num_CIR,Num_SIREN,Ref_Collaborative,Code_Produit,Identifiant_de_offre_comm,Chef_de_File,Num_OVI,Num_RUM,TypeEnergie,Produit_Comm,Produit,Phase,Montant_pret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl,bfixm,yyvwp,vegzu,ixrrl,wmeoi,dcosp,wpinz,nliuy,impvq,uljpk,blcbp,poocm,yobnt\n";
+        String csvContent = "numero,raisonSocial,codeProduit,produit,phase,montantPret\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\ndfydn,1,ztfop,amgqv,fmkzu,zqmyl\n";
         MultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
                 csvContent.getBytes(StandardCharsets.UTF_8));
 
