@@ -122,31 +122,51 @@ public class KafkaController {
 
     @PostMapping("/verify")
     public String verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
+
         // Create an ObjectMapper object
         ObjectMapper objectMapper = new ObjectMapper();
+
         // Use the readValue method to convert the JSON string to a Map<String, String>
         Map<String, String> map = objectMapper.readValue(doc, new TypeReference<Map<String, String>>(){});
 
         // Get the type of document
         String type = map.get("type");
         map.remove("type");
-        System.out.println(map);
         // Get the attributes of this class
         List<String> attributes = service.getAttributes(type);
 
         // Get the attributes of the document
         List<String> keyList = map.keySet().stream().collect(Collectors.toList());
-        keyList.forEach(key -> System.out.println(key));
 
-        Map<String,String> map1 = new LinkedHashMap<>();
-
+        // Create a new map for existing attributes
+        Map<String,String> legacyAttributes = new LinkedHashMap<>();
         for (String key : attributes) {
-            map1.put(key,map.get(key));
+            legacyAttributes.put(key,map.get(key));
         }
-        System.out.println(map1);
-        System.out.println(keyList.containsAll(attributes));
+
+
+
+        // Create a new map for additional attributes
+
+
+        List<String> additionalAttributesList = new ArrayList<>();
+        additionalAttributesList.addAll(keyList);
+
+        additionalAttributesList.removeAll(attributes);
+        System.out.println(additionalAttributesList);
+
+        Map<String,String> additionalAttributes = new LinkedHashMap<>();
+        for (String key : additionalAttributesList) {
+            additionalAttributes.put(key,map.get(key));
+        }
+
+        System.out.println(additionalAttributes);
+
+
+
+
         if(keyList.containsAll(attributes)){
-            if (service.searchDocument(type,map1)) {
+            if (service.searchDocument(type,legacyAttributes,additionalAttributes)) {
                 return "Le fichier existe";
             }else{
                 return "Le fichier n'existe pas. Voulez vous le sauvegardez ?";

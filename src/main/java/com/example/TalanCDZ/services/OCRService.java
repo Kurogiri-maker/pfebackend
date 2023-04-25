@@ -6,8 +6,7 @@ import com.example.TalanCDZ.domain.Tiers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -59,7 +58,7 @@ public class OCRService {
 
     }
 
-    public boolean searchDocument(String classe,Map<String,String> map) throws JsonProcessingException {
+    public boolean searchDocument(String classe,Map<String,String> map,Map<String,String> map2) throws JsonProcessingException {
 
 
         String numero = map.get("numero");
@@ -70,22 +69,33 @@ public class OCRService {
             case "Tiers":
                 // convert JSON string to object
                 Tiers t = objectMapper.readValue(json, Tiers.class);
-                System.out.println(t);
                 List<Tiers> list = tiers.searchTiers(numero);
                 Tiers t1 = list.get(0);
-                System.out.println(t1);
-                return t.equals(t1);
+                Boolean r = t.equals(t1);
+                if(r){
+                    tiers.save(t);
+                    map2.forEach((key, value) -> {
+                        System.out.println("Key : "+key+"\n Value : "+ value);
+                    });
+                }
+                return r;
 
             case "Contrat":
                 break;
             case "Dossier":
                 // convert JSON string to object
                 Dossier d = objectMapper.readValue(json, Dossier.class);
-                System.out.println(d);
                 List<Dossier> listD = dossier.searchDossiers(numero);
                 Dossier d1 = listD.get(0);
-                System.out.println(d1);
-                return d.equals(d1);
+                Boolean r1 = d.equals(d1);
+                if(r1){
+                    dossier.save(d);
+                    map2.forEach((key, value) -> {
+                        System.out.println("Key : "+key+"\n Value : "+ value);
+                    });
+                }
+                return r1;
+
             default:
                 return false;
         }
@@ -94,6 +104,7 @@ public class OCRService {
 
 
     }
+
 
 
 
