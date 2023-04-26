@@ -1,5 +1,6 @@
 package com.example.TalanCDZ.controllers;
 
+import com.example.TalanCDZ.domain.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.example.TalanCDZ.domain.KafkaResponse;
@@ -120,8 +121,8 @@ public class KafkaController {
         return true;
     }
 
-    @PostMapping("/verify")
-    public String verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
+    @PostMapping("/kafka/verify")
+    public Response verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
 
         // Create an ObjectMapper object
         ObjectMapper objectMapper = new ObjectMapper();
@@ -167,12 +168,24 @@ public class KafkaController {
 
         if(keyList.containsAll(attributes)){
             if (service.searchDocument(type,legacyAttributes,additionalAttributes)) {
-                return "Le fichier existe";
+                Response response = new Response();
+                response.setType(type);
+                response.setLegacyAttributes(legacyAttributes);
+                response.setAdditionalAttributes(additionalAttributes);
+                response.setMessage("Le fichier existe");
+                return response;
             }else{
-                return "Le fichier n'existe pas. Voulez vous le sauvegardez ?";
+                Response response = new Response();
+                response.setType(type);
+                response.setLegacyAttributes(legacyAttributes);
+                response.setAdditionalAttributes(additionalAttributes);
+                response.setMessage("Le fichier n'existe pas. Voulez vous le sauvegardez ?");
+                return response ;
             }
         }
-        return "Le fichier n'est pas cohérent";
+        Response response = new Response();
+        response.setMessage("Le fichier n'est pas cohérent");
+        return response;
 
     }
 

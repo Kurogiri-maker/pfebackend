@@ -70,15 +70,18 @@ public class OCRService {
                 // convert JSON string to object
                 Tiers t = objectMapper.readValue(json, Tiers.class);
                 List<Tiers> list = tiers.searchTiers(numero);
-                Tiers t1 = list.get(0);
-                Boolean r = t.equals(t1);
-                if(r){
+                if(list.isEmpty()){
                     tiers.save(t);
                     map2.forEach((key, value) -> {
                         System.out.println("Key : "+key+"\n Value : "+ value);
                     });
+                }else{
+                    Tiers t1 = list.get(0);
+                    Boolean r = t.equals(t1);
+                    return r;
                 }
-                return r;
+                break;
+
 
             case "Contrat":
                 break;
