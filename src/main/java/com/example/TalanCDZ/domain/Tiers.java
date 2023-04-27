@@ -20,12 +20,9 @@ public class Tiers {
     private String nom;
     private String siren;
     private String ref_mandat;
-    /*
     @OneToMany
     @JoinColumn(name = "tiers_id")
-    private List<Attribute> additional;
-    */
-
+    private List<AdditionalAttributesTiers> additional;
 
 
     public boolean equals(Tiers t){

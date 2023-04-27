@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,6 +22,10 @@ public class Contrat {
     private String produit;
     private String phase;
     private String montantPret;
+    @OneToMany
+    @JoinColumn(name = "contrat_id")
+    private List<AdditionalAttributesContrat> additional;
+
 
 
     public boolean equals(Contrat c){
