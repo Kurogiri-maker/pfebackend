@@ -28,4 +28,10 @@ public class Tiers {
 
 
 
+    public boolean equals(Tiers t){
+        return this.nom.equals(t.nom) && this.siren.equals(t.siren) && this.ref_mandat.equals(t.ref_mandat);
+    }
+
+
+
 }

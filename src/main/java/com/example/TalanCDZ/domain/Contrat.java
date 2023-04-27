@@ -26,4 +26,9 @@ public class Contrat {
     private String montantPret;
 
 
+    public boolean equals(Contrat c){
+        return this.raisonSocial.equals(c.raisonSocial) && this.codeProduit.equals(c.codeProduit) && this.produit.equals(c.produit) && this.phase.equals(c.phase) && this.montantPret.equals(c.montantPret);
+    }
+
+
 }

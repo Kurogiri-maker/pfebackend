@@ -23,4 +23,8 @@ public class Dossier {
     private String n_DPS;
     private String montant_du_pres;
 
+    public boolean equals(Dossier d){
+        return this.dossier_DC.equals(d.dossier_DC) && this.listSDC.equals(d.listSDC) && this.n_DPS.equals(d.n_DPS) && this.montant_du_pres.equals(d.montant_du_pres);
+    }
+
 }
