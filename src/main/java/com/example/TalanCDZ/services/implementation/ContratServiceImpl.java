@@ -2,7 +2,10 @@ package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
+import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.helper.ContratSpecifications;
+import com.example.TalanCDZ.helper.TiersSpecifications;
 import com.example.TalanCDZ.helper.mapper.ContratMapper;
 import com.example.TalanCDZ.repositories.ContratRepository;
 import com.example.TalanCDZ.services.ContratService;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,6 +84,20 @@ public class ContratServiceImpl implements ContratService {
         } else {
             return Page.empty();
         }
+    }
+
+    @Override
+    public List<Contrat> searchContrat(String searchTerm) {
+
+            Specification<Contrat> spec = Specification.where(ContratSpecifications.codeProduitContains(searchTerm)
+                    .or(ContratSpecifications.numeroContains(searchTerm))
+                    .or(ContratSpecifications.raisonSocialContains(searchTerm))
+                    .or(ContratSpecifications.phaseContains(searchTerm))
+                    .or(ContratSpecifications.produitContains(searchTerm))
+                    .or(ContratSpecifications.montantPretContains(searchTerm)));
+
+            return contratRepo.findAll(spec);
+
     }
 
 }

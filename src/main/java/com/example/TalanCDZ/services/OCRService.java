@@ -71,33 +71,35 @@ public class OCRService {
                 Tiers t = objectMapper.readValue(json, Tiers.class);
                 List<Tiers> list = tiers.searchTiers(numero);
                 if(list.isEmpty()){
-                    tiers.save(t);
-                    map2.forEach((key, value) -> {
-                        System.out.println("Key : "+key+"\n Value : "+ value);
-                    });
+                    break;
                 }else{
                     Tiers t1 = list.get(0);
                     Boolean r = t.equals(t1);
                     return r;
                 }
-                break;
-
 
             case "Contrat":
-                break;
+                // convert JSON string to object
+                Contrat c = objectMapper.readValue(json, Contrat.class);
+                List<Contrat> listC = contrat.searchContrat(numero);
+                if(listC.isEmpty()){
+                    break;
+                }else{
+                    Contrat c1 = listC.get(0);
+                    Boolean r2 = c.equals(c1);
+                    return r2;
+                }
             case "Dossier":
                 // convert JSON string to object
                 Dossier d = objectMapper.readValue(json, Dossier.class);
                 List<Dossier> listD = dossier.searchDossiers(numero);
-                Dossier d1 = listD.get(0);
-                Boolean r1 = d.equals(d1);
-                if(r1){
-                    dossier.save(d);
-                    map2.forEach((key, value) -> {
-                        System.out.println("Key : "+key+"\n Value : "+ value);
-                    });
+                if(listD.isEmpty()){
+                    break;
+                }else{
+                    Dossier d1 = listD.get(0);
+                    Boolean r1 = d.equals(d1);
+                    return r1;
                 }
-                return r1;
 
             default:
                 return false;

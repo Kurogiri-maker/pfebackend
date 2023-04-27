@@ -137,7 +137,7 @@ public class KafkaController {
         List<String> attributes = service.getAttributes(type);
 
         // Get the attributes of the document
-        List<String> keyList = map.keySet().stream().collect(Collectors.toList());
+        List<String> keyList = map.keySet().stream().toList();
 
         // Create a new map for existing attributes
         Map<String,String> legacyAttributes = new LinkedHashMap<>();
@@ -150,8 +150,7 @@ public class KafkaController {
         // Create a new map for additional attributes
 
 
-        List<String> additionalAttributesList = new ArrayList<>();
-        additionalAttributesList.addAll(keyList);
+        List<String> additionalAttributesList = new ArrayList<>(keyList);
 
         additionalAttributesList.removeAll(attributes);
         System.out.println(additionalAttributesList);
