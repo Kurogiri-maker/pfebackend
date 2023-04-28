@@ -58,7 +58,7 @@ public class OCRService {
 
     }
 
-    public boolean searchDocument(String classe,Map<String,String> map,Map<String,String> map2) throws JsonProcessingException {
+    public Long searchDocument(String classe,Map<String,String> map) throws JsonProcessingException {
 
 
         String numero = map.get("numero");
@@ -74,8 +74,9 @@ public class OCRService {
                     break;
                 }else{
                     Tiers t1 = list.get(0);
-                    Boolean r = t.equals(t1);
-                    return r;
+                    if(t.equals(t1)){
+                        return t1.getId();
+                    }
                 }
 
             case "Contrat":
@@ -86,8 +87,9 @@ public class OCRService {
                     break;
                 }else{
                     Contrat c1 = listC.get(0);
-                    Boolean r2 = c.equals(c1);
-                    return r2;
+                    if(c.equals(c1)){
+                        return c1.getId();
+                    }
                 }
             case "Dossier":
                 // convert JSON string to object
@@ -97,15 +99,16 @@ public class OCRService {
                     break;
                 }else{
                     Dossier d1 = listD.get(0);
-                    Boolean r1 = d.equals(d1);
-                    return r1;
+                    if(d.equals(d1)){
+                        return d1.getId();
+                    }
                 }
 
             default:
-                return false;
+                return null;
         }
 
-        return false;
+        return null;
 
 
     }

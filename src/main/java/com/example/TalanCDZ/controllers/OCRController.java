@@ -16,14 +16,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @CrossOrigin("*")
 @RestController
 @Slf4j
 @AllArgsConstructor
-public class KafkaController {
+public class OCRController {
 
 
     private final WebClient webClient;
@@ -34,7 +33,7 @@ public class KafkaController {
 
 
     //Upload a document to collect its data
-    @PostMapping("/kafka/collect")
+    @PostMapping("/ocr/collect")
     public ResponseEntity<String> uploadFileForCollect(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
@@ -73,7 +72,7 @@ public class KafkaController {
 
 
     //Upload a document to get its type
-    @PostMapping("/kafka/type")
+    @PostMapping("/ocr/type")
     public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
@@ -121,7 +120,7 @@ public class KafkaController {
         return true;
     }
 
-    @PostMapping("/kafka/verify")
+    @PostMapping("/ocr/verify")
     public Response verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
 
         // Create an ObjectMapper object
@@ -166,7 +165,9 @@ public class KafkaController {
 
 
         if(keyList.containsAll(attributes)){
-            if (service.searchDocument(type,legacyAttributes,additionalAttributes)) {
+            Long id = service.searchDocument(type,legacyAttributes);
+            if (id != null) {
+                legacyAttributes.replace("id", String.valueOf(id));
                 Response response = new Response();
                 response.setType(type);
                 response.setLegacyAttributes(legacyAttributes);

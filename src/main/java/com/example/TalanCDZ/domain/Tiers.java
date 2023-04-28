@@ -20,11 +20,14 @@ public class Tiers {
     private String nom;
     private String siren;
     private String ref_mandat;
-    /*
     @OneToMany
     @JoinColumn(name = "tiers_id")
-    private List<Attribute> additional;
-    */
+    private List<AdditionalAttributesTiers> additional;
+
+
+    public boolean equals(Tiers t){
+        return this.nom.equals(t.nom) && this.siren.equals(t.siren) && this.ref_mandat.equals(t.ref_mandat);
+    }
 
 
 
