@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -25,10 +26,16 @@ public class Tiers {
     private List<AdditionalAttributesTiers> additional;
 
 
-    public boolean equals(Tiers t){
-        return this.nom.equals(t.nom) && this.siren.equals(t.siren) && this.ref_mandat.equals(t.ref_mandat);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tiers tiers = (Tiers) o;
+        return Objects.equals(numero, tiers.numero) && Objects.equals(nom, tiers.nom) && Objects.equals(siren, tiers.siren) && Objects.equals(ref_mandat, tiers.ref_mandat);
     }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero, nom, siren, ref_mandat);
+    }
 }

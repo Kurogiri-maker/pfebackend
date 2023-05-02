@@ -63,7 +63,7 @@ public class ContratControllerTest {
 
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<>(List.of("id", "numero","raisonSocial","codeProduit","produit","phase","montantPret"));
+        List<String> attributes = new ArrayList<String>(List.of("id", "numero","raisonSocial","codeProduit","produit","phase","montantPret","additional"));
 
         MvcResult result = mvc.perform(get("/api/csv/contrat/attributes"))
                 .andExpect(status().isOk())
@@ -151,7 +151,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
 
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(c);
@@ -174,7 +175,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         Contrat t2 = new Contrat(
                 2L,
                 "dfydn",
@@ -182,7 +184,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
 
         List<Contrat> content = new ArrayList<>(List.of(t1, t2));
         Page<Contrat> page = new PageImpl<>(content, PageRequest.of(0, 2), 2);
@@ -208,7 +211,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         when(service.getContrat(1L)).thenReturn(t1);
         ResponseEntity<Contrat> result = controller.getContrat(1L);
 
@@ -229,7 +233,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         when(service.getContrat(1L)).thenReturn(null);
         ResponseEntity<Contrat> result = controller.getContrat(1L);
 
@@ -251,7 +256,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         when(service.getContrat(t1.getId())).thenReturn(t1);
         ResponseEntity<Void> result = controller.deleteContrat(t1.getId());
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -266,7 +272,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         when(service.getContrat(t1.getId())).thenReturn(null);
         ResponseEntity<Void> result = controller.deleteContrat(t1.getId());
         assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
@@ -282,7 +289,8 @@ public class ContratControllerTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         ContratDTO dto = new ContratDTO();
         dto.setRaisonSocial("aaaa");
         ResponseEntity<Void> result = controller.updateTiers(1L, dto);

@@ -60,13 +60,13 @@ public class TiersControllerTest {
     @BeforeEach
     void setUp(){
 
-        controller= new TiersController(service);
+        controller= new TiersController(service,null);
     }
 
 
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<>(List.of("id","numero","nom" ,"siren","ref_mandat"));
+        List<String> attributes = new ArrayList<>(List.of("id","numero","nom" ,"siren","ref_mandat","additional"));
 
         MvcResult result = mvc.perform(get("/api/csv/tier/attributes"))
                 .andExpect(status().isOk())
@@ -151,7 +151,7 @@ public class TiersControllerTest {
 
     @Test
     void save() throws Exception {
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(t);
         MvcResult result = mvc.perform(post("/api/csv/tier").content(body).contentType(MediaType.APPLICATION_JSON))
@@ -166,8 +166,8 @@ public class TiersControllerTest {
 
     @Test
     void getAllTiers() throws Exception {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
-        Tiers t2 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t2 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi",null);
         List<Tiers> content = new ArrayList<>();
         content.add(t1);
         content.add(t2);
@@ -189,7 +189,7 @@ public class TiersControllerTest {
 
     @Test
     void getTiers() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         when(service.getTiers(1L)).thenReturn(t1);
         ResponseEntity<Tiers> result = controller.getTiers(1L);
 
@@ -203,7 +203,7 @@ public class TiersControllerTest {
 
     @Test
     void getTiersFailed() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         when(service.getTiers(1L)).thenReturn(null);
         ResponseEntity<Tiers> result = controller.getTiers(1L);
 
@@ -219,8 +219,8 @@ public class TiersControllerTest {
 
     @Test
     void searchByName() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
-        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb",null);
         List<Tiers> list = new ArrayList<>(List.of(t1,t2));
         when(service.search("iheb")).thenReturn(list);
         ResponseEntity<List<Tiers>> result = controller.searchByName("iheb");
@@ -237,8 +237,8 @@ public class TiersControllerTest {
 
     @Test
     void searchByNameFailed() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
-        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb",null);
         List<Tiers> list = new ArrayList<>(List.of(t1,t2));
         when(service.search("iheb")).thenReturn(null);
         ResponseEntity<List<Tiers>> result = controller.searchByName("iheb");
@@ -255,8 +255,8 @@ public class TiersControllerTest {
 
     @Test
     void searchTiers() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
-        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t2 = new Tiers(2L,"2","iheb",".@gmail.com","iheb",null);
         List<Tiers> list = new ArrayList<>(List.of(t1,t2));
         when(service.searchTiers("iheb",null,null)).thenReturn(list);
         ResponseEntity<List<Tiers>> result = controller.searchTiers("iheb",null,null);
@@ -270,7 +270,7 @@ public class TiersControllerTest {
 
     @Test
     void deleteTiers() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         when(service.getTiers(t1.getId())).thenReturn(t1);
         ResponseEntity<Void> result = controller.deleteTiers(t1.getId());
         assertEquals(HttpStatus.OK,result.getStatusCode());
@@ -279,7 +279,7 @@ public class TiersControllerTest {
 
     @Test
     void deleteTiersFailed() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         when(service.getTiers(t1.getId())).thenReturn(null);
         ResponseEntity<Void> result = controller.deleteTiers(t1.getId());
         assertEquals(HttpStatus.NO_CONTENT,result.getStatusCode());
@@ -288,7 +288,7 @@ public class TiersControllerTest {
 
     @Test
     void updateTiers() {
-        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif");
+        Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         TiersDTO dto = new TiersDTO();
         dto.setNom("mohamed");
         ResponseEntity<Void> result = controller.updateTiers(1L,dto);

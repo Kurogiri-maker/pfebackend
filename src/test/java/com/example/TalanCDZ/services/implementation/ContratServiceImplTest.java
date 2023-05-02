@@ -58,7 +58,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         contratService.save(contrat);
 
         ArgumentCaptor<Contrat> contratArgumentCaptor = ArgumentCaptor.forClass(Contrat.class);
@@ -80,7 +81,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
 
 
 
@@ -104,7 +106,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
 
         ContratDTO contratDTO = new ContratDTO();
         contratDTO.setRaisonSocial("3");
@@ -115,7 +118,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
 
         when(contratRepository.findById(21L)).thenReturn(Optional.of(contrat));
         when(mapper.mapNonNullFields(contratDTO,contrat)).thenReturn(contrat1);
@@ -142,7 +146,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         contratService.delete(contrat.getId());
 
         Mockito.verify(contratRepository).deleteById(contrat.getId());
@@ -168,7 +173,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl"));
+                "zqmyl",
+                null));
         expectedContrats.add( new Contrat(
                 null,
                 "dfydn",
@@ -176,7 +182,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl"));
+                "zqmyl",
+                null));
 
         // create a mock CSVHelper that returns the expected Contrat objects
         CSVHelper csvHelper = Mockito.mock(CSVHelper.class);
@@ -220,7 +227,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         Contrat contrat2= new Contrat(
                 2L,
                 "dfydn",
@@ -228,7 +236,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         List<Contrat> expectedContrats = new ArrayList<>();
         expectedContrats.add(contrat1);
         expectedContrats.add(contrat2);
@@ -256,7 +265,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         Contrat contrat2= new Contrat(
                 2L,
                 "dfydn",
@@ -264,7 +274,8 @@ class ContratServiceImplTest {
                 "ztfop",
                 "amgqv",
                 "fmkzu",
-                "zqmyl");
+                "zqmyl",
+                null);
         List<Contrat> expectedContrats = new ArrayList<>(List.of(contrat1, contrat2));
 
 

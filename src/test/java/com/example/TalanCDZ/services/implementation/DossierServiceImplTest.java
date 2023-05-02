@@ -53,7 +53,7 @@ public class DossierServiceImplTest {
 
     @Test
     void saveDossier() {
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         List<Dossier> list = new ArrayList<>();
         list.add(t);
         when(dossierRepo.save(t)).thenReturn(t);
@@ -72,11 +72,11 @@ public class DossierServiceImplTest {
 
     @Test
     void updateDossier() {
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         DossierDTO dto = new DossierDTO();
         dto.setDossier_DC("dossier2");
         Long id = 1L;
-        Dossier t1 = new Dossier(1L, "dossier2", "1", "list1", "1","10");
+        Dossier t1 = new Dossier(1L, "dossier2", "1", "list1", "1","10",null);
         when(dossierRepo.findById(id)).thenReturn(Optional.of(t));
         when(mapper.mapNonNullFields(dto, t)).thenReturn(t1);
         service.update(id, dto);
@@ -93,7 +93,7 @@ public class DossierServiceImplTest {
 
     @Test
     void deleteDossier() {
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         doNothing().when(dossierRepo).deleteById(t.getId());
         service.delete(t.getId());
         try {
@@ -145,7 +145,7 @@ public class DossierServiceImplTest {
 
     @Test
     void getDossier(){
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         when(dossierRepo.findById(1L)).thenReturn(Optional.of(t));
         Dossier t1 = service.getDossier(1L);
         assertEquals(t.getId(),t1.getId());
@@ -153,8 +153,8 @@ public class DossierServiceImplTest {
 
     @Test
     void getAllDossiers(){
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
-        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
+        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20",null);
 
 
         List<Dossier> list = new ArrayList<>();
@@ -177,7 +177,7 @@ public class DossierServiceImplTest {
 
     @Test
     void searchDossier(){
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         String dossier_DC = "iheb";
         List<Dossier> list = new ArrayList<>();
         list.add(t);
@@ -193,9 +193,9 @@ public class DossierServiceImplTest {
 
     @Test
     void searchDossierForCoverage(){
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
-        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20");
-        Dossier t2 = new Dossier(3L, "dossier3", "3", "list3", "3","30");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
+        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20",null);
+        Dossier t2 = new Dossier(3L, "dossier3", "3", "list3", "3","30",null);
         String dossier_DC = "dossier1";
         String listSDC = "list1";
         String n_DPS = "1";
@@ -216,8 +216,8 @@ public class DossierServiceImplTest {
 
     @Test
     void getAllDossiersPage(){
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10");
-        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
+        Dossier t1 = new Dossier(2L, "dossier2", "2", "list2", "2","20",null);
 
 
         List<Dossier> list = new ArrayList<>();
