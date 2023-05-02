@@ -1,4 +1,4 @@
-/*package com.example.TalanCDZ.config;
+package com.example.TalanCDZ.config;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
@@ -38,4 +38,3 @@ public class KafkaConfiguration {
         return new NewTopic("collecte", 1, (short) 1);
     }
 }
-*/
