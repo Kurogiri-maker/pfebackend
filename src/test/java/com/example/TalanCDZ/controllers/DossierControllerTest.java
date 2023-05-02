@@ -150,7 +150,7 @@ public class DossierControllerTest {
 
     @Test
     void save() throws Exception {
-        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(t);
         MvcResult result = mvc.perform(post("/api/csv/dossier").content(body).contentType(MediaType.APPLICATION_JSON))
@@ -165,8 +165,8 @@ public class DossierControllerTest {
 
     @Test
     void getAllDossiers() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
-        Dossier t2 = new Dossier(2L, "dossier2", "2", "list2", "2", "20");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
+        Dossier t2 = new Dossier(2L, "dossier2", "2", "list2", "2", "20",null);
         List<Dossier> content = new ArrayList<>();
         content.add(t1);
         content.add(t2);
@@ -186,8 +186,8 @@ public class DossierControllerTest {
 
     @Test
     void searchDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
-        Dossier t2 = new Dossier(2L, "dossier1", "2", "list2", "2", "20");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
+        Dossier t2 = new Dossier(2L, "dossier1", "2", "list2", "2", "20",null);
         List<Dossier> list = new ArrayList<>(List.of(t1, t2));
         when(service.searchDossiers("dossier1", null, null, null)).thenReturn(list);
         ResponseEntity<List<Dossier>> result = controller.searchDossier("dossier1", null, null, null);
@@ -201,7 +201,7 @@ public class DossierControllerTest {
 
     @Test
     void getDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         when(service.getDossier(1L)).thenReturn(t1);
         ResponseEntity<Dossier> result = controller.getDossier(1L);
 
@@ -215,7 +215,7 @@ public class DossierControllerTest {
 
     @Test
     void deleteDossier() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         when(service.getDossier(t1.getId())).thenReturn(t1);
         ResponseEntity<Void> result = controller.deleteDossier(t1.getId());
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -223,7 +223,7 @@ public class DossierControllerTest {
 
     @Test
     void deleteDossierFailed() {
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         when(service.getDossier(t1.getId())).thenReturn(null);
         ResponseEntity<Void> result = controller.deleteDossier(t1.getId());
         assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
@@ -233,7 +233,7 @@ public class DossierControllerTest {
     @Test
     void updateDossier() {
 
-        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10");
+        Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         DossierDTO dto = new DossierDTO();
         dto.setDossier_DC("dossier2");
         ResponseEntity<Void> result = controller.updateDossier(1L, dto);

@@ -54,7 +54,7 @@ public class TiersServiceImplTest {
 
     @Test
     void saveTiers() {
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         List<Tiers> list = new ArrayList<>();
         list.add(t);
         when(tiersRepo.save(t)).thenReturn(t);
@@ -73,11 +73,11 @@ public class TiersServiceImplTest {
 
     @Test
     void updateTiers() {
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         TiersDTO dto = new TiersDTO();
         dto.setNom("Ahmed");
         Long id = 1L;
-        Tiers t1 = new Tiers(1L, "1", "Ahmed", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t1 = new Tiers(1L, "1", "Ahmed", "iheb.cherif99@gmail.com", "cherif",null);
         when(tiersRepo.findById(id)).thenReturn(Optional.of(t));
         when(mapper.mapNonNullFields(dto, t)).thenReturn(t1);
         service.update(id, dto);
@@ -94,7 +94,7 @@ public class TiersServiceImplTest {
 
     @Test
     void deleteTiers() {
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         doNothing().when(tiersRepo).deleteById(t.getId());
         service.delete(t.getId());
         try {
@@ -147,7 +147,7 @@ public class TiersServiceImplTest {
 
     @Test
     void getTiers(){
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         when(tiersRepo.findById(1L)).thenReturn(Optional.of(t));
         Tiers t1 = service.getTiers(1L);
         assertEquals(t.getId(),t1.getId());
@@ -155,8 +155,8 @@ public class TiersServiceImplTest {
 
     @Test
     void getAllTiers(){
-        Tiers t = new Tiers(null,"1","iheb",".@gmail.com","cherif");
-        Tiers t1 = new Tiers(null,"2","ahmed",".@gmail.com","tounsi");
+        Tiers t = new Tiers(null,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t1 = new Tiers(null,"2","ahmed",".@gmail.com","tounsi",null);
 
 
         List<Tiers> list = new ArrayList<>();
@@ -177,7 +177,7 @@ public class TiersServiceImplTest {
 
     @Test
     void search(){
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         String name = "Iheb";
         List<Tiers> list = new ArrayList<>();
         list.add(t);
@@ -190,9 +190,9 @@ public class TiersServiceImplTest {
 
     @Test
     void searchTiers(){
-        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif");
-        Tiers t1 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi" );
-        Tiers t2 = new Tiers(3L,"3","ahmed","@yahoo.fr","chaari" );
+        Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
+        Tiers t1 = new Tiers(2L,"2","ahmed",".@gmail.com","tounsi",null );
+        Tiers t2 = new Tiers(3L,"3","ahmed","@yahoo.fr","chaari",null );
         String name = "Iheb";
         List<Tiers> list = new ArrayList<>(List.of(t,t1,t2));
         for (Tiers tiers : list) {
@@ -210,8 +210,8 @@ public class TiersServiceImplTest {
 
     @Test
     void getAllTiersPage(){
-        Tiers t = new Tiers(2L,"1","iheb",".@gmail.com","cherif");
-        Tiers t1 = new Tiers(1L,"2","ahmed",".@gmail.com","tounsi");
+        Tiers t = new Tiers(2L,"1","iheb",".@gmail.com","cherif",null);
+        Tiers t1 = new Tiers(1L,"2","ahmed",".@gmail.com","tounsi",null);
         List<Tiers> list = new ArrayList<>();
         list.add(t);
         list.add(t1);

@@ -29,12 +29,12 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public NewTopic typageTopic() {
-        return new NewTopic("typage", 1, (short) 1);
+    public NewTopic enrichment() {
+        return new NewTopic("enrichissement-topic", 1, (short) 1);
     }
 
     @Bean
-    public NewTopic collecteTopic() {
-        return new NewTopic("collecte", 1, (short) 1);
+    public NewTopic newAttributesTopic() {
+        return new NewTopic("new-attributes-topic", 1, (short) 1);
     }
 }

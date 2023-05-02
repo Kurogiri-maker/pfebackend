@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -33,4 +34,16 @@ public class Contrat {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contrat contrat = (Contrat) o;
+        return Objects.equals(numero, contrat.numero) && Objects.equals(raisonSocial, contrat.raisonSocial) && Objects.equals(codeProduit, contrat.codeProduit) && Objects.equals(produit, contrat.produit) && Objects.equals(phase, contrat.phase) && Objects.equals(montantPret, contrat.montantPret);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero, raisonSocial, codeProduit, produit, phase, montantPret);
+    }
 }

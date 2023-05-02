@@ -2,6 +2,7 @@ package com.example.TalanCDZ.controllers;
 
 import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
+import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.domain.ResponseMessage;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.services.ContratService;
@@ -100,6 +101,14 @@ public class ContratController {
     {
         Page<Contrat> list = fileService.getAllContrats(page, size, sortBy);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<List<Contrat>> searchDossier(
+            @RequestParam(required = false) String searchTerm
+    ){
+        List<Contrat> contrats = fileService.searchContrat(searchTerm) ;
+        return new ResponseEntity<>(contrats,HttpStatus.OK);
     }
 
 

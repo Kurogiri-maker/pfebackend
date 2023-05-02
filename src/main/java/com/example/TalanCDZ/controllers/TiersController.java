@@ -1,9 +1,11 @@
 package com.example.TalanCDZ.controllers;
 
+import com.example.TalanCDZ.DTO.AdditionalAttributesDTO;
 import com.example.TalanCDZ.domain.ResponseMessage;
 import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.DTO.TiersDTO;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.services.TiersService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -27,6 +30,8 @@ public class TiersController {
 
     @Autowired
     private final TiersService fileService;
+
+    private final TopicProducer producer;
 
 
     // Get attributes
@@ -158,6 +163,12 @@ public class TiersController {
     public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
         fileService.update(id,tiersDTO);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/attributes")
+    public ResponseEntity<Void> addAttributes(@RequestBody List<String> attributes){
+        producer.sendNewAttributes(attributes);
+        return ResponseEntity.ok().build();
     }
 
 }
