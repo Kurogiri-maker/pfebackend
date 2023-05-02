@@ -22,7 +22,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class TiersServiceImpl implements TiersService {
 
     @Autowired
