@@ -60,7 +60,8 @@ public class CSVHelper {
                         csvRecord.get("codeProduit"),
                         csvRecord.get("produit"),
                         csvRecord.get("phase"),
-                        csvRecord.get("montantPret")
+                        csvRecord.get("montantPret"),
+                        null
                 );
 
                 contrats.add(contrat);
@@ -87,7 +88,8 @@ public class CSVHelper {
                         csvRecord.get("Numero"),
                         csvRecord.get("nom"),
                         csvRecord.get("siren"),
-                        csvRecord.get("ref_mandat")
+                        csvRecord.get("ref_mandat"),
+                        null
                 );
 
                 tiers.add(tier);
@@ -116,7 +118,8 @@ public class CSVHelper {
                         csvRecord.get("Numero"),
                         csvRecord.get("ListSDC"),
                         csvRecord.get("N_DPS"),
-                        csvRecord.get("Montant_du_pres")
+                        csvRecord.get("Montant_du_pres"),
+                        null
                 );
 
                 dossiers.add(dossier);
