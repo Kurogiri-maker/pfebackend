@@ -22,6 +22,7 @@ import java.util.*;
 @RestController
 @Slf4j
 @AllArgsConstructor
+@RequestMapping("/api")
 public class OCRController {
 
 
