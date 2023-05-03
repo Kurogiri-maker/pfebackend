@@ -52,6 +52,7 @@ public class OCRService {
             for (Field field: fields){
                 attributes.add(field.getName());
             }
+            attributes.remove(attributes.size()-1);
             return attributes;
         }
         return null;
