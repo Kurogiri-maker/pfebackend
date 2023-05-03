@@ -21,9 +21,8 @@ public class Tiers {
     private String nom;
     private String siren;
     private String ref_mandat;
-    @OneToMany
-    @JoinColumn(name = "tiers_id")
-    private List<AdditionalAttributesTiers> additional;
+    @OneToMany(mappedBy = "tiers")
+    private List<AdditionalAttributesTiers> additionalAttributesTiersList;
 
 
     @Override

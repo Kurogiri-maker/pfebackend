@@ -23,8 +23,7 @@ public class Contrat {
     private String produit;
     private String phase;
     private String montantPret;
-    @OneToMany
-    @JoinColumn(name = "contrat_id")
+    @OneToMany(mappedBy = "contrat")
     private List<AdditionalAttributesContrat> additional;
 
 

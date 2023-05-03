@@ -22,8 +22,7 @@ public class Dossier {
     private String listSDC;
     private String n_DPS;
     private String montant_du_pres;
-    @OneToMany
-    @JoinColumn(name = "dossier_id")
+    @OneToMany(mappedBy = "dossier")
     private List<AdditionalAttributesDossier> additional;
 
     @Override
