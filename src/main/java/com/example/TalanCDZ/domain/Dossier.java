@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,8 +23,8 @@ public class Dossier {
     private String listSDC;
     private String n_DPS;
     private String montant_du_pres;
-    @OneToMany(mappedBy = "dossier")
-    private List<AdditionalAttributesDossier> additional;
+    @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<AdditionalAttributesDossier> additionalAttributesDossierSet;
 
     @Override
     public boolean equals(Object o) {

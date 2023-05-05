@@ -1,10 +1,7 @@
 package com.example.TalanCDZ.helper;
 
 
-import com.example.TalanCDZ.domain.AdditionalAttributesContrat;
-import com.example.TalanCDZ.domain.AdditionalAttributesResponse;
-import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
-import com.example.TalanCDZ.domain.Tiers;
+import com.example.TalanCDZ.domain.*;
 import com.example.TalanCDZ.services.ContratService;
 import com.example.TalanCDZ.services.DossierService;
 import com.example.TalanCDZ.services.TiersService;
@@ -85,16 +82,6 @@ public class TopicListener {
         );
         switch (dto.getType()) {
             case "Tiers":
-                /*if (tiersService.findByNumero(dto.getNumero()).isPresent()) {
-                    Tiers tiers = tiersService.findByNumero(dto.getNumero()).get();
-                    tiers.addAdditionalAttributesTiers(AdditionalAttributesTiers.builder()
-                            .cle(dto.getAttributeName())
-                            .valeur(dto.getAttributeValue())
-                            .tiers(tiers)
-                            .build());
-                    tiersService.save(tiers);
-                    LOGGER.info(String.format("Tiers %s updated \n new value %s", dto.getNumero(), tiers));
-                }*/
                 if (tiersService.findByNumero(dto.getNumero()).isPresent()) {
                     Tiers tiers = tiersService.findByNumero(dto.getNumero()).get();
                     Tiers result = new Tiers();
@@ -103,7 +90,7 @@ public class TopicListener {
                     result.setNom(tiers.getNom());
                     result.setSiren(tiers.getSiren());
                     result.setRef_mandat(tiers.getRef_mandat());
-                    result.getAdditionalAttributesTiersList().add(AdditionalAttributesTiers.builder()
+                    result.getAdditionalAttributesTiersSet().add(AdditionalAttributesTiers.builder()
                             .cle(dto.getAttributeName())
                             .valeur(dto.getAttributeValue())
                             .tiers(result)
@@ -117,17 +104,50 @@ public class TopicListener {
                 break;
             case "Contrat":
                 LOGGER.info("Contrat");
-                /*if (contratService.findByNumero(dto.getNumero()).isPresent()) {
-                    ContratService contrat = contratService.findByNumero(dto.getNumero()).get();
-                    contrat.addAdditionalAttributesContrat(AdditionalAttributesContrat.builder()
+                if (contratService.findByNumero(dto.getNumero()).isPresent()) {
+                    Contrat contrat = contratService.findByNumero(dto.getNumero()).get();
+                    Contrat result = new Contrat();
+                    result.setId(contrat.getId());
+                    result.setNumero(contrat.getNumero());
+                    result.setRaisonSocial(contrat.getRaisonSocial());
+                    result.setCodeProduit(contrat.getCodeProduit());
+                    result.setProduit(contrat.getProduit());
+                    result.setPhase(contrat.getPhase());
+                    result.setMontantPret(contrat.getMontantPret());
+                    result.getAdditionalAttributesContratSet().add(AdditionalAttributesContrat.builder()
                             .cle(dto.getAttributeName())
                             .valeur(dto.getAttributeValue())
+                            .contrat(result)
                             .build());
-                    tiersService.save(tiers);*/
+                    contratService.save(result);
+                    LOGGER.info(String.format("""
+                            //////////////
+                            Contrat %s updated\s
+                             new value %s""", dto.getNumero(), contratService.findByNumero(dto.getNumero()).get().toString()));
+                }
                 break;
             case "Dossier":
                 LOGGER.info("Dossier");
-                break;
+                if (dossierService.findByNumero(dto.getNumero()).isPresent()) {
+                    Dossier dossier = dossierService.findByNumero(dto.getNumero()).get();
+                    Dossier result = new Dossier();
+                    result.setId(dossier.getId());
+                    result.setNumero(dossier.getNumero());
+                    result.setDossier_DC(dossier.getDossier_DC());
+                    result.setListSDC(dossier.getListSDC());
+                    result.setN_DPS(dossier.getN_DPS());
+                    result.setMontant_du_pres(dossier.getMontant_du_pres());
+                    result.getAdditionalAttributesDossierSet().add(AdditionalAttributesDossier.builder()
+                            .cle(dto.getAttributeName())
+                            .valeur(dto.getAttributeValue())
+                            .dossier(result)
+                            .build());
+                    dossierService.save(result);
+                    LOGGER.info(String.format("""
+                            //////////////
+                            Dossier %s updated\s
+                             new value %s""", dto.getNumero(), dossierService.findByNumero(dto.getNumero()).get().toString()));
+                }
             default:
                 LOGGER.info("default");
                 break;

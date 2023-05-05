@@ -23,7 +23,7 @@ public class Tiers {
     private String siren;
     private String ref_mandat;
     @OneToMany(mappedBy = "tiers", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<AdditionalAttributesTiers> additionalAttributesTiersList = new HashSet<>();
+    private Set<AdditionalAttributesTiers> additionalAttributesTiersSet = new HashSet<>();
 
 
     @Override
@@ -47,7 +47,7 @@ public class Tiers {
                 ", nom='" + nom + '\'' +
                 ", siren='" + siren + '\'' +
                 ", ref_mandat='" + ref_mandat + '\'' +
-                ", additionalAttributesTiersList=" + additionalAttributesTiersList +
+                ", additionalAttributesTiersList=" + additionalAttributesTiersSet +
                 '}';
     }
 

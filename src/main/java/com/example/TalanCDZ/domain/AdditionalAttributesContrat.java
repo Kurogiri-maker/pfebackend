@@ -1,5 +1,6 @@
 package com.example.TalanCDZ.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,16 @@ public class AdditionalAttributesContrat {
     private String cle;
     private String valeur;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "contrat_id")
     private Contrat contrat;
 
+    @Override
+    public String toString() {
+        return "AdditionalAttributesContrat{" +
+                "id=" + id +
+                ", cle='" + cle + '\'' +
+                ", valeur='" + valeur + '\'' +
+                '}';
+    }
 }
