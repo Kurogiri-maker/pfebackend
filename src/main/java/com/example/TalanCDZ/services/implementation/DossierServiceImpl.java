@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -114,6 +115,11 @@ public class DossierServiceImpl implements DossierService {
         } else {
             return Page.empty();
         }
+    }
+
+    @Override
+    public Optional<Dossier> findByNumero(String numero) {
+        return dosRepo.findByNumero(numero);
     }
 
 }

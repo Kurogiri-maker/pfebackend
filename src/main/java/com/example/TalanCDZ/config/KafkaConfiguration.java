@@ -37,4 +37,10 @@ public class KafkaConfiguration {
     public NewTopic newAttributesTopic() {
         return new NewTopic("new-attributes-topic", 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic enrichmentTopic() {
+        return new NewTopic("enrichissement", 1, (short) 1);
+    }
+
 }

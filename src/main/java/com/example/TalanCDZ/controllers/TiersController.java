@@ -23,7 +23,7 @@ import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/csv/tier")
+@RequestMapping("/api/csv/tiers")
 @AllArgsConstructor
 @Slf4j
 public class TiersController {
@@ -31,7 +31,7 @@ public class TiersController {
     @Autowired
     private final TiersService fileService;
 
-    private final TopicProducer producer;
+
 
 
     // Get attributes
@@ -165,11 +165,6 @@ public class TiersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/attributes")
-    public ResponseEntity<Void> addAttributes(@RequestBody List<String> attributes){
-        producer.sendNewAttributes(attributes);
-        return ResponseEntity.ok().build();
-    }
 
 }
 

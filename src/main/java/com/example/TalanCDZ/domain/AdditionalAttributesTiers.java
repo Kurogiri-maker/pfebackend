@@ -1,6 +1,8 @@
 package com.example.TalanCDZ.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AdditionalAttributesTiers {
 
     @Id
@@ -18,7 +21,16 @@ public class AdditionalAttributesTiers {
     private String cle;
     private String valeur;
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "tiers_id")
+    @JsonIgnore
+    @JoinColumn(name = "tiers_id")
     private Tiers tiers;
 
+    @Override
+    public String toString() {
+        return "AdditionalAttributesTiers{" +
+                "id=" + id +
+                ", cle='" + cle + '\'' +
+                ", valeur='" + valeur + '\'' +
+                '}';
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.TalanCDZ.helper;
 
+import com.example.TalanCDZ.domain.AdditionalAttributesRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +18,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TopicProducer {
 
@@ -27,9 +30,11 @@ public class TopicProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendNewAttributes(List<String> newAttributes) {
+    public void sendNewAttributes(List<AdditionalAttributesRequest> newAttributes) {
         newAttributes.forEach(newAttribute -> {
-            kafkaTemplate.send(newAttributesTopic.name(), newAttribute);
+            kafkaTemplate.send(newAttributesTopic.name(), newAttribute.toString());
+            log.info("send attribute : {}  to OCR", newAttribute);
+
         });
 
     }

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -116,5 +117,10 @@ public class TiersServiceImpl implements TiersService {
         } else {
             return Page.empty();
         }
+    }
+
+    @Override
+    public Optional<Tiers> findByNumero(String numero) {
+        return tiersRepo.findByNumero(numero);
     }
 }

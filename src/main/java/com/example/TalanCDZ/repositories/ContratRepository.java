@@ -8,8 +8,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.Optional;
+
 public interface ContratRepository extends JpaRepository<Contrat, Long> , JpaSpecificationExecutor<Contrat> {
 
     Page<Contrat> findAll(Pageable pageable);
+    Optional<Contrat> findByNumero(String numero);
 
 }
