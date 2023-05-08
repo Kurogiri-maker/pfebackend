@@ -42,7 +42,10 @@ public class AdditionalAttributesDossierServiceImpl implements AdditionalAttribu
     }
 
     @Override
-    public void update(Long id) {
+    public void update(Long id) {}
 
+    @Override
+    public List<String> getDistinctAttributeCle() {
+        return repo.findDistinctCle();
     }
 }

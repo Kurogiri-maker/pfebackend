@@ -17,5 +17,7 @@ public interface AdditionalAttributesTiersService {
 
     void update(Long id);
 
+    List<String> getDistinctAttributeCle();
+
 
 }

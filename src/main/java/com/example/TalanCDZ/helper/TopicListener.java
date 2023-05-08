@@ -6,7 +6,6 @@ import com.example.TalanCDZ.services.ContratService;
 import com.example.TalanCDZ.services.DossierService;
 import com.example.TalanCDZ.services.TiersService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -89,8 +85,8 @@ public class TopicListener {
                     result.setNumero(tiers.getNumero());
                     result.setNom(tiers.getNom());
                     result.setSiren(tiers.getSiren());
-                    result.setRef_mandat(tiers.getRef_mandat());
-                    result.getAdditionalAttributesTiersSet().add(AdditionalAttributesTiers.builder()
+                    result.setRefMandat(tiers.getRefMandat());
+                    result.getAdditionalAttributesSet().add(AdditionalAttributesTiers.builder()
                             .cle(dto.getAttributeName())
                             .valeur(dto.getAttributeValue())
                             .tiers(result)
@@ -114,7 +110,7 @@ public class TopicListener {
                     result.setProduit(contrat.getProduit());
                     result.setPhase(contrat.getPhase());
                     result.setMontantPret(contrat.getMontantPret());
-                    result.getAdditionalAttributesContratSet().add(AdditionalAttributesContrat.builder()
+                    result.getAdditionalAttributesSet().add(AdditionalAttributesContrat.builder()
                             .cle(dto.getAttributeName())
                             .valeur(dto.getAttributeValue())
                             .contrat(result)
@@ -133,11 +129,11 @@ public class TopicListener {
                     Dossier result = new Dossier();
                     result.setId(dossier.getId());
                     result.setNumero(dossier.getNumero());
-                    result.setDossier_DC(dossier.getDossier_DC());
+                    result.setDossierDC(dossier.getDossierDC());
                     result.setListSDC(dossier.getListSDC());
                     result.setN_DPS(dossier.getN_DPS());
                     result.setMontant_du_pres(dossier.getMontant_du_pres());
-                    result.getAdditionalAttributesDossierSet().add(AdditionalAttributesDossier.builder()
+                    result.getAdditionalAttributesSet().add(AdditionalAttributesDossier.builder()
                             .cle(dto.getAttributeName())
                             .valeur(dto.getAttributeValue())
                             .dossier(result)

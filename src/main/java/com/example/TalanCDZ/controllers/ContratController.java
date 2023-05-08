@@ -5,6 +5,8 @@ import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.domain.ResponseMessage;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.services.AdditionalAttributesContratService;
+import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.ContratService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,10 @@ public class ContratController {
     @Autowired
     private final ContratService fileService;
 
+    @Autowired
+    private final AdditionalAttributesContratService service;
+
+
     @GetMapping("/attributes")
     public ResponseEntity<?> getMetadata(){
         Class<?> clazz = Contrat.class;
@@ -38,6 +44,8 @@ public class ContratController {
         for (Field field: fields){
             attributes.add(field.getName());
         }
+        attributes.remove(attributes.size()-1);
+        attributes.addAll(service.getDistinctAttributeCle());
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 

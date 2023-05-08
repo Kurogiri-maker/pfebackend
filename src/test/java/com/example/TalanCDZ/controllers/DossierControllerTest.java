@@ -3,6 +3,7 @@ package com.example.TalanCDZ.controllers;
 import com.example.TalanCDZ.DTO.DossierDTO;
 import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.domain.ResponseMessage;
+import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.DossierService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,9 +52,12 @@ public class DossierControllerTest {
     private static final Logger logger = LoggerFactory.getLogger(DossierControllerTest.class);
 
     private DossierController controller;
+    private AdditionalAttributesDossierService additionalAttributesDossierService;
 
     @Mock
     private DossierService service;
+
+
 
     @Autowired
     private MockMvc mvc;
@@ -61,7 +65,7 @@ public class DossierControllerTest {
     @BeforeEach
     void setUp() {
 
-        controller = new DossierController(service);
+        controller = new DossierController(service, additionalAttributesDossierService);
     }
 
     @Test
@@ -235,7 +239,7 @@ public class DossierControllerTest {
 
         Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         DossierDTO dto = new DossierDTO();
-        dto.setDossier_DC("dossier2");
+        dto.setDossierDC("dossier2");
         ResponseEntity<Void> result = controller.updateDossier(1L, dto);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }

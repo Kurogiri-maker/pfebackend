@@ -21,9 +21,9 @@ public class Tiers {
     private String numero;
     private String nom;
     private String siren;
-    private String ref_mandat;
+    private String refMandat;
     @OneToMany(mappedBy = "tiers", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<AdditionalAttributesTiers> additionalAttributesTiersSet = new HashSet<>();
+    private Set<AdditionalAttributesTiers> additionalAttributesSet = new HashSet<>();
 
 
     @Override
@@ -31,12 +31,12 @@ public class Tiers {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tiers tiers = (Tiers) o;
-        return Objects.equals(numero, tiers.numero) && Objects.equals(nom, tiers.nom) && Objects.equals(siren, tiers.siren) && Objects.equals(ref_mandat, tiers.ref_mandat);
+        return Objects.equals(numero, tiers.numero) && Objects.equals(nom, tiers.nom) && Objects.equals(siren, tiers.siren) && Objects.equals(refMandat, tiers.refMandat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numero, nom, siren, ref_mandat);
+        return Objects.hash(numero, nom, siren, refMandat);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Tiers {
                 ", numero='" + numero + '\'' +
                 ", nom='" + nom + '\'' +
                 ", siren='" + siren + '\'' +
-                ", ref_mandat='" + ref_mandat + '\'' +
-                ", additionalAttributesTiersList=" + additionalAttributesTiersSet +
+                ", ref_mandat='" + refMandat + '\'' +
+                ", additionalAttributesTiersList=" + additionalAttributesSet +
                 '}';
     }
 

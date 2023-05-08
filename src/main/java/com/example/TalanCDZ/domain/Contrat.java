@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class Contrat {
     private String phase;
     private String montantPret;
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<AdditionalAttributesContrat> additionalAttributesContratSet = new HashSet<>();
+    private Set<AdditionalAttributesContrat> additionalAttributesSet = new HashSet<>();
 
 
     @Override
@@ -39,7 +38,7 @@ public class Contrat {
                 ", produit='" + produit + '\'' +
                 ", phase='" + phase + '\'' +
                 ", montantPret='" + montantPret + '\'' +
-                ", additionalAttributesContratSet=" + additionalAttributesContratSet +
+                ", additionalAttributesSet=" + additionalAttributesSet +
                 '}';
     }
 

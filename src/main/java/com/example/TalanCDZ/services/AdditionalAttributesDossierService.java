@@ -16,4 +16,7 @@ public interface AdditionalAttributesDossierService {
     void delete(Long id);
 
     void update(Long id);
+
+
+    List<String> getDistinctAttributeCle();
 }

@@ -121,7 +121,7 @@ public class TiersServiceImplTest {
         assertEquals(2,result.size());
         String content="Numero,nom,siren,ref_mandat\n";
         for (Tiers tiers : result) {
-            content += tiers.getNumero() + "," + tiers.getNom() + "," + tiers.getSiren() + "," + tiers.getRef_mandat() + "\n";
+            content += tiers.getNumero() + "," + tiers.getNom() + "," + tiers.getSiren() + "," + tiers.getRefMandat() + "\n";
         }
         assertEquals(csvContent, content);
     }
@@ -170,7 +170,7 @@ public class TiersServiceImplTest {
         assertNotNull(t2);
         assertNotNull(t3);
         assertEquals(t2.getNom(),t.getNom());
-        assertEquals(t3.getRef_mandat(),t1.getRef_mandat());
+        assertEquals(t3.getRefMandat(),t1.getRefMandat());
         assertEquals(list.size(),result.size());
     }
 

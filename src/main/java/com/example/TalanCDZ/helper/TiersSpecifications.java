@@ -16,7 +16,7 @@ public class TiersSpecifications {
         return (root,query,builder) -> builder.like(builder.lower(root.get("siren")), siren );
     }
 
-    public static Specification<Tiers> refMandatContains(String ref_mandat) {
-        return (root,query,builder) -> builder.like(builder.lower(root.get("ref_mandat")), ref_mandat );
+    public static Specification<Tiers> refMandatContains(String refMandat) {
+        return (root,query,builder) -> builder.like(builder.lower(root.get("refMandat")), refMandat );
     }
 }

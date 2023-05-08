@@ -4,6 +4,7 @@ import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 import com.example.TalanCDZ.repositories.AdditionalAttributesTiersRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AdditionalAttributesTiersServiceImpl implements AdditionalAttributesTiersService {
 
-    private final AdditionalAttributesTiersRepository repo;
+    @Autowired
+    private  AdditionalAttributesTiersRepository repo;
 
     @Override
     public AdditionalAttributesTiers save(AdditionalAttributesTiers t) {
@@ -44,6 +46,11 @@ public class AdditionalAttributesTiersServiceImpl implements AdditionalAttribute
     @Override
     public void update(Long id) {
 
+    }
+
+    @Override
+    public List<String> getDistinctAttributeCle() {
+        return repo.findDistinctCle();
     }
 }
 
