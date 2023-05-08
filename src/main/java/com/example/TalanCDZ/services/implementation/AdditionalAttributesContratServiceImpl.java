@@ -46,4 +46,9 @@ public class AdditionalAttributesContratServiceImpl implements AdditionalAttribu
     public void update(Long id) {
 
     }
+
+    @Override
+    public List<String> getDistinctAttributeCle() {
+        return repo.findDistinctCle();
+    }
 }

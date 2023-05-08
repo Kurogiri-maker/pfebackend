@@ -6,6 +6,7 @@ import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.DTO.TiersDTO;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.TopicProducer;
+import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
 import com.example.TalanCDZ.services.TiersService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/csv/tier")
+@RequestMapping("/api/csv/tiers")
 @AllArgsConstructor
 @Slf4j
 public class TiersController {
@@ -31,7 +32,8 @@ public class TiersController {
     @Autowired
     private final TiersService fileService;
 
-    private final TopicProducer producer;
+    @Autowired
+    private final AdditionalAttributesTiersService service;
 
 
     // Get attributes
@@ -43,6 +45,8 @@ public class TiersController {
         for (Field field: fields){
             attributes.add(field.getName());
         }
+        attributes.remove(attributes.size()-1);
+        attributes.addAll(service.getDistinctAttributeCle());
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 
@@ -165,11 +169,6 @@ public class TiersController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/attributes")
-    public ResponseEntity<Void> addAttributes(@RequestBody List<String> attributes){
-        producer.sendNewAttributes(attributes);
-        return ResponseEntity.ok().build();
-    }
 
 }
 

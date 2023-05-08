@@ -74,7 +74,7 @@ public class DossierServiceImplTest {
     void updateDossier() {
         Dossier t = new Dossier(1L, "dossier1", "1", "list1", "1","10",null);
         DossierDTO dto = new DossierDTO();
-        dto.setDossier_DC("dossier2");
+        dto.setDossierDC("dossier2");
         Long id = 1L;
         Dossier t1 = new Dossier(1L, "dossier2", "1", "list1", "1","10",null);
         when(dossierRepo.findById(id)).thenReturn(Optional.of(t));
@@ -85,8 +85,8 @@ public class DossierServiceImplTest {
         Dossier result = arg.getValue();
 
 
-        assertEquals("dossier2", result.getDossier_DC());
-        log.info("Expected : dossier2" + "Result : " + result.getDossier_DC());
+        assertEquals("dossier2", result.getDossierDC());
+        log.info("Expected : dossier2" + "Result : " + result.getDossierDC());
 
     }
 
@@ -120,7 +120,7 @@ public class DossierServiceImplTest {
         assertEquals(2,result.size());
         String content="dossier_DC,Numero,ListSDC,N_DPS,Montant_du_pres\n";
         for (Dossier d : result) {
-            content += d.getDossier_DC()+","+d.getNumero() + "," + d.getListSDC() + "," + d.getN_DPS() + "," + d.getMontant_du_pres() + "\n";
+            content += d.getDossierDC()+","+d.getNumero() + "," + d.getListSDC() + "," + d.getN_DPS() + "," + d.getMontant_du_pres() + "\n";
         }
         assertEquals(csvContent, content);
     }
@@ -167,7 +167,7 @@ public class DossierServiceImplTest {
         Dossier t3 = result.get(1);
         assertNotNull(t2);
         assertNotNull(t3);
-        assertEquals(t2.getDossier_DC(),t.getDossier_DC());
+        assertEquals(t2.getDossierDC(),t.getDossierDC());
         assertEquals(t3.getMontant_du_pres(),t1.getMontant_du_pres());
         assertEquals(list.size(),result.size());
     }
@@ -186,8 +186,8 @@ public class DossierServiceImplTest {
         List<Dossier>  result = service.searchDossiers(dossier_DC,null,null,null);
         log.info("Expected : "+ list.size() + "\n Result : "+ result.size());
         assertEquals(list.size(),result.size());
-        log.info("Expected : "+ list.get(0).getDossier_DC() + "\n Result : "+ result.get(0).getDossier_DC());
-        assertEquals(list.get(0).getDossier_DC(),result.get(0).getDossier_DC());
+        log.info("Expected : "+ list.get(0).getDossierDC() + "\n Result : "+ result.get(0).getDossierDC());
+        assertEquals(list.get(0).getDossierDC(),result.get(0).getDossierDC());
 
     }
 

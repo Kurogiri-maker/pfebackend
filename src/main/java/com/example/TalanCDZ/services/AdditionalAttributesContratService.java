@@ -15,4 +15,7 @@ public interface AdditionalAttributesContratService {
     void delete(Long id);
 
     void update(Long id);
+
+
+    List<String> getDistinctAttributeCle();
 }

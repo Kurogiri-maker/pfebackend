@@ -1,8 +1,10 @@
 package com.example.TalanCDZ.controllers;
 
 import com.example.TalanCDZ.DTO.TiersDTO;
+import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 import com.example.TalanCDZ.domain.ResponseMessage;
 import com.example.TalanCDZ.domain.Tiers;
+import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
 import com.example.TalanCDZ.services.TiersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -48,6 +50,8 @@ public class TiersControllerTest {
 
     private TiersController controller;
 
+    private AdditionalAttributesTiersService serviceAdd;
+
     @Mock
     private TiersService service;
 
@@ -60,7 +64,7 @@ public class TiersControllerTest {
     @BeforeEach
     void setUp(){
 
-        controller= new TiersController(service,null);
+        controller= new TiersController(service,serviceAdd);
     }
 
 

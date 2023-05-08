@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DossierService {
     void saveFile(MultipartFile file);
@@ -25,6 +26,8 @@ public interface DossierService {
     List<Dossier> searchDossiers(String searchTerm);
 
     public Page<Dossier> getAllDossiers(Integer pageNo, Integer pageSize, String sortBy);
+
+    Optional<Dossier> findByNumero(String numero);
 
 
 }

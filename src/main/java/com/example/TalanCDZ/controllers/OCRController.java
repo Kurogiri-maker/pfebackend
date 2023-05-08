@@ -1,6 +1,8 @@
 package com.example.TalanCDZ.controllers;
 
+import com.example.TalanCDZ.domain.AdditionalAttributesRequest;
 import com.example.TalanCDZ.domain.Response;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.example.TalanCDZ.domain.KafkaResponse;
@@ -22,7 +24,7 @@ import java.util.*;
 @RestController
 @Slf4j
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/ocr")
 public class OCRController {
 
 
@@ -30,11 +32,12 @@ public class OCRController {
 
     private final OCRService service;
 
+    private final TopicProducer producer;
     //private final TopicListener topicListener;
 
 
     //Upload a document to collect its data
-    @PostMapping("/ocr/collect")
+    @PostMapping("/collect")
     public ResponseEntity<String> uploadFileForCollect(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
@@ -73,7 +76,7 @@ public class OCRController {
 
 
     //Upload a document to get its type
-    @PostMapping("/ocr/type")
+    @PostMapping("/type")
     public ResponseEntity<String> uploadFileForTypage(@RequestParam("file") MultipartFile file) {
 
         byte[] fileContent;
@@ -121,7 +124,7 @@ public class OCRController {
         return true;
     }
 
-    @PostMapping("/ocr/verify")
+    @PostMapping("/verify")
     public Response verifyCoherence(@RequestBody String doc) throws JsonProcessingException {
 
         // Create an ObjectMapper object
@@ -188,6 +191,12 @@ public class OCRController {
         response.setMessage("Le fichier n'est pas cohérent");
         return response;
 
+    }
+
+    @PostMapping("/attributes")
+    public ResponseEntity<Void> addAttributes(@RequestBody List<AdditionalAttributesRequest> attributes){
+        producer.sendNewAttributes(attributes);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,26 +17,25 @@ public class Dossier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String dossier_DC;
+    private String dossierDC;
     private String numero;
     private String listSDC;
     private String n_DPS;
     private String montant_du_pres;
-    @OneToMany
-    @JoinColumn(name = "dossier_id")
-    private List<AdditionalAttributesDossier> additional;
+    @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<AdditionalAttributesDossier> additionalAttributesSet;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dossier dossier = (Dossier) o;
-        return Objects.equals(dossier_DC, dossier.dossier_DC) && Objects.equals(numero, dossier.numero) && Objects.equals(listSDC, dossier.listSDC) && Objects.equals(n_DPS, dossier.n_DPS) && Objects.equals(montant_du_pres, dossier.montant_du_pres);
+        return Objects.equals(dossierDC, dossier.dossierDC) && Objects.equals(numero, dossier.numero) && Objects.equals(listSDC, dossier.listSDC) && Objects.equals(n_DPS, dossier.n_DPS) && Objects.equals(montant_du_pres, dossier.montant_du_pres);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dossier_DC, numero, listSDC, n_DPS, montant_du_pres);
+        return Objects.hash(dossierDC, numero, listSDC, n_DPS, montant_du_pres);
     }
 
 

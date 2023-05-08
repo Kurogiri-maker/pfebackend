@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TiersService {
 
@@ -28,6 +29,8 @@ public interface TiersService {
     List<Tiers>  search(String nom);
 
     List<Tiers> searchTiers(String nom , String siren , String ref_mandat);
+
+    Optional<Tiers> findByNumero(String numero);
 
     //List<Tiers> searchTiers(String searchTerm);
 }

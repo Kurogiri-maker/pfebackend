@@ -3,6 +3,7 @@ package com.example.TalanCDZ.controllers;
 import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.domain.ResponseMessage;
+import com.example.TalanCDZ.services.AdditionalAttributesContratService;
 import com.example.TalanCDZ.services.ContratService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -49,6 +50,8 @@ public class ContratControllerTest {
 
     private ContratController controller;
 
+    private AdditionalAttributesContratService additionalAttributesContratService;
+
     @Mock
     private ContratService service;
 
@@ -58,7 +61,7 @@ public class ContratControllerTest {
     @BeforeEach
     void setUp() {
 
-        controller = new ContratController(service);
+        controller = new ContratController(service, additionalAttributesContratService);
     }
 
     @Test

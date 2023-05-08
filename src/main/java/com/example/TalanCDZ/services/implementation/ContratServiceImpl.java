@@ -1,6 +1,7 @@
 package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.ContratDTO;
+import com.example.TalanCDZ.domain.AdditionalAttributesContrat;
 import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -99,5 +101,12 @@ public class ContratServiceImpl implements ContratService {
             return contratRepo.findAll(spec);
 
     }
+
+    @Override
+    public Optional<Contrat> findByNumero(String numero) {
+        return contratRepo.findByNumero(numero);
+    }
+
+
 
 }
