@@ -141,8 +141,9 @@ public class ContratController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody ContratDTO contratDTO){
-        fileService.update(id,contratDTO);
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody Contrat contrat){
+
+        fileService.update(id,contrat);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

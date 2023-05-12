@@ -1,5 +1,6 @@
 package com.example.TalanCDZ.services;
 
+import com.example.TalanCDZ.DTO.AdditionalAttributesDTO;
 import com.example.TalanCDZ.DTO.TiersDTO;
 import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 
@@ -15,7 +16,7 @@ public interface AdditionalAttributesTiersService {
 
     void delete(Long id);
 
-    void update(Long id);
+    void update(Long id, AdditionalAttributesTiers dto);
 
     List<String> getDistinctAttributeCle();
 

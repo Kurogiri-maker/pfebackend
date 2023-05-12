@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Spring Boot app
+  web:
+    build: ./web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/myapp?useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  # Angular app
+  client:
+    build: ./client
+    ports:
+      - "4200:4200"
+
+  # MySQL
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myapp
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # Jenkins
+  jenkins:
+    image: jenkins/jenkins:lts
+    restart: always
+    ports:
+      - "8081:8080"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  # Grafana
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+
+  # SonarQube
+  sonarqube:
+    image: sonarqube
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonar
+      SONARQUBE_JDBC_URL: jdbc:mysql://db:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
+    ports:
+      - "9000:9000"
+
+  # Datadog
+  datadog:
+    image: datadog/agent:7
+    environment:
+      - DD_API_KEY=<DATADOG_API_KEY>
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_PROCESS_AGENT_ENABLED=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+  db_data:
+  jenkins_data:
+  grafana_data:

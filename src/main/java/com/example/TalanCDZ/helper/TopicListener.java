@@ -25,8 +25,6 @@ public class TopicListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TopicListener.class);
 
-    @Value("${topic.name.consumer}")
-    private String topicName;
 
     @Autowired
     private NewTopic enrichmentTopic;

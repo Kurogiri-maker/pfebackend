@@ -9,7 +9,11 @@ import com.example.TalanCDZ.domain.KafkaResponse;
 import com.example.TalanCDZ.services.OCRService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +27,26 @@ import java.util.*;
 @CrossOrigin("*")
 @RestController
 @Slf4j
-@AllArgsConstructor
+@NoArgsConstructor
 @RequestMapping("/api/ocr")
 public class OCRController {
 
+    @Autowired
+    private WebClient webClient;
 
-    private final WebClient webClient;
+    @Autowired
+    private OCRService service;
 
-    private final OCRService service;
-
-    private final TopicProducer producer;
+    @Autowired
+    private TopicProducer producer;
     //private final TopicListener topicListener;
+
+    @Value("${ocr.port}")
+    private String PORT;
+
+    @Value("${ocr.url}")
+    private String URL;
+
 
 
     //Upload a document to collect its data
@@ -55,8 +68,9 @@ public class OCRController {
             String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
 
             // Make POST request using WebClient
+            String ocrUrl = URL+":"+PORT;
             WebClient.ResponseSpec responseSpec = webClient.post()
-                    .uri("http://localhost:8080/collect")
+                    .uri(ocrUrl + "/collect")
                     .bodyValue(base64FileContent)
                     .retrieve();
 
@@ -97,9 +111,11 @@ public class OCRController {
             // Convert byte array to Base64 encoded string
             String base64FileContent = Base64.getEncoder().encodeToString(fileContent);
 
+            String ocrUrl = URL+":"+PORT;
+
             // Make POST request using WebClient
             WebClient.ResponseSpec responseSpec = webClient.post()
-                    .uri("http://localhost:8080/type")
+                    .uri(ocrUrl+ "/type")
                     .bodyValue(base64FileContent)
                     .retrieve();
 

@@ -50,6 +50,18 @@ public class TiersController {
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 
+    @GetMapping("/attributes/legacy")
+    public ResponseEntity<?> getLegacyAttributes(){
+        Class<?> clazz = Tiers.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        attributes.remove(attributes.size()-1);
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
+
     // Upload a csv file to save all tiers in it
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)  {
@@ -164,8 +176,9 @@ public class TiersController {
 
     //Update a tier by its id
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody TiersDTO tiersDTO){
-        fileService.update(id,tiersDTO);
+    public ResponseEntity<Void> updateTiers(@PathVariable("id") Long id ,@RequestBody Tiers tiers){
+        //System.out.println(tiersDTO);
+        fileService.update(id,tiers);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

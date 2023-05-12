@@ -1,14 +1,15 @@
 package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.ContratDTO;
-import com.example.TalanCDZ.domain.AdditionalAttributesContrat;
-import com.example.TalanCDZ.domain.Contrat;
-import com.example.TalanCDZ.domain.Tiers;
+import com.example.TalanCDZ.DTO.DossierDTO;
+import com.example.TalanCDZ.domain.*;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.ContratSpecifications;
 import com.example.TalanCDZ.helper.TiersSpecifications;
 import com.example.TalanCDZ.helper.mapper.ContratMapper;
 import com.example.TalanCDZ.repositories.ContratRepository;
+import com.example.TalanCDZ.services.AdditionalAttributesContratService;
+import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.ContratService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +32,10 @@ public class ContratServiceImpl implements ContratService {
 
     @Autowired
     private final ContratRepository contratRepo;
+
+
+    @Autowired
+    private final AdditionalAttributesContratService additionalService;
 
     private ContratMapper mapper;
 
@@ -107,6 +113,25 @@ public class ContratServiceImpl implements ContratService {
         return contratRepo.findByNumero(numero);
     }
 
+    @Override
+    public void update(Long id, Contrat contrat) {
+        ContratDTO dto = mapper.toDto(contrat);
+        this.update(id, dto);
+        Set<AdditionalAttributesContrat> additional = contrat.getAdditionalAttributesSet();
+        additional.forEach(additionalAttributesContrat -> {
+            if (additionalAttributesContrat.getId() != null) {
+                additionalService.update(additionalAttributesContrat.getId(), additionalAttributesContrat);
+            } else {
+                AdditionalAttributesContrat add =  AdditionalAttributesContrat
+                        .builder()
+                        .cle(additionalAttributesContrat.getCle())
+                        .valeur(additionalAttributesContrat.getValeur())
+                        .contrat(contrat)
+                        .build();
+                additionalService.save(add);
+            }
+        });
 
+    }
 
 }

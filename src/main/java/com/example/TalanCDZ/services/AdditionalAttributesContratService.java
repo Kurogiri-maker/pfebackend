@@ -1,5 +1,6 @@
 package com.example.TalanCDZ.services;
 
+import com.example.TalanCDZ.DTO.AdditionalAttributesDTO;
 import com.example.TalanCDZ.domain.AdditionalAttributesContrat;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface AdditionalAttributesContratService {
 
     void delete(Long id);
 
-    void update(Long id);
+    void update(Long id,  AdditionalAttributesContrat dto);
 
 
     List<String> getDistinctAttributeCle();

@@ -1,11 +1,16 @@
 package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.DossierDTO;
+import com.example.TalanCDZ.DTO.TiersDTO;
+import com.example.TalanCDZ.domain.AdditionalAttributesDossier;
+import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 import com.example.TalanCDZ.domain.Dossier;
+import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.DossierSpecifications;
 import com.example.TalanCDZ.helper.mapper.DossierMapper;
 import com.example.TalanCDZ.repositories.DossierRepository;
+import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.DossierService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +25,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class DossierServiceImpl implements DossierService {
     @Autowired
     private final DossierRepository dosRepo;
+
+    @Autowired
+    private final AdditionalAttributesDossierService additionalService;
 
     private DossierMapper mapper;
 
@@ -120,6 +129,29 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public Optional<Dossier> findByNumero(String numero) {
         return dosRepo.findByNumero(numero);
+    }
+
+
+
+    @Override
+    public void update(Long id, Dossier dossier) {
+        DossierDTO dto = mapper.toDto(dossier);
+        this.update(id, dto);
+        Set<AdditionalAttributesDossier> additional = dossier.getAdditionalAttributesSet();
+        additional.forEach(additionalAttributesDossier -> {
+            if (additionalAttributesDossier.getId() != null) {
+                additionalService.update(additionalAttributesDossier.getId(), additionalAttributesDossier);
+            } else {
+                AdditionalAttributesDossier add =  AdditionalAttributesDossier
+                        .builder()
+                        .cle(additionalAttributesDossier.getCle())
+                        .valeur(additionalAttributesDossier.getValeur())
+                        .dossier(dossier)
+                        .build();
+                additionalService.save(add);
+            }
+        });
+
     }
 
 }
