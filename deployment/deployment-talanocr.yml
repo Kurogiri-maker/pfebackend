@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # Where in the API it resides
+kind: Deployment # The kind of workload we're creating
+metadata:
+  name: talanocr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: talanocr
+  template:
+    metadata:
+      labels:
+        app: talanocr
+    spec:
+      containers:
+        - name: talancdz
+          image: kurogirixo/talanocr:latest
+          ports:
+            - containerPort: 8080

@@ -66,7 +66,7 @@ public class ContratControllerTest {
 
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<String>(List.of("id", "numero","raisonSocial","codeProduit","produit","phase","montantPret","additional"));
+        List<String> attributes = new ArrayList<String>(List.of("id", "numero","raisonSocial","codeProduit","produit","phase","montantPret"));
 
         MvcResult result = mvc.perform(get("/api/csv/contrat/attributes"))
                 .andExpect(status().isOk())

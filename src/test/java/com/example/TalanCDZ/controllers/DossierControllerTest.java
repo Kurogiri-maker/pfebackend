@@ -72,7 +72,7 @@ public class DossierControllerTest {
     void getMetadata() throws Exception {
 
         List<String> attributes = new ArrayList<>(
-                List.of("id", "dossier_DC", "numero", "listSDC", "n_DPS", "montant_du_pres", "additional"));
+                List.of("id","dossierDC","numero","listSDC","n_DPS","montant_du_pres"));
 
         MvcResult result = mvc.perform(get("/api/csv/dossier/attributes"))
                 .andExpect(status().isOk())

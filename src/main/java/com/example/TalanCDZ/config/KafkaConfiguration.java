@@ -5,7 +5,6 @@ import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaAdmin;
 
 import java.util.HashMap;
@@ -19,7 +18,7 @@ public class KafkaConfiguration {
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Replace with your Kafka bootstrap servers
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "40.68.211.112:9092"); // Replace with your Kafka bootstrap servers
         return new KafkaAdmin(configs);
     }
 
@@ -28,10 +27,6 @@ public class KafkaConfiguration {
         return AdminClient.create(kafkaAdmin().getConfigurationProperties());
     }
 
-    @Bean
-    public NewTopic enrichment() {
-        return new NewTopic("enrichissement-topic", 1, (short) 1);
-    }
 
     @Bean
     public NewTopic newAttributesTopic() {

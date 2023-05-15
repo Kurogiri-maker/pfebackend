@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # Where in the API it resides
+kind: Deployment # The kind of workload we're creating
+metadata:
+  name: talancdz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: talancdz
+  template:
+    metadata:
+      labels:
+        app: talancdz
+    spec:
+      containers:
+        - name: talancdz
+          image: kurogirixo/talancdz:latest
+          ports:
+            - containerPort: 8086

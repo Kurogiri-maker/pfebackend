@@ -70,9 +70,9 @@ public class TiersControllerTest {
 
     @Test
     void getMetadata() throws Exception {
-        List<String> attributes = new ArrayList<>(List.of("id","numero","nom" ,"siren","ref_mandat","additional"));
+        List<String> attributes = new ArrayList<>(List.of("id","numero","nom" ,"siren","refMandat"));
 
-        MvcResult result = mvc.perform(get("/api/csv/tier/attributes"))
+        MvcResult result = mvc.perform(get("/api/csv/tiers/attributes"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -91,7 +91,7 @@ public class TiersControllerTest {
         String csvContent = "Numero,nom,siren,ref_mandat\n1,iheb,@gmail.com,cherif\n2,ahmed,.@gmail.com,tounsi\n";
         MockMultipartFile mockCsvFile = new MockMultipartFile("file","test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8));
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(mockCsvFile))
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tiers/upload").file(mockCsvFile))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -138,7 +138,7 @@ public class TiersControllerTest {
     void uploadFileWrongFormat() throws Exception {
 
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes());
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tier/upload").file(file))
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/tiers/upload").file(file))
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -158,7 +158,7 @@ public class TiersControllerTest {
         Tiers t = new Tiers(1L, "1", "Iheb", "iheb.cherif99@gmail.com", "cherif",null);
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(t);
-        MvcResult result = mvc.perform(post("/api/csv/tier").content(body).contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mvc.perform(post("/api/csv/tiers").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 

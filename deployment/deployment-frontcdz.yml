@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # Where in the API it resides
+kind: Deployment # The kind of workload we're creating
+metadata:
+  name: frontcdz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontcdz
+  template:
+    metadata:
+      labels:
+        app: frontcdz
+    spec:
+      containers:
+        - name: frontcdz
+          image: kurogirixo/frontcdz:latest
+          ports:
+            - containerPort: 4200
