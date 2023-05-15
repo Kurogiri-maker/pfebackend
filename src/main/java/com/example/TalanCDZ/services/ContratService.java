@@ -23,6 +23,8 @@ public interface ContratService {
 
     void update(Long id, ContratDTO contratDTO);
 
+    void update(Long id, Contrat contrat);
+
     public Page<Contrat> getAllContrats(Integer pageNo, Integer pageSize, String sortBy);
 
     List<Contrat> searchContrat(String searchTerm);

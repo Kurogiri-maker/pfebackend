@@ -1,11 +1,13 @@
 package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.TiersDTO;
+import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.TiersSpecifications;
 import com.example.TalanCDZ.helper.mapper.TierMapper;
 import com.example.TalanCDZ.repositories.TiersRepository;
+import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
 import com.example.TalanCDZ.services.TiersService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +30,9 @@ public class TiersServiceImpl implements TiersService {
 
     @Autowired
     private final TiersRepository tiersRepo;
+
+    @Autowired
+    private final AdditionalAttributesTiersService additionalService;
 
     private TierMapper mapper;
 
@@ -122,5 +128,26 @@ public class TiersServiceImpl implements TiersService {
     @Override
     public Optional<Tiers> findByNumero(String numero) {
         return tiersRepo.findByNumero(numero);
+    }
+
+    @Override
+    public void update(Long id, Tiers tiers) {
+        TiersDTO dto = mapper.toDto(tiers);
+        this.update(id, dto);
+        Set<AdditionalAttributesTiers> additional = tiers.getAdditionalAttributesSet();
+        additional.forEach(additionalAttributesTiers -> {
+            if (additionalAttributesTiers.getId() != null) {
+                additionalService.update(additionalAttributesTiers.getId(), additionalAttributesTiers);
+            } else {
+                AdditionalAttributesTiers add =  AdditionalAttributesTiers
+                        .builder()
+                        .cle(additionalAttributesTiers.getCle())
+                        .valeur(additionalAttributesTiers.getValeur())
+                        .tiers(tiers)
+                        .build();
+                additionalService.save(add);
+            }
+        });
+
     }
 }

@@ -33,4 +33,6 @@ public interface TiersService {
     Optional<Tiers> findByNumero(String numero);
 
     //List<Tiers> searchTiers(String searchTerm);
+
+    void update(Long id, Tiers dto);
 }

@@ -1,5 +1,6 @@
 package com.example.TalanCDZ.services.implementation;
 
+import com.example.TalanCDZ.DTO.AdditionalAttributesDTO;
 import com.example.TalanCDZ.domain.AdditionalAttributesContrat;
 import com.example.TalanCDZ.domain.AdditionalAttributesDossier;
 import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
@@ -43,7 +44,14 @@ public class AdditionalAttributesContratServiceImpl implements AdditionalAttribu
     }
 
     @Override
-    public void update(Long id) {
+    public void update(Long id, AdditionalAttributesContrat dto) {
+        Optional<AdditionalAttributesContrat> attribute = repo.findById(id);
+        if(attribute.isPresent()){
+            AdditionalAttributesContrat a = attribute.get();
+            a.setCle(dto.getCle());
+            a.setValeur(dto.getValeur());
+            repo.save(a);
+        }
 
     }
 

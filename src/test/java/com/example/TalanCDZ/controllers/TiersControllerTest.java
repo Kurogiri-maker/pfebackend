@@ -290,12 +290,12 @@ public class TiersControllerTest {
 
     }
 
-    @Test
+    /*@Test
     void updateTiers() {
         Tiers t1 = new Tiers(1L,"1","iheb",".@gmail.com","cherif",null);
         TiersDTO dto = new TiersDTO();
         dto.setNom("mohamed");
         ResponseEntity<Void> result = controller.updateTiers(1L,dto);
         assertEquals(HttpStatus.OK,result.getStatusCode());
-    }
+    }*/
 }

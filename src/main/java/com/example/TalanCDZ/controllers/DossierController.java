@@ -145,8 +145,8 @@ public class DossierController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateDossier(@PathVariable("id") Long id ,@RequestBody DossierDTO dossierDTO){
-        fileService.update(id,dossierDTO);
+    public ResponseEntity<Void> updateDossier(@PathVariable("id") Long id ,@RequestBody Dossier dossier){
+        fileService.update(id,dossier);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

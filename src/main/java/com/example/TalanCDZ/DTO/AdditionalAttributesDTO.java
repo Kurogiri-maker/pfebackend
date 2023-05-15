@@ -12,6 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AdditionalAttributesDTO {
-    private String field;
-    private String header;
+    private String cle;
+    private String valeur;
 }
