@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.mail.MessagingException;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 @Service
@@ -26,12 +27,13 @@ public class AuthenticationService {
 
     private final EmailService emailService;
 
-    public void register(RegisterRequest request) throws MessagingException {
+    public void register(RegisterRequest request) throws MessagingException, UnknownHostException {
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             System.out.println(request.getEmail() +" is already registered");
             throw new  IllegalStateException("Email already registered");
         } else {
+            System.out.println("Request new user: " + request);
             var user = User.builder()
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
@@ -40,6 +42,7 @@ public class AuthenticationService {
                     .role(Role.USER)
                     .enabled(false)
                     .build();
+            System.out.println("Registering new user: " + user);
             userRepository.save(user);
             emailService.sendVerificationEmail(user);
             /*var jwtToken = jwtService.generateToken(user);
