@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.net.UnknownHostException;
 
 @CrossOrigin("*")
 @RestController
@@ -19,11 +20,14 @@ public class AuthenticationController {
     public ResponseEntity<RegisterRequest> register(
             @RequestBody RegisterRequest request) throws MessagingException {
         try {
+            System.out.println("Request new user(controller)  : " + request);
             service.register(request);
 
             return ResponseEntity.ok(request);
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(request);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
         }
     }
 

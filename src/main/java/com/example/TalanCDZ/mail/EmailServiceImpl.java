@@ -12,6 +12,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Service
 public class EmailServiceImpl implements EmailService{
@@ -27,7 +29,7 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     @Async
-    public void sendVerificationEmail(User user) throws MessagingException {
+    public void sendVerificationEmail(User user) throws MessagingException, UnknownHostException {
 
         try {
             InternetAddress emailAddress = new InternetAddress(user.getEmail());
@@ -41,10 +43,11 @@ public class EmailServiceImpl implements EmailService{
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
         String token = generateVerificationToken(user);
+        String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
         String subject = "Email Verification";
         String text ="Please click on the link below to verify your email address:"+
-                "http://localhost:8086/auth/verify?token=" + token;
+                "http://"+ ipAddress + ":8086/auth/verify?token=" + token;
 
         helper.setTo(user.getEmail());
         helper.setSubject(subject);
