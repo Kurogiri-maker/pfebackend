@@ -28,10 +28,6 @@ public class KafkaConfiguration {
         return AdminClient.create(kafkaAdmin().getConfigurationProperties());
     }
 
-    @Bean
-    public NewTopic enrichment() {
-        return new NewTopic("enrichissement-topic", 1, (short) 1);
-    }
 
     @Bean
     public NewTopic newAttributesTopic() {
@@ -40,7 +36,7 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic enrichmentTopic() {
-        return new NewTopic("enrichissement", 1, (short) 1);
+        return new NewTopic("enrichment-topic", 1, (short) 1);
     }
 
     @Bean

@@ -50,7 +50,7 @@ public class DossierController {
 
     @GetMapping("/attributes/legacy")
     public ResponseEntity<?> getLegacyAttributes(){
-        Class<?> clazz = Tiers.class;
+        Class<?> clazz = Dossier.class;
         Field[] fields = clazz.getDeclaredFields();
         List<String> attributes = new ArrayList<>();
         for (Field field: fields){

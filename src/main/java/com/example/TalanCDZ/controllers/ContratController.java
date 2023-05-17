@@ -52,7 +52,7 @@ public class ContratController {
 
     @GetMapping("/attributes/legacy")
     public ResponseEntity<?> getLegacyAttributes(){
-        Class<?> clazz = Tiers.class;
+        Class<?> clazz = Contrat.class;
         Field[] fields = clazz.getDeclaredFields();
         List<String> attributes = new ArrayList<>();
         for (Field field: fields){
