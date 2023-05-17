@@ -45,6 +45,18 @@ public class DossierController {
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 
+    @GetMapping("/attributes/legacy")
+    public ResponseEntity<?> getLegacyAttributes(){
+        Class<?> clazz = Tiers.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        attributes.remove(attributes.size()-1);
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";

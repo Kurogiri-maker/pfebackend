@@ -31,6 +31,8 @@ public class UserController {
         return new ResponseEntity<>(attributes, HttpStatus.OK);
     }
 
+
+
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user){
         user.setPassword(userService.passwordEncoder(user.getPassword()));

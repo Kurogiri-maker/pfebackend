@@ -4,6 +4,7 @@ import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.domain.ResponseMessage;
+import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.services.AdditionalAttributesContratService;
 import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
@@ -46,6 +47,18 @@ public class ContratController {
         }
         attributes.remove(attributes.size()-1);
         attributes.addAll(service.getDistinctAttributeCle());
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
+
+    @GetMapping("/attributes/legacy")
+    public ResponseEntity<?> getLegacyAttributes(){
+        Class<?> clazz = Tiers.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        attributes.remove(attributes.size()-1);
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 
