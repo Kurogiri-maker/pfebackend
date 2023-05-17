@@ -8,6 +8,7 @@ import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.DossierSpecifications;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.DossierMapper;
 import com.example.TalanCDZ.repositories.DossierRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
@@ -34,6 +35,9 @@ public class DossierServiceImpl implements DossierService {
     private final DossierRepository dosRepo;
 
     @Autowired
+    private final TopicProducer topicProducer;
+
+    @Autowired
     private final AdditionalAttributesDossierService additionalService;
 
     private DossierMapper mapper;
@@ -43,6 +47,9 @@ public class DossierServiceImpl implements DossierService {
         try {
             List<Dossier> dossiers = CSVHelper.csvToDossiers(file.getInputStream());
             dosRepo.saveAll(dossiers);
+            dossiers.forEach(dossier -> {
+                topicProducer.sendNewDocument("Dossier",dossier.getNumero());
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +73,7 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public Dossier save(Dossier dossier) {
         Dossier dossier1 = dosRepo.save(dossier);
+        topicProducer.sendNewDocument("Dossier",dossier.getNumero());
         return dossier1;
     }
 

@@ -45,7 +45,7 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic synchronisationTopic() {
-        return new NewTopic("synchronisation", 1, (short) 1);
+        return new NewTopic("synchronisation-topic", 1, (short) 1);
     }
 
 }

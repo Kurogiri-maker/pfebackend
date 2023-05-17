@@ -24,6 +24,8 @@ public class TopicProducer {
 
     private final NewTopic newAttributesTopic;
 
+    private final NewTopic synchronisationTopic;
+
 
     // Serialize the document object to JSON string
     ObjectMapper objectMapper = new ObjectMapper();
@@ -36,6 +38,12 @@ public class TopicProducer {
             log.info("send attribute : {}  to OCR", newAttribute);
 
         });
+
+    }
+
+    public void sendNewDocument(String type, String numero){
+        kafkaTemplate.send(synchronisationTopic.name(), type + " " + numero);
+        log.info("send document : {}  to OCR", type + " " + numero);
 
     }
 

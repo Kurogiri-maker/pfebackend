@@ -3,6 +3,7 @@ package com.example.TalanCDZ.controllers;
 import com.example.TalanCDZ.DTO.DossierDTO;
 import com.example.TalanCDZ.domain.*;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.DossierService;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,8 @@ public class DossierController {
 
     @Autowired
     private final AdditionalAttributesDossierService service;
+
+
 
     @GetMapping("/attributes")
     public ResponseEntity<?> getMetadata(){

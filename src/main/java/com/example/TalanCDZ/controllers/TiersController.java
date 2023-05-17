@@ -10,6 +10,7 @@ import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
 import com.example.TalanCDZ.services.TiersService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.internals.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,8 @@ public class TiersController {
 
     @Autowired
     private final AdditionalAttributesTiersService service;
+
+
 
 
     // Get attributes
