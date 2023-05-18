@@ -3,6 +3,7 @@ package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.TiersDTO;
 import com.example.TalanCDZ.domain.Tiers;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.TierMapper;
 import com.example.TalanCDZ.repositories.TiersRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
@@ -42,6 +43,9 @@ public class TiersServiceImplTest {
 
     private TiersService service;
 
+    private  TopicProducer topicProducer;
+
+
     private AdditionalAttributesTiersService additionalService;
 
     @Mock
@@ -51,7 +55,7 @@ public class TiersServiceImplTest {
 
     @BeforeEach
     void setup() {
-        service = new TiersServiceImpl(tiersRepo, additionalService ,mapper);
+        service = new TiersServiceImpl(tiersRepo, topicProducer,additionalService ,mapper);
     }
 
 
