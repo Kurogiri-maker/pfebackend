@@ -4,10 +4,10 @@ package com.example.TalanCDZ.services.implementation;
 import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.ContratMapper;
 import com.example.TalanCDZ.repositories.ContratRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesContratService;
-import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.ContratService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +39,8 @@ class ContratServiceImplTest {
 
     private AdditionalAttributesContratService additionalService;
 
+    private  TopicProducer topicProducer;
+
     @Mock
     private ContratRepository contratRepository;
     private ContratService contratService ;
@@ -47,7 +49,7 @@ class ContratServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        contratService = new ContratServiceImpl(contratRepository,additionalService,mapper);
+        contratService = new ContratServiceImpl(contratRepository,additionalService,mapper,topicProducer);
     }
 
     @Test
@@ -250,7 +252,7 @@ class ContratServiceImplTest {
         when(mockRepo.findAll()).thenReturn(expectedContrats);
 
         // create a service instance with the mock repository
-        ContratServiceImpl contratService = new ContratServiceImpl(mockRepo,additionalService,mapper);
+        ContratServiceImpl contratService = new ContratServiceImpl(mockRepo,additionalService,mapper,topicProducer);
 
 
         // call the method and verify the results

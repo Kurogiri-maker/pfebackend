@@ -2,6 +2,7 @@ package com.example.TalanCDZ.services.implementation;
 
 import com.example.TalanCDZ.DTO.DossierDTO;
 import com.example.TalanCDZ.domain.Dossier;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.DossierMapper;
 import com.example.TalanCDZ.repositories.DossierRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
@@ -41,6 +42,9 @@ public class DossierServiceImplTest {
 
     private DossierService service;
 
+    private  TopicProducer topicProducer;
+
+
     private AdditionalAttributesDossierService additionalService;
 
     @Mock
@@ -48,9 +52,11 @@ public class DossierServiceImplTest {
     @Mock
     private DossierRepository dossierRepo;
 
+
     @BeforeEach
     void setup() {
-        service = new DossierServiceImpl(dossierRepo,additionalService,mapper);
+        service = new DossierServiceImpl(dossierRepo,topicProducer,additionalService,mapper);
+
     }
 
 

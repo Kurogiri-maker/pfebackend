@@ -6,6 +6,7 @@ import com.example.TalanCDZ.domain.*;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.ContratSpecifications;
 import com.example.TalanCDZ.helper.TiersSpecifications;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.ContratMapper;
 import com.example.TalanCDZ.repositories.ContratRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesContratService;
@@ -39,9 +40,13 @@ public class ContratServiceImpl implements ContratService {
 
     private ContratMapper mapper;
 
+    @Autowired
+    private final TopicProducer topicProducer;
+
     @Override
     public Contrat save(Contrat contrat) {
         Contrat contrat1 = contratRepo.save(contrat);
+        topicProducer.sendNewDocument("Contrat",contrat.getNumero());
         return contrat1;
     }
 
@@ -51,6 +56,9 @@ public class ContratServiceImpl implements ContratService {
         try {
             List<Contrat> contrats = CSVHelper.csvToContrats(file.getInputStream());
             contratRepo.saveAll(contrats);
+            contrats.forEach(contrat -> {
+                topicProducer.sendNewDocument("Contrat",contrat.getNumero());
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

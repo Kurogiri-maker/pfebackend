@@ -154,6 +154,8 @@ public class OCRController {
         map.remove("type");
         // Get the attributes of this class
         List<String> attributes = service.getAttributes(type);
+        attributes.remove(0);
+        System.out.println(attributes);
 
         // Get the attributes of the document
         List<String> keyList = map.keySet().stream().toList();

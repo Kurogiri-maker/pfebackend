@@ -5,6 +5,7 @@ import com.example.TalanCDZ.domain.AdditionalAttributesTiers;
 import com.example.TalanCDZ.domain.Tiers;
 import com.example.TalanCDZ.helper.CSVHelper;
 import com.example.TalanCDZ.helper.TiersSpecifications;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.helper.mapper.TierMapper;
 import com.example.TalanCDZ.repositories.TiersRepository;
 import com.example.TalanCDZ.services.AdditionalAttributesTiersService;
@@ -32,6 +33,9 @@ public class TiersServiceImpl implements TiersService {
     private final TiersRepository tiersRepo;
 
     @Autowired
+    private final TopicProducer topicProducer;
+
+    @Autowired
     private final AdditionalAttributesTiersService additionalService;
 
     private TierMapper mapper;
@@ -39,6 +43,7 @@ public class TiersServiceImpl implements TiersService {
     @Override
     public Tiers save(Tiers tiers) {
         Tiers tiers1 = tiersRepo.save(tiers);
+        topicProducer.sendNewDocument("Tiers",tiers.getNumero());
         return tiers1;
     }
 
@@ -48,6 +53,9 @@ public class TiersServiceImpl implements TiersService {
         try {
             List<Tiers> tiers = CSVHelper.csvToTiers(file.getInputStream());
             tiersRepo.saveAll(tiers);
+            tiers.forEach(tier -> {
+                topicProducer.sendNewDocument("Tiers",tier.getNumero());
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

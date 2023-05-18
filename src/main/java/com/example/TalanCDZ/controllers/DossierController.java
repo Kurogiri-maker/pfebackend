@@ -3,6 +3,7 @@ package com.example.TalanCDZ.controllers;
 import com.example.TalanCDZ.DTO.DossierDTO;
 import com.example.TalanCDZ.domain.*;
 import com.example.TalanCDZ.helper.CSVHelper;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.DossierService;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,8 @@ public class DossierController {
     @Autowired
     private final AdditionalAttributesDossierService service;
 
+
+
     @GetMapping("/attributes")
     public ResponseEntity<?> getMetadata(){
         Class<?> clazz = Dossier.class;
@@ -42,6 +45,18 @@ public class DossierController {
         }
         attributes.remove(attributes.size()-1);
         attributes.addAll(service.getDistinctAttributeCle());
+        return new ResponseEntity<>(attributes,HttpStatus.OK);
+    }
+
+    @GetMapping("/attributes/legacy")
+    public ResponseEntity<?> getLegacyAttributes(){
+        Class<?> clazz = Dossier.class;
+        Field[] fields = clazz.getDeclaredFields();
+        List<String> attributes = new ArrayList<>();
+        for (Field field: fields){
+            attributes.add(field.getName());
+        }
+        attributes.remove(attributes.size()-1);
         return new ResponseEntity<>(attributes,HttpStatus.OK);
     }
 
