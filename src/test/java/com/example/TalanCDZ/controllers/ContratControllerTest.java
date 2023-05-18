@@ -296,7 +296,7 @@ public class ContratControllerTest {
                 null);
         ContratDTO dto = new ContratDTO();
         dto.setRaisonSocial("aaaa");
-        ResponseEntity<Void> result = controller.updateTiers(1L, dto);
+        ResponseEntity<Void> result = controller.updateTiers(1L, t1);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }

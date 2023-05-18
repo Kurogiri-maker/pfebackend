@@ -240,7 +240,7 @@ public class DossierControllerTest {
         Dossier t1 = new Dossier(1L, "dossier1", "1", "list1", "1", "10",null);
         DossierDTO dto = new DossierDTO();
         dto.setDossierDC("dossier2");
-        ResponseEntity<Void> result = controller.updateDossier(1L, dto);
+        ResponseEntity<Void> result = controller.updateDossier(1L, t1);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }

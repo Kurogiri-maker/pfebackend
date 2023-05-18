@@ -4,6 +4,7 @@ import com.example.TalanCDZ.DTO.DossierDTO;
 import com.example.TalanCDZ.domain.Dossier;
 import com.example.TalanCDZ.helper.mapper.DossierMapper;
 import com.example.TalanCDZ.repositories.DossierRepository;
+import com.example.TalanCDZ.services.AdditionalAttributesDossierService;
 import com.example.TalanCDZ.services.DossierService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +41,8 @@ public class DossierServiceImplTest {
 
     private DossierService service;
 
+    private AdditionalAttributesDossierService additionalService;
+
     @Mock
     private DossierMapper mapper;
     @Mock
@@ -47,7 +50,7 @@ public class DossierServiceImplTest {
 
     @BeforeEach
     void setup() {
-        service = new DossierServiceImpl(dossierRepo, mapper);
+        service = new DossierServiceImpl(dossierRepo,additionalService,mapper);
     }
 
 
