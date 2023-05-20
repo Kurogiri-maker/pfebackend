@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -39,6 +40,7 @@ import static org.mockito.Mockito.*;
 @Slf4j
 @ExtendWith(MockitoExtension.class)
 @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class DossierServiceImplTest {
 
 

@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.*;
 @Slf4j
 @ExtendWith(MockitoExtension.class)
 @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class ContratServiceImplTest {
 
     private AdditionalAttributesContratService additionalService;
