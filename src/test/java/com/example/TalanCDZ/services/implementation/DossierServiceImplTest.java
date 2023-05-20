@@ -46,6 +46,7 @@ public class DossierServiceImplTest {
 
     private DossierService service;
 
+    @Mock
     private  TopicProducer topicProducer;
 
 

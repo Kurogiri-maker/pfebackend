@@ -47,6 +47,8 @@ public class TiersServiceImplTest {
 
     private TiersService service;
 
+    @Mock
+
     private  TopicProducer topicProducer;
 
 
