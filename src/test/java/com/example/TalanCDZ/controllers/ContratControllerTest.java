@@ -3,6 +3,7 @@ package com.example.TalanCDZ.controllers;
 import com.example.TalanCDZ.DTO.ContratDTO;
 import com.example.TalanCDZ.domain.Contrat;
 import com.example.TalanCDZ.domain.ResponseMessage;
+import com.example.TalanCDZ.helper.TopicProducer;
 import com.example.TalanCDZ.services.AdditionalAttributesContratService;
 import com.example.TalanCDZ.services.ContratService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -43,11 +45,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc(addFilters = false)
+@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
 public class ContratControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ContratControllerTest.class);
 
     private ContratController controller;
+
+    @Autowired
+    private TopicProducer topicProducer;
+
 
     private AdditionalAttributesContratService additionalAttributesContratService;
 
@@ -86,6 +93,8 @@ public class ContratControllerTest {
         MockMultipartFile mockCsvFile = new MockMultipartFile("file", "test.csv", "text/csv",
                 csvContent.getBytes(StandardCharsets.UTF_8));
 
+
+
         MvcResult result = mvc.perform(MockMvcRequestBuilders.multipart("/api/csv/contrat/upload").file(mockCsvFile))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -95,7 +104,7 @@ public class ContratControllerTest {
         String val = JsonPath.read(actualContent, "$.message");
 
         assertEquals(expectedContent, val);
-
+        logger.info("file :");
         logger.info("Expected : " + expectedContent);
         logger.info("Resultat  : " + val);
     }
