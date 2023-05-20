@@ -69,6 +69,7 @@ pipeline {
             }
         }
 
+        /*
         stage('Run Docker Image') {
             steps {
                 sh '''
@@ -87,7 +88,7 @@ pipeline {
                     docker stop $container_id
                 '''
             }
-        }
+        } */
 
 
     }
