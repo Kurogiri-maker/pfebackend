@@ -7,12 +7,7 @@ pipeline {
     stages {
 
 
-        stage('Build') {
-            // Build the jar file
-            steps {
-                sh 'mvn clean install -DskipTests'
-            }
-        }
+
 
 
         stage('Unit Test') {
@@ -46,6 +41,13 @@ pipeline {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.java.binaries=target/classes'
                 }
             }
+        }
+
+        stage('Build') {
+             // Build the jar file
+             steps {
+                sh 'mvn clean install -DskipTests'
+             }
         }
         
         stage('Docker Login') {
