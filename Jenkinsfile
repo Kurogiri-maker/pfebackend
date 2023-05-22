@@ -69,6 +69,20 @@ pipeline {
             }
         }
 
+        stage('Log in to Azure and Connect to AKS') {
+                  steps {
+                      script {
+                          // Azure login
+                          sh 'az login'
+
+                          // Set the AKS cluster credentials
+                          sh 'az aks get-credentials --name cdz --resource-group talancdz'
+                      }
+                  }
+              }
+
+
+
         /*
         stage('Run Docker Image') {
             steps {
