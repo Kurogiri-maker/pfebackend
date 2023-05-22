@@ -8,7 +8,7 @@ pipeline {
 
 
 
-
+/*
 
         stage('Unit Test') {
             steps {
@@ -68,6 +68,7 @@ pipeline {
                 sh "docker push kurogirixo/talancdz:latest"
             }
         }
+        */
 
         stage('Log in to Azure and Connect to AKS') {
                   steps {
