@@ -74,8 +74,7 @@ pipeline {
                   steps {
                       script {
                           // Azure login
-                          sh 'az login -u iheb.cherif@talan.com -p G23midoriyamortyA*'
-
+                          sh 'az account set --subscription 42540b50-232f-4b1b-9c25-a984540d5974'
                           // Set the AKS cluster credentials
                           sh 'az aks get-credentials --name cdz --resource-group talancdz'
                       }
