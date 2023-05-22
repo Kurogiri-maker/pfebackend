@@ -79,7 +79,16 @@ pipeline {
                           sh 'az aks get-credentials --name cdz --resource-group talancdz'
                       }
                   }
-              }
+        }
+
+         stage('Deploy to Kubernetes') {
+                    steps {
+                        script {
+                            // Deploy the deployment.yaml
+                            sh 'kubectl apply -f deployment/deployment-talancdz.yaml'
+                        }
+                    }
+                }
 
 
 
