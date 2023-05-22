@@ -19,7 +19,7 @@ pipeline {
         stage('Code Coverage Report') {
             steps {
                 sh 'mvn jacoco:report'
-                jacoco(execPattern: '**/target/jacoco.exec')
+                jacoco(execPattern: '**//*target/jacoco.exec')
             }
             post {
                 always {
@@ -68,7 +68,7 @@ pipeline {
                 sh "docker push kurogirixo/talancdz:latest"
             }
         }
-        */
+*/
 
         stage('Log in to Azure and Connect to AKS') {
                   steps {
