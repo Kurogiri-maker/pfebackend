@@ -85,7 +85,7 @@ pipeline {
                     steps {
                         script {
                             // Deploy the deployment.yaml
-                            sh 'kubectl apply -f deployment/deployment-talancdz.yaml'
+                            sh 'kubectl apply -f deployment/deployment-talancdz.yml'
                         }
                     }
                 }
