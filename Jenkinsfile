@@ -8,7 +8,7 @@ pipeline {
 
 
 
-/*
+
 
         stage('Unit Test') {
             steps {
@@ -68,7 +68,7 @@ pipeline {
                 sh "docker push kurogirixo/talancdz:latest"
             }
         }
-*/
+
 
         stage('Log in to Azure and Connect to AKS') {
                   steps {
@@ -85,7 +85,16 @@ pipeline {
                     steps {
                         script {
                             // Deploy the deployment.yaml
+                            sh 'kubectl apply -f deployment/deployment-mysql.yml'
+                            sh 'kubectl apply -f deployment/deployment-mysqlocr.yml'
+                            sh 'kubectl apply -f deployment/service-mysql.yml'
+                            sh 'kubectl apply -f deployment/service-mysqlocr.yml'
+                            sh 'kubectl apply -f deployment/deployment-frontcdz.yml'
+                            sh 'kubectl apply -f deployment/service-frontcdz.yml'
                             sh 'kubectl apply -f deployment/deployment-talancdz.yml'
+                            sh 'kubectl apply -f deployment/service-talancdz.yml'
+                            sh 'kubectl apply -f deployment/deployment-talancdz.yml'
+                            sh 'kubectl apply -f deployment/service-talancdz.yml'
                         }
                     }
                 }

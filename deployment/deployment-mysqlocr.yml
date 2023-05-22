@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqlocr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysqlocr
+  template:
+    metadata:
+      labels:
+        app: mysqlocr
+    spec:
+      containers:
+        - name: mysqlocr
+          image: mysql:latest
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "true"
+            - name: MYSQL_DATABASE
+              value: ocr
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysqlocr-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysqlocr-data
