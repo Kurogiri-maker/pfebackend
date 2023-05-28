@@ -194,19 +194,19 @@ public class OCRController {
                 response.setType(type);
                 response.setLegacyAttributes(legacyAttributes);
                 response.setAdditionalAttributes(additionalAttributes);
-                response.setMessage("Le fichier existe");
+                response.setMessage("The file does  exist");
                 return response;
             }else{
                 Response response = new Response();
                 response.setType(type);
                 response.setLegacyAttributes(legacyAttributes);
                 response.setAdditionalAttributes(additionalAttributes);
-                response.setMessage("Le fichier n'existe pas. Voulez vous le sauvegardez ?");
+                response.setMessage("The file does not exist. Do you want to save it?");
                 return response ;
             }
         }
         Response response = new Response();
-        response.setMessage("Le fichier n'est pas cohérent");
+        response.setMessage("The file is not consistent");
         return response;
 
     }
