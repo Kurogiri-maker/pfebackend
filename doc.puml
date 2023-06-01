@@ -1,0 +1,61 @@
+@startuml
+'https://plantuml.com/class-diagram
+package "TalanCDZ" {
+  class "Contrat" {
+    -id: Long
+    -numero: String
+    -raisonSocial: String
+    -codeProduit: String
+    -produit: String
+    -phase: String
+    -montantPret: String
+    -additionalAttributesSet: Set<AdditionalAttributesContrat>
+
+  }
+
+  class Tiers {
+      -id: Long
+      -numero: String
+      -nom: String
+      -siren: String
+      -refMandat: String
+      -additionalAttributesSet: Set<AdditionalAttributesTiers>
+  }
+
+  class Dossier {
+      -id: Long
+      -dossierDC: String
+      -numero: String
+      -listSDC: String
+      -n_DPS: String
+      -montant_du_pres: String
+      -additionalAttributesSet: Set<AdditionalAttributesDossier>
+  }
+
+
+  class AdditionalAttributesContrat {
+      -id: Long
+      -cle: String
+      -valeur: String
+      -contrat: Contrat
+  }
+
+  class AdditionalAttributesTiers {
+       -id: Long
+       -cle: String
+       -valeur: String
+       -Tiers: tiers
+  }
+
+  class AdditionalAttributesDossier {
+      -id: Long
+      -cle: String
+      -valeur: String
+      -dossier: Dossier
+  }
+
+Contrat "1" --> "0..*" AdditionalAttributesContrat
+Dossier "1" --> "0..*" AdditionalAttributesDossier
+Tiers "1" --> "0..*" AdditionalAttributesTiers
+}
+@enduml

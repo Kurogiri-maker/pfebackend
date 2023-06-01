@@ -7,45 +7,6 @@ package "TalanCDZ" {
     USER
   }
 
-  class "Contrat" {
-    -id: Long
-    -num_dossierKPS: String
-    -num_CP: String
-    -raison_Social: String
-    -id_Tiers: String
-    -num_DC: String
-    -num_SDC: String
-    -num_CIR: String
-    -num_SIREN: String
-    -ref_Collaborative: String
-    -code_Produit: String
-    -identifiant_de_offre_comm: String
-    -chef_de_File: String
-    -num_OVI: String
-    -num_RUM: String
-    -typeEnergie: String
-    -produit_Comm: String
-    -produit: String
-    -phase: String
-    -montant_pret: String
-  }
-
-  class Tiers {
-      -id: Long
-      -numero: String
-      -nom: String
-      -siren: String
-      -ref_mandat: String
-  }
-
-  class Dossier {
-      -id: Long
-      -dossier_DC: String
-      -numero: String
-      -listSDC: String
-      -n_DPS: String
-      -montant_du_pres: String
-  }
 
 
   class "User" {
@@ -64,10 +25,6 @@ package "TalanCDZ" {
     +isCredentialsNonExpired(): boolean
     +isEnabled(): boolean
   }
-
-  "User" -->  "Contrat"
-   "User" -->  "Tiers"
-   "User" -->  "Dossier"
 
 }
 @enduml
