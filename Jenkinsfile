@@ -89,8 +89,8 @@ pipeline {
                             sh 'kubectl apply -f deployment/service-frontcdz.yml'
                             sh 'kubectl apply -f deployment/deployment-talancdz.yml'
                             sh 'kubectl apply -f deployment/service-talancdz.yml'
-                            sh 'kubectl apply -f deployment/deployment-talancdz.yml'
-                            sh 'kubectl apply -f deployment/service-talancdz.yml'
+                            sh 'kubectl apply -f deployment/deployment-talanocr.yml'
+                            sh 'kubectl apply -f deployment/service-talanocr.yml'
                         }
                     }
                 }
