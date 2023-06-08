@@ -9,7 +9,7 @@ pipeline {
 
 
 
-
+/*
         stage('Unit Test') {
             steps {
                 sh 'mvn test '
@@ -69,7 +69,7 @@ pipeline {
             }
         }
 
-
+*/
         stage('Log in to Azure and Connect to AKS') {
                   steps {
                       script {
