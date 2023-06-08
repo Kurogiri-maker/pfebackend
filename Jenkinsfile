@@ -76,7 +76,7 @@ pipeline {
                           // Azure login
                           sh 'az account set --subscription db8a4274-6875-495d-8ae8-4567e81675e9'
                           // Set the AKS cluster credentials
-                          sh 'az aks get-credentials --name cdz --resource-group talancdz1'
+                          sh 'az aks get-credentials --name cdz --resource-group talancdz1 --overwrite-existing'
                       }
                   }
         }
