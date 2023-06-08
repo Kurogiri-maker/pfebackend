@@ -73,7 +73,6 @@ pipeline {
         stage('Log in to Azure and Connect to AKS') {
                   steps {
                       script {
-                          sh 'az login'
                           // Azure login
                           sh 'az account set --subscription db8a4274-6875-495d-8ae8-4567e81675e9'
                           // Set the AKS cluster credentials
