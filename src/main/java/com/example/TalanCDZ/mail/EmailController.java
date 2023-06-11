@@ -36,7 +36,7 @@ public class EmailController {
             throws IOException {
         Boolean val = emailService.verifyEmail(token);
         if (val) {
-            String redirectUrl = "http://20.199.1.112:80/auth/login"; // REDIRECT TO LOGIN PAGE
+            String redirectUrl = "http://20.19.106.40:80/auth/login"; // REDIRECT TO LOGIN PAGE
             response.sendRedirect(redirectUrl);
             return null;
         }

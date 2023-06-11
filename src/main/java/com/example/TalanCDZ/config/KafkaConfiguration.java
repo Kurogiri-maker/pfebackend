@@ -18,7 +18,7 @@ public class KafkaConfiguration {
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "52.166.9.193:9092"); // Replace with your Kafka bootstrap servers
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "13.69.79.109:9092"); // Replace with your Kafka bootstrap servers
         return new KafkaAdmin(configs);
     }
 
